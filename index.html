@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f1115">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Bolso Viagem</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<style>
+:root{--bg:#0f1115;--card:#1a1d24;--txt:#f2f4f8;--mut:#8b93a7;--ac:#4f8cff;--ok:#2ecc71;--warn:#f1c40f;--bad:#e74c3c;--line:#2a2f3a}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+body{min-height:100vh;padding:env(safe-area-inset-top) 16px env(safe-area-inset-bottom)}
+.tela{display:none;max-width:480px;margin:0 auto;padding:16px 0 32px}
+.tela.ativa{display:block}
+h1{font-size:22px;margin:8px 0 4px}
+.sub{color:var(--mut);font-size:14px;margin-top:2px}
+.card{background:var(--card);border-radius:18px;padding:20px;margin:16px 0}
+.topo{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.btn-eng{background:none;border:none;color:var(--mut);font-size:26px;padding:8px;cursor:pointer;min-width:48px;min-height:48px}
+.teto{font-size:44px;font-weight:700;margin:8px 0}
+.lbl{color:var(--mut);font-size:13px;text-transform:uppercase;letter-spacing:.05em}
+.linha{display:flex;justify-content:space-between;margin-top:12px;font-size:16px}
+.neg{color:var(--bad)}
+.barra{height:14px;background:var(--line);border-radius:999px;overflow:hidden;margin-top:16px}
+.barra>div{height:100%;width:0;transition:width .3s,background .3s;border-radius:999px}
+.verde{background:var(--ok)}
+.amarelo{background:var(--warn)}
+.vermelho{background:var(--bad)}
+.alerta{color:var(--bad);font-weight:600;margin-top:12px;min-height:18px}
+.btn{display:block;width:100%;min-height:64px;border:none;border-radius:16px;background:var(--ac);color:#fff;font-size:20px;font-weight:600;cursor:pointer;margin-top:12px}
+.btn.sec{background:var(--card);color:var(--txt);border:1px solid var(--line)}
+label{display:block;color:var(--mut);font-size:14px;margin-top:16px}
+input,select{width:100%;min-height:56px;margin-top:6px;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:var(--bg);color:var(--txt);font-size:18px}
+.erro{color:var(--bad);font-size:14px;margin-top:10px;min-height:18px}
+.item{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);gap:12px}
+.item:last-child{border-bottom:none}
+.item small{color:var(--mut)}
+.del{background:none;border:none;color:var(--bad);font-size:14px;padding:12px;cursor:pointer;min-height:44px}
+.aviso{text-align:center;padding:24px 8px;font-size:17px;line-height:1.5}
+</style>
+</head>
+<body>
+
+<!-- Tela 1: configuração da viagem -->
+<section id="tela-config" class="tela">
+  <h1 id="cfg-titulo">Nova viagem</h1>
+  <div class="sub">Configure uma vez. Você pode editar depois sem perder as despesas.</div>
+  <div class="card">
+    <label>Nome da viagem
+      <input id="cfg-nome" type="text" placeholder="Anaheim 2027">
+    </label>
+    <label>Destino
+      <input id="cfg-destino" type="text" placeholder="Anaheim, Califórnia">
+    </label>
+    <label>Data de início
+      <input id="cfg-inicio" type="date">
+    </label>
+    <label>Data de fim
+      <input id="cfg-fim" type="date">
+    </label>
+    <label>Moeda
+      <input id="cfg-moeda" type="text" placeholder="US$, CA$, R$">
+    </label>
+    <label>Orçamento total
+      <input id="cfg-orcamento" type="text" inputmode="decimal" placeholder="0,00">
+    </label>
+    <div id="cfg-erro" class="erro"></div>
+    <button id="cfg-salvar" class="btn">Começar</button>
+    <button id="cfg-voltar" class="btn sec" style="display:none">Voltar</button>
+  </div>
+</section>
+
+<!-- Tela 2: Hoje -->
+<section id="tela-hoje" class="tela">
+  <div class="topo">
+    <div>
+      <h1 id="h-nome"></h1>
+      <div class="sub" id="h-destino"></div>
+      <div class="sub" id="h-dia"></div>
+    </div>
+    <button id="btn-config" class="btn-eng" aria-label="Configurar viagem">⚙</button>
+  </div>
+
+  <div id="card-teto" class="card">
+    <div class="lbl">Teto de hoje</div>
+    <div class="teto" id="teto"></div>
+    <div class="linha"><span>Já gasto hoje</span><strong id="gasto-hoje"></strong></div>
+    <div class="linha"><span>Restante hoje</span><strong id="restante-hoje"></strong></div>
+    <div class="barra"><div id="barra"></div></div>
+    <div id="alerta" class="alerta"></div>
+  </div>
+
+  <div id="aviso-fim" class="card aviso" style="display:none"></div>
+
+  <button id="btn-nova" class="btn">+ Despesa</button>
+
+  <div class="card">
+    <div class="lbl">Gastos de hoje</div>
+    <div id="lista"></div>
+  </div>
+</section>
+
+<!-- Tela 3: nova despesa -->
+<section id="tela-despesa" class="tela">
+  <h1>Nova despesa</h1>
+  <div class="sub" id="d-data"></div>
+  <div class="card">
+    <label>Valor
+      <input id="d-valor" type="text" inputmode="decimal" placeholder="0,00">
+    </label>
+    <label>Categoria
+      <select id="d-cat"></select>
+    </label>
+    <label>Descrição (opcional)
+      <input id="d-desc" type="text" placeholder="Almoço, ingresso...">
+    </label>
+    <div id="d-erro" class="erro"></div>
+    <button id="d-salvar" class="btn">Salvar</button>
+    <button id="d-cancelar" class="btn sec">Cancelar</button>
+  </div>
+</section>
+
+<script>
+const CHAVE = 'bolsoViagem';
+const CATEGORIAS = ['Alimentação', 'Transporte', 'Hospedagem', 'Ingressos', 'Compras', 'Outros'];
+const $ = id => document.getElementById(id);
+const val = id => $(id).value.trim();
+
+// ---------- Armazenamento ----------
+function carregar() {
+  const raw = localStorage.getItem(CHAVE);
+  if (!raw) return { viagem: null, despesas: [] };
+  try {
+    const o = JSON.parse(raw);
+    return {
+      viagem: o.viagem || null,
+      despesas: Array.isArray(o.despesas) ? o.despesas : []
+    };
+  } catch (e) {
+    // Dado corrompido: guarda cópia de segurança para não perder nada
+    localStorage.setItem(CHAVE + '_backup', raw);
+    return { viagem: null, despesas: [] };
+  }
+}
+function salvar() {
+  localStorage.setItem(CHAVE, JSON.stringify(estado));
+}
+let estado = carregar();
+
+// ---------- Datas (sempre como AAAA-MM-DD local, evita problema de fuso) ----------
+const pad = n => String(n).padStart(2, '0');
+function hojeStr() {
+  const d = new Date();
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+function paraDate(s) {
+  const [y, m, d] = s.split('-').map(Number);
+  return new Date(y, m - 1, d);
+}
+function diffDias(a, b) {
+  return Math.round((paraDate(b) - paraDate(a)) / 86400000);
+}
+function formatarData(s) {
+  const [y, m, d] = s.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+// ---------- Números ----------
+function parseNum(v) {
+  return parseFloat(String(v).replace(',', '.'));
+}
+function fmt(v) {
+  const n = Math.abs(v) < 0.005 ? 0 : v;
+  const s = Math.abs(n).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const sinal = n < 0 ? '-' : '';
+  return `${sinal}${estado.viagem.moeda} ${s}`.trim();
+}
+
+// ---------- Cálculos ----------
+function calcular() {
+  const v = estado.viagem;
+  const hoje = hojeStr();
+  const diasTotais = diffDias(v.inicio, v.fim) + 1;
+
+  let diaAtual, diasRestantes;
+  if (hoje < v.inicio) {
+    diaAtual = 0;
+    diasRestantes = diasTotais;
+  } else if (hoje > v.fim) {
+    diaAtual = diasTotais;
+    diasRestantes = 0;
+  } else {
+    diaAtual = diffDias(v.inicio, hoje) + 1;
+    diasRestantes = diffDias(hoje, v.fim) + 1;
+  }
+
+  const totalGasto = estado.despesas.reduce((s, d) => s + d.valor, 0);
+  const saldo = v.orcamento - totalGasto;
+  const teto = diasRestantes > 0 && saldo > 0 ? saldo / diasRestantes : 0;
+  const gastoHoje = estado.despesas
+    .filter(d => d.data === hoje)
+    .reduce((s, d) => s + d.valor, 0);
+
+  return {
+    hoje, diasTotais, diaAtual, diasRestantes, totalGasto, saldo,
+    teto, gastoHoje,
+    restanteHoje: teto - gastoHoje,
+    antes: hoje < v.inicio,
+    encerrada: hoje > v.fim
+  };
+}
+
+// ---------- Navegação ----------
+function mostrar(id) {
+  document.querySelectorAll('.tela').forEach(t => t.classList.toggle('ativa', t.id === id));
+  window.scrollTo(0, 0);
+}
+
+// ---------- Tela de configuração ----------
+function abrirConfig() {
+  const v = estado.viagem || {};
+  $('cfg-titulo').textContent = estado.viagem ? 'Editar viagem' : 'Nova viagem';
+  $('cfg-nome').value = v.nome || '';
+  $('cfg-destino').value = v.destino || '';
+  $('cfg-inicio').value = v.inicio || '';
+  $('cfg-fim').value = v.fim || '';
+  $('cfg-moeda').value = v.moeda || '';
+  $('cfg-orcamento').value = v.orcamento != null ? String(v.orcamento).replace('.', ',') : '';
+  $('cfg-voltar').style.display = estado.viagem ? 'block' : 'none';
+  $('cfg-erro').textContent = '';
+  mostrar('tela-config');
+}
+
+function salvarConfig() {
+  const nome = val('cfg-nome');
+  const destino = val('cfg-destino');
+  const inicio = $('cfg-inicio').value;
+  const fim = $('cfg-fim').value;
+  const moeda = val('cfg-moeda');
+  const orcamento = parseNum(val('cfg-orcamento'));
+
+  let erro = '';
+  if (!nome) erro = 'Informe o nome da viagem.';
+  else if (!inicio || !fim) erro = 'Informe as datas de início e fim.';
+  else if (fim < inicio) erro = 'A data fim deve ser igual ou posterior à data início.';
+  else if (!moeda) erro = 'Informe a moeda (ex.: US$, CA$, R$).';
+  else if (!(orcamento > 0)) erro = 'O orçamento total deve ser maior que zero.';
+
+  if (erro) {
+    $('cfg-erro').textContent = erro;
+    return;
+  }
+
+  // Editar a viagem não apaga as despesas
+  estado.viagem = { nome, destino, inicio, fim, moeda, orcamento };
+  salvar();
+  renderHoje();
+  mostrar('tela-hoje');
+}
+
+// ---------- Tela Hoje ----------
+function renderHoje() {
+  if (!estado.viagem) { abrirConfig(); return; }
+  const v = estado.viagem;
+  const c = calcular();
+
+  $('h-nome').textContent = v.nome;
+  $('h-destino').textContent = v.destino || '';
+
+  if (c.antes) {
+    const faltam = diffDias(c.hoje, v.inicio);
+    $('h-dia').textContent = `Começa em ${faltam} ${faltam === 1 ? 'dia' : 'dias'}`;
+  } else if (c.encerrada) {
+    $('h-dia').textContent = 'Viagem encerrada';
+  } else {
+    $('h-dia').textContent = `Dia ${c.diaAtual} de ${c.diasTotais} · ${c.diasRestantes} ${c.diasRestantes === 1 ? 'dia restante' : 'dias restantes'}`;
+  }
+
+  const cardTeto = $('card-teto');
+  const avisoFim = $('aviso-fim');
+  const btnNova = $('btn-nova');
+
+  if (c.encerrada) {
+    cardTeto.style.display = 'none';
+    btnNova.style.display = 'none';
+    avisoFim.style.display = 'block';
+    avisoFim.innerHTML = '';
+    const p1 = document.createElement('div');
+    p1.textContent = 'Essa viagem já terminou. Boa volta!';
+    const p2 = document.createElement('div');
+    p2.style.marginTop = '12px';
+    p2.textContent = `Total gasto: ${fmt(c.totalGasto)} de ${fmt(v.orcamento)}`;
+    avisoFim.append(p1, p2);
+  } else {
+    cardTeto.style.display = 'block';
+    btnNova.style.display = 'block';
+    avisoFim.style.display = 'none';
+
+    $('teto').textContent = fmt(c.teto);
+    $('gasto-hoje').textContent = fmt(c.gastoHoje);
+    const restEl = $('restante-hoje');
+    restEl.textContent = fmt(c.restanteHoje);
+    restEl.classList.toggle('neg', c.restanteHoje < 0);
+
+    // Semáforo: verde < 80%, amarelo 80–100%, vermelho > 100%
+    const barra = $('barra');
+    const alerta = $('alerta');
+    let cor, largura, msg = '';
+    if (c.teto <= 0) {
+      cor = 'vermelho';
+      largura = 100;
+      msg = 'Orçamento esgotado';
+    } else {
+      const pct = c.gastoHoje / c.teto;
+      cor = pct < 0.8 ? 'verde' : pct <= 1 ? 'amarelo' : 'vermelho';
+      largura = Math.min(pct, 1) * 100;
+      if (pct > 1) msg = `Passou do teto de hoje em ${fmt(-c.restanteHoje)}`;
+    }
+    barra.className = cor;
+    barra.style.width = largura + '%';
+    alerta.textContent = msg;
+  }
+
+  // Lista de gastos de hoje
+  const lista = $('lista');
+  lista.innerHTML = '';
+  const doDia = estado.despesas.filter(d => d.data === c.hoje).slice().reverse();
+  if (!doDia.length) {
+    const vazio = document.createElement('div');
+    vazio.className = 'sub';
+    vazio.style.padding = '12px 0';
+    vazio.textContent = 'Nenhum gasto hoje.';
+    lista.appendChild(vazio);
+  }
+  doDia.forEach(d => {
+    const item = document.createElement('div');
+    item.className = 'item';
+
+    const info = document.createElement('div');
+    const titulo = document.createElement('div');
+    titulo.textContent = fmt(d.valor);
+    const sub = document.createElement('small');
+    sub.textContent = [d.categoria, d.descricao].filter(Boolean).join(' · ');
+    info.append(titulo, sub);
+
+    const btn = document.createElement('button');
+    btn.className = 'del';
+    btn.textContent = 'Apagar';
+    btn.onclick = () => {
+      if (confirm('Apagar esta despesa?')) {
+        estado.despesas = estado.despesas.filter(x => x.id !== d.id);
+        salvar();
+        renderHoje();
+      }
+    };
+
+    item.append(info, btn);
+    lista.appendChild(item);
+  });
+}
+
+// ---------- Tela Nova despesa ----------
+function abrirDespesa() {
+  $('d-valor').value = '';
+  $('d-desc').value = '';
+  $('d-erro').textContent = '';
+  const sel = $('d-cat');
+  sel.innerHTML = '';
+  CATEGORIAS.forEach(c => {
+    const o = document.createElement('option');
+    o.value = c;
+    o.textContent = c;
+    sel.appendChild(o);
+  });
+  $('d-data').textContent = `Data: ${formatarData(hojeStr())}`;
+  mostrar('tela-despesa');
+  setTimeout(() => $('d-valor').focus(), 150);
+}
+
+function salvarDespesa() {
+  const valor = parseNum(val('d-valor'));
+  const categoria = $('d-cat').value;
+  const descricao = val('d-desc');
+  const hoje = hojeStr();
+  const v = estado.viagem;
+
+  let erro = '';
+  if (!(valor > 0)) erro = 'O valor deve ser maior que zero.';
+  else if (hoje < v.inicio || hoje > v.fim) erro = 'Hoje está fora do período da viagem. Não é possível registrar a despesa.';
+
+  if (erro) {
+    $('d-erro').textContent = erro;
+    return;
+  }
+
+  estado.despesas.push({
+    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+    valor: Math.round(valor * 100) / 100,
+    categoria,
+    descricao,
+    data: hoje
+  });
+  salvar();
+  renderHoje();
+  mostrar('tela-hoje');
+}
+
+// ---------- Eventos ----------
+$('cfg-salvar').onclick = salvarConfig;
+$('cfg-voltar').onclick = () => { renderHoje(); mostrar('tela-hoje'); };
+$('btn-config').onclick = abrirConfig;
+$('btn-nova').onclick = abrirDespesa;
+$('d-salvar').onclick = salvarDespesa;
+$('d-cancelar').onclick = () => { renderHoje(); mostrar('tela-hoje'); };
+
+// Atualiza a tela ao voltar para o app (pode ter virado o dia)
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && estado.viagem && $('tela-hoje').classList.contains('ativa')) renderHoje();
+});
+
+// ---------- Início ----------
+if (estado.viagem) {
+  renderHoje();
+  mostrar('tela-hoje');
+} else {
+  abrirConfig();
+}
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
+</script>
+</body>
+</html>
