@@ -145,6 +145,7 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
 .hero-marca p{margin:10px 0 0;color:var(--mut);font-size:16px;line-height:1.5;max-width:30ch}
 .form-card{margin-top:22px;background:var(--s1);border-radius:var(--raio-g);padding:4px 20px 22px}
 .form-card .btn{margin-top:8px}
+.versao{margin:18px 0 0;text-align:center;font-size:13px;color:var(--mut)}
 
 .valor-box{display:flex;align-items:center;gap:12px;margin-top:8px;padding:24px 22px;background:var(--s1);border-radius:var(--raio-g);border:1.5px solid transparent}
 .valor-box:focus-within{border-color:var(--ac)}
@@ -232,6 +233,7 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
     <div id="cfg-erro" class="erro" role="alert"></div>
     <button id="cfg-salvar" class="btn" type="button">Começar</button>
   </div>
+  <p class="versao">Bolso Viagem, versão <span id="versao"></span></p>
 </section>
 
 <!-- Tela: Hoje -->
@@ -326,6 +328,7 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
 </section>
 
 <script>
+const VERSAO = '3';
 const CHAVE = 'bolsoViagem';
 const CATEGORIAS = ['Alimentação', 'Transporte', 'Hospedagem', 'Ingressos', 'Compras', 'Outros'];
 const ICONE = { 'Alimentação':'i-comida', 'Transporte':'i-carro', 'Hospedagem':'i-cama', 'Ingressos':'i-ingresso', 'Compras':'i-sacola', 'Outros':'i-outros' };
@@ -802,6 +805,7 @@ document.addEventListener('visibilitychange', () => {
 });
 
 // ---------- Início ----------
+$('versao').textContent = VERSAO;
 history.replaceState(null, '');
 if (estado.viagem) {
   renderHoje();

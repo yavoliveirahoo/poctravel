@@ -1,6 +1,8 @@
-// Service Worker do Bolso Viagem: cache-first do próprio app.
-// Ao alterar qualquer arquivo, aumente o número da versão abaixo para forçar a atualização.
-const CACHE = 'bolso-viagem-v2';
+// Service Worker do Bolso Viagem.
+// Estratégia: rede primeiro (pega sempre a versão mais nova quando há internet)
+// e cache como reserva (o app continua abrindo 100% offline).
+// Ao publicar uma versão nova, aumente o número abaixo.
+const CACHE = 'bolso-viagem-v3';
 const ARQUIVOS = [
   './', './index.html', './manifest.json',
   './icon.svg', './icon-192.png', './icon-512.png', './icon-maskable-512.png'
@@ -9,7 +11,7 @@ const ARQUIVOS = [
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE)
-      .then(cache => cache.addAll(ARQUIVOS))
+      .then(cache => cache.addAll(ARQUIVOS.map(u => new Request(u, { cache: 'reload' }))))
       .then(() => self.skipWaiting())
   );
 });
@@ -23,17 +25,20 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') return;
+  const req = event.request;
+  if (req.method !== 'GET' || new URL(req.url).origin !== self.location.origin) return;
+
   event.respondWith(
-    caches.match(event.request).then(cached => {
-      if (cached) return cached;
-      return fetch(event.request).then(resp => {
-        if (resp && resp.status === 200 && resp.type === 'basic') {
+    fetch(req, { cache: 'no-cache' })
+      .then(resp => {
+        if (resp && resp.status === 200) {
           const copia = resp.clone();
-          caches.open(CACHE).then(cache => cache.put(event.request, copia));
+          event.waitUntil(caches.open(CACHE).then(cache => cache.put(req, copia)));
         }
         return resp;
-      });
-    })
+      })
+      .catch(() =>
+        caches.match(req).then(cached => cached || caches.match('./index.html'))
+      )
   );
 });
