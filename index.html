@@ -103,7 +103,7 @@ button{font-family:inherit}
 .item{display:grid;grid-template-columns:44px 1fr auto 40px;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--linha)}
 .item:first-child{border-top:none;padding-top:0}
 .item:last-child{padding-bottom:0}
-.item-t{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item-t{font-weight:600;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:anywhere}
 .item-s{margin-top:2px;font-size:13px;color:var(--mut)}
 .item-v{font-weight:700;font-variant-numeric:tabular-nums}
 .del{width:40px;height:44px;border:none;background:transparent;color:var(--mut);display:grid;place-items:center;border-radius:12px;cursor:pointer}
@@ -167,6 +167,14 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
 .tag{display:inline-flex;align-items:center;gap:4px;margin-left:8px;padding:1px 8px 1px 6px;border-radius:999px;font-size:12px;font-weight:600;color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);vertical-align:1px}
 .tag:first-child{margin-left:0}
 .tag .ic{width:13px;height:13px}
+.bloco-link{display:block;width:100%;text-align:left;border:none;color:inherit;font:inherit;cursor:pointer}
+.bloco-link .bloco-topo{align-items:center;margin-bottom:8px}
+.bloco-link .chev{width:20px;height:20px;color:var(--mut);flex:none}
+.pre-total{font-size:24px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.pre-sub{margin-top:4px;font-size:14px;color:var(--mut);line-height:1.45}
+.nota{margin:14px 0 0;font-size:13px;color:var(--mut);line-height:1.5}
+.custo{display:flex;justify-content:space-between;gap:12px;margin-top:16px;padding-top:14px;border-top:1px solid var(--linha);font-size:15px;font-variant-numeric:tabular-nums}
+.custo strong{font-weight:700}
 .encerrada .formas-fim{margin-top:14px;display:grid;gap:6px;font-size:15px;color:var(--txt);font-variant-numeric:tabular-nums}
 
 .valor-box{display:flex;align-items:center;gap:12px;margin-top:8px;padding:24px 22px;background:var(--s1);border-radius:var(--raio-g);border:1.5px solid transparent}
@@ -215,6 +223,9 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
   <symbol id="i-sacola" viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V7a3 3 0 0 1 6 0v1"/></symbol>
   <symbol id="i-dinheiro" viewBox="0 0 24 24"><rect x="3" y="6.5" width="18" height="11" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6.5 9.5v.01M17.5 14.5v.01"/></symbol>
   <symbol id="i-cartao" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h4"/></symbol>
+  <symbol id="i-aviao" viewBox="0 0 24 24"><path d="M21 3L3 10.5l7 2.5 2.5 7z"/><path d="M21 3L10 13"/></symbol>
+  <symbol id="i-escudo" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
   <symbol id="i-outros" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="18" cy="12" r="1.4" fill="currentColor"/></symbol>
 </svg>
 
@@ -316,6 +327,11 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
     <div id="formas-resumo" class="formas-box"></div>
   </div>
 
+  <button id="bloco-pre" class="bloco bloco-link" type="button">
+    <div class="bloco-topo"><h2>Pagos antes da viagem</h2><svg class="ic chev"><use href="#i-chevron"/></svg></div>
+    <div id="pre-resumo"></div>
+  </button>
+
   <div class="bloco">
     <div class="bloco-topo"><h2>Gastos de hoje</h2><span id="lista-total"></span></div>
     <div id="lista"></div>
@@ -360,8 +376,67 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
   </div>
 </section>
 
+<!-- Tela: pagamentos pré-viagem -->
+<section id="tela-pre" class="tela">
+  <div class="barra-app">
+    <button id="pre-voltar" class="icone-btn" type="button" aria-label="Voltar"><svg class="ic"><use href="#i-voltar"/></svg></button>
+    <h2>Pagos antes da viagem</h2>
+  </div>
+
+  <div class="bloco" style="margin-top:4px">
+    <div class="rot">Total pago antes da viagem</div>
+    <div class="teto" id="pre-total"></div>
+    <div class="resumo-linhas" style="margin-top:16px">
+      <div><div class="rot">Dinheiro</div><strong id="pre-din"></strong></div>
+      <div><div class="rot">Cartão</div><strong id="pre-car"></strong></div>
+    </div>
+    <div class="custo"><span>Custo total da viagem</span><strong id="pre-custo"></strong></div>
+    <p class="nota">Estes pagamentos não entram no orçamento nem no teto do dia. O custo total soma estes valores aos gastos feitos durante a viagem.</p>
+  </div>
+
+  <div class="bloco">
+    <div class="bloco-topo"><h2>Pagamentos</h2><span id="pre-qtd"></span></div>
+    <div id="pre-lista"></div>
+  </div>
+
+  <div class="acao">
+    <button id="btn-novo-pre" class="btn" type="button"><svg class="ic"><use href="#i-plus"/></svg>Pagamento</button>
+  </div>
+</section>
+
+<!-- Tela: novo pagamento pré-viagem -->
+<section id="tela-pre-form" class="tela">
+  <div class="barra-app">
+    <button id="p-voltar" class="icone-btn" type="button" aria-label="Voltar"><svg class="ic"><use href="#i-voltar"/></svg></button>
+    <h2>Novo pagamento</h2>
+  </div>
+
+  <div class="valor-box">
+    <span class="moeda" id="p-moeda"></span>
+    <input id="p-valor" type="text" inputmode="decimal" placeholder="0,00" autocomplete="off" aria-label="Valor">
+  </div>
+
+  <div class="sec-titulo" id="p-forma-rot">Forma de pagamento</div>
+  <div id="p-formas" class="formas" role="radiogroup" aria-labelledby="p-forma-rot"></div>
+
+  <div class="sec-titulo" id="p-tipo-rot">O que foi pago</div>
+  <div id="p-tipos" class="cats" role="radiogroup" aria-labelledby="p-tipo-rot"></div>
+
+  <label for="p-desc">Descrição (opcional)
+    <input id="p-desc" type="text" placeholder="Voo Vancouver–Los Angeles, hotel..." autocomplete="off">
+  </label>
+  <label for="p-data">Data do pagamento
+    <input id="p-data" type="date">
+  </label>
+  <div id="p-erro" class="erro" role="alert"></div>
+
+  <div class="acao">
+    <button id="p-salvar" class="btn" type="button">Salvar</button>
+  </div>
+</section>
+
 <script>
-const VERSAO = '5';
+const VERSAO = '6';
 const CHAVE = 'bolsoViagem';
 const CATEGORIAS = ['Alimentação', 'Transporte', 'Hospedagem', 'Ingressos', 'Compras', 'Outros'];
 const ICONE = { 'Alimentação':'i-comida', 'Transporte':'i-carro', 'Hospedagem':'i-cama', 'Ingressos':'i-ingresso', 'Compras':'i-sacola', 'Outros':'i-outros' };
@@ -371,6 +446,15 @@ const FORMAS = {
   cartao:   { nome: 'Cartão',   ic: 'i-cartao',   cor: '#818CF8' }
 };
 const ORDEM_FORMAS = ['dinheiro', 'cartao'];
+const TIPOS_PRE = [
+  { k: 'Passagens',        ic: 'i-aviao',    cor: '#38BDF8' },
+  { k: 'Hospedagem',       ic: 'i-cama',     cor: '#A78BFA' },
+  { k: 'Aluguel de carro', ic: 'i-carro',    cor: '#FB923C' },
+  { k: 'Ingressos',        ic: 'i-ingresso', cor: '#F472B6' },
+  { k: 'Seguro viagem',    ic: 'i-escudo',   cor: '#34D399' },
+  { k: 'Outros',           ic: 'i-outros',   cor: '#94A3B8' }
+];
+const tipoPre = k => TIPOS_PRE.find(t => t.k === k) || TIPOS_PRE[TIPOS_PRE.length - 1];
 const MESES = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 const SVGNS = 'http://www.w3.org/2000/svg';
 const CIRC = 263.9;
@@ -381,18 +465,19 @@ const val = id => $(id).value.trim();
 // ---------- Armazenamento ----------
 function carregar() {
   const raw = localStorage.getItem(CHAVE);
-  if (!raw) return { viagem: null, despesas: [], ultimaForma: 'cartao' };
+  if (!raw) return { viagem: null, despesas: [], prePagos: [], ultimaForma: 'cartao' };
   try {
     const o = JSON.parse(raw);
     return migrar({
       viagem: o.viagem || null,
       despesas: Array.isArray(o.despesas) ? o.despesas : [],
+      prePagos: Array.isArray(o.prePagos) ? o.prePagos : [],
       ultimaForma: FORMAS[o.ultimaForma] ? o.ultimaForma : 'cartao'
     });
   } catch (e) {
     // Dado corrompido: guarda cópia de segurança para não perder nada
     localStorage.setItem(CHAVE + '_backup', raw);
-    return { viagem: null, despesas: [], ultimaForma: 'cartao' };
+    return { viagem: null, despesas: [], prePagos: [], ultimaForma: 'cartao' };
   }
 }
 // Dados de versões antigas: orçamento único vira "dinheiro"; despesas sem forma viram "dinheiro"
@@ -402,6 +487,7 @@ function migrar(e) {
     e.viagem.orcamentoCartao = 0;
   }
   e.despesas.forEach(d => { if (!FORMAS[d.forma]) d.forma = 'dinheiro'; });
+  e.prePagos.forEach(d => { if (!FORMAS[d.forma]) d.forma = 'cartao'; });
   return e;
 }
 function salvar() {
@@ -492,6 +578,9 @@ function lerValor(id) {
   const t = val(id);
   return t === '' ? 0 : parseNum(t);
 }
+function totalPre(k) {
+  return estado.prePagos.filter(d => !k || d.forma === k).reduce((s, d) => s + d.valor, 0);
+}
 function gastoPorForma(k) {
   return estado.despesas.filter(d => d.forma === k).reduce((s, d) => s + d.valor, 0);
 }
@@ -559,7 +648,12 @@ function voltarHoje() {
   }
 }
 window.addEventListener('popstate', () => {
-  if (estado.viagem) {
+  if (!estado.viagem) return;
+  const t = history.state && history.state.t;
+  if (t === 'tela-pre') {
+    renderPre();
+    mostrar('tela-pre');
+  } else {
     renderHoje();
     mostrar('tela-hoje');
   }
@@ -686,6 +780,14 @@ function renderHoje() {
       linha.textContent = `${FORMAS[k].nome}: ${fmt(gastoPorForma(k))} de ${fmt(orcamentoDaForma(v, k))}`;
       fim.appendChild(linha);
     });
+    if (estado.prePagos.length) {
+      const pre = document.createElement('div');
+      pre.textContent = `Pago antes da viagem: ${fmt(totalPre())}`;
+      const custo = document.createElement('div');
+      custo.style.fontWeight = '700';
+      custo.textContent = `Custo total da viagem: ${fmt(totalPre() + c.totalGasto)}`;
+      fim.append(pre, custo);
+    }
     avisoFim.append(t, p, fim);
   } else {
     cardTeto.style.display = 'block';
@@ -740,6 +842,25 @@ function renderHoje() {
   requestAnimationFrame(() => {
     $('total-fill').style.width = Math.min(usoTotal, 1) * 100 + '%';
   });
+
+  // Pagos antes da viagem (fora do orçamento)
+  const preBox = $('pre-resumo');
+  preBox.textContent = '';
+  if (estado.prePagos.length) {
+    const tot = document.createElement('div');
+    tot.className = 'pre-total';
+    tot.textContent = fmt(totalPre());
+    const sub = document.createElement('div');
+    sub.className = 'pre-sub';
+    const n = estado.prePagos.length;
+    sub.textContent = `${n} ${n === 1 ? 'pagamento' : 'pagamentos'}, fora do orçamento. Custo total da viagem: ${fmt(totalPre() + c.totalGasto)}`;
+    preBox.append(tot, sub);
+  } else {
+    const sub = document.createElement('div');
+    sub.className = 'pre-sub';
+    sub.textContent = 'Registre passagens, hotel e aluguel de carro já pagos. Eles não entram no orçamento da viagem.';
+    preBox.appendChild(sub);
+  }
 
   // Dinheiro x cartão (viagem toda)
   const formasBox = $('formas-resumo');
@@ -965,6 +1086,133 @@ function salvarDespesa() {
   voltarHoje();
 }
 
+// ---------- Escolha genérica (botões tipo rádio) ----------
+function montarEscolha(boxId, opcoes, cls, selecionado, aoEscolher) {
+  const box = $(boxId);
+  box.textContent = '';
+  const marcar = k => box.querySelectorAll('.' + cls).forEach(b =>
+    b.setAttribute('aria-checked', b.dataset.k === k ? 'true' : 'false'));
+  opcoes.forEach(o => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = cls;
+    b.dataset.k = o.k;
+    b.setAttribute('role', 'radio');
+    b.style.setProperty('--c', o.cor);
+    b.appendChild(icone(o.ic));
+    const s = document.createElement('span');
+    s.textContent = o.nome || o.k;
+    b.appendChild(s);
+    b.onclick = () => { aoEscolher(o.k); marcar(o.k); };
+    box.appendChild(b);
+  });
+  marcar(selecionado);
+}
+
+// ---------- Tela Pagos antes da viagem ----------
+function renderPre() {
+  const v = estado.viagem;
+  dinheiro($('pre-total'), totalPre());
+  dinheiro($('pre-din'), totalPre('dinheiro'));
+  dinheiro($('pre-car'), totalPre('cartao'));
+  const c = calcular();
+  $('pre-custo').textContent = fmt(totalPre() + c.totalGasto);
+
+  const n = estado.prePagos.length;
+  $('pre-qtd').textContent = n ? `${n} ${n === 1 ? 'item' : 'itens'}` : '';
+  const lista = $('pre-lista');
+  lista.textContent = '';
+  if (!n) {
+    const vazio = document.createElement('p');
+    vazio.className = 'vazio';
+    vazio.textContent = 'Nenhum pagamento ainda. Toque em Pagamento para registrar passagens, hotel ou aluguel de carro.';
+    lista.appendChild(vazio);
+    return;
+  }
+  estado.prePagos.slice().sort((a, b) => (b.data || '').localeCompare(a.data || '')).forEach(d => {
+    const t = tipoPre(d.tipo);
+    const item = document.createElement('div');
+    item.className = 'item';
+
+    const info = document.createElement('div');
+    info.style.minWidth = '0';
+    const titulo = document.createElement('div');
+    titulo.className = 'item-t';
+    titulo.textContent = d.descricao || d.tipo;
+    const sub = document.createElement('div');
+    sub.className = 'item-s';
+    const quando = d.data ? formatarData(d.data) : '';
+    sub.appendChild(document.createTextNode([d.descricao ? d.tipo : '', quando].filter(Boolean).join(', ')));
+    sub.appendChild(tagForma(d.forma));
+    info.append(titulo, sub);
+
+    const valor = document.createElement('div');
+    valor.className = 'item-v';
+    valor.textContent = fmt(d.valor);
+
+    const btn = document.createElement('button');
+    btn.className = 'del';
+    btn.type = 'button';
+    btn.setAttribute('aria-label', 'Apagar pagamento');
+    btn.appendChild(icone('i-lixo'));
+    btn.onclick = () => {
+      if (confirm('Apagar este pagamento?')) {
+        estado.prePagos = estado.prePagos.filter(x => x.id !== d.id);
+        salvar();
+        renderPre();
+      }
+    };
+
+    item.append(iconeBox(t.ic, t.cor), info, valor, btn);
+    lista.appendChild(item);
+  });
+}
+
+function abrirPre() {
+  renderPre();
+  irPara('tela-pre');
+}
+
+let preForma = 'cartao';
+let preTipo = TIPOS_PRE[0].k;
+
+function abrirPreForm() {
+  $('p-valor').value = '';
+  $('p-desc').value = '';
+  $('p-data').value = hojeStr();
+  $('p-erro').textContent = '';
+  $('p-moeda').textContent = estado.viagem.moeda;
+  preForma = 'cartao';
+  preTipo = TIPOS_PRE[0].k;
+  montarEscolha('p-formas', ORDEM_FORMAS.map(k => ({ k, nome: FORMAS[k].nome, ic: FORMAS[k].ic, cor: FORMAS[k].cor })),
+    'forma', preForma, k => { preForma = k; });
+  montarEscolha('p-tipos', TIPOS_PRE, 'cat', preTipo, k => { preTipo = k; });
+  irPara('tela-pre-form');
+  setTimeout(() => $('p-valor').focus(), 150);
+}
+
+function salvarPre() {
+  const valor = parseNum(val('p-valor'));
+  const data = $('p-data').value;
+  let erro = '';
+  if (!(valor > 0)) erro = 'O valor deve ser maior que zero.';
+  else if (!data) erro = 'Informe a data do pagamento.';
+  if (erro) {
+    $('p-erro').textContent = erro;
+    return;
+  }
+  estado.prePagos.push({
+    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+    valor: Math.round(valor * 100) / 100,
+    tipo: preTipo,
+    forma: preForma,
+    descricao: val('p-desc'),
+    data
+  });
+  salvar();
+  voltarHoje();   // volta para a lista de pagamentos
+}
+
 // ---------- Eventos ----------
 $('cfg-salvar').onclick = salvarConfig;
 ['cfg-dinheiro', 'cfg-cartao', 'cfg-moeda'].forEach(id => $(id).addEventListener('input', atualizarTotalCfg));
@@ -973,6 +1221,11 @@ $('btn-config').onclick = abrirConfig;
 $('btn-nova').onclick = abrirDespesa;
 $('d-salvar').onclick = salvarDespesa;
 $('d-cancelar').onclick = voltarHoje;
+$('bloco-pre').onclick = abrirPre;
+$('pre-voltar').onclick = voltarHoje;
+$('btn-novo-pre').onclick = abrirPreForm;
+$('p-voltar').onclick = voltarHoje;
+$('p-salvar').onclick = salvarPre;
 
 // Atualiza a tela ao voltar para o app (pode ter virado o dia)
 document.addEventListener('visibilitychange', () => {
