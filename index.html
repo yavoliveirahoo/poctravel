@@ -3,129 +3,337 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0f1115">
+<meta name="theme-color" content="#0A1020">
+<meta name="color-scheme" content="dark">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <title>Bolso Viagem</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
 <style>
-:root{--bg:#0f1115;--card:#1a1d24;--txt:#f2f4f8;--mut:#8b93a7;--ac:#4f8cff;--ok:#2ecc71;--warn:#f1c40f;--bad:#e74c3c;--line:#2a2f3a}
+:root{
+  --bg:#0A1020; --s1:#111A30; --s2:#18243F;
+  --linha:rgba(160,180,230,.12); --linha2:rgba(160,180,230,.22);
+  --txt:#EEF2FA; --mut:#8E9AB8;
+  --ac:#FFB547; --ac-ink:#231500;
+  --ok:#4ADE80; --atencao:#FACC15; --estourou:#F43F5E;
+  --raio-g:24px; --raio-m:18px; --raio-p:14px;
+}
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
-body{min-height:100vh;padding:env(safe-area-inset-top) 16px env(safe-area-inset-bottom)}
-.tela{display:none;max-width:480px;margin:0 auto;padding:16px 0 32px}
+html,body{margin:0;background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
+body{min-height:100vh;padding-top:env(safe-area-inset-top)}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+
+.sprite{position:absolute;width:0;height:0;overflow:hidden}
+.ic{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;display:block}
+
+.tela{display:none;max-width:480px;margin:0 auto;padding:0 18px calc(124px + env(safe-area-inset-bottom))}
 .tela.ativa{display:block}
-h1{font-size:22px;margin:8px 0 4px}
-.sub{color:var(--mut);font-size:14px;margin-top:2px}
-.card{background:var(--card);border-radius:18px;padding:20px;margin:16px 0}
-.topo{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-.btn-eng{background:none;border:none;color:var(--mut);font-size:26px;padding:8px;cursor:pointer;min-width:48px;min-height:48px}
-.teto{font-size:44px;font-weight:700;margin:8px 0}
-.lbl{color:var(--mut);font-size:13px;text-transform:uppercase;letter-spacing:.05em}
-.linha{display:flex;justify-content:space-between;margin-top:12px;font-size:16px}
-.neg{color:var(--bad)}
-.barra{height:14px;background:var(--line);border-radius:999px;overflow:hidden;margin-top:16px}
-.barra>div{height:100%;width:0;transition:width .3s,background .3s;border-radius:999px}
-.verde{background:var(--ok)}
-.amarelo{background:var(--warn)}
-.vermelho{background:var(--bad)}
-.alerta{color:var(--bad);font-weight:600;margin-top:12px;min-height:18px}
-.btn{display:block;width:100%;min-height:64px;border:none;border-radius:16px;background:var(--ac);color:#fff;font-size:20px;font-weight:600;cursor:pointer;margin-top:12px}
-.btn.sec{background:var(--card);color:var(--txt);border:1px solid var(--line)}
-label{display:block;color:var(--mut);font-size:14px;margin-top:16px}
-input,select{width:100%;min-height:56px;margin-top:6px;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:var(--bg);color:var(--txt);font-size:18px}
-.erro{color:var(--bad);font-size:14px;margin-top:10px;min-height:18px}
-.item{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);gap:12px}
-.item:last-child{border-bottom:none}
-.item small{color:var(--mut)}
-.del{background:none;border:none;color:var(--bad);font-size:14px;padding:12px;cursor:pointer;min-height:44px}
-.aviso{text-align:center;padding:24px 8px;font-size:17px;line-height:1.5}
+
+/* ---------- barra superior ---------- */
+.barra-app{display:flex;align-items:center;justify-content:space-between;gap:12px;height:68px}
+.marca-mini{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;letter-spacing:-.01em}
+.logo{width:34px;height:34px;display:block;border-radius:10px}
+.icone-btn{width:48px;height:48px;border:none;background:var(--s1);color:var(--txt);border-radius:var(--raio-p);display:grid;place-items:center;cursor:pointer}
+.icone-btn .ic{width:22px;height:22px}
+.barra-app h2{flex:1;margin:0;font-size:19px;font-weight:700;letter-spacing:-.01em}
+.barra-data{font-size:14px;color:var(--mut)}
+
+/* ---------- cabeçalho da viagem ---------- */
+.viagem{margin-top:6px}
+.viagem h1{margin:0;font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.local{display:flex;align-items:center;gap:6px;margin-top:8px;color:var(--mut);font-size:15px}
+.local .ic{width:16px;height:16px;flex:none}
+.periodo{margin-top:2px;color:var(--mut);font-size:14px;padding-left:22px}
+.dias-barra{display:flex;gap:3px;height:8px;margin-top:20px}
+.dias-barra i{flex:1;border-radius:3px;background:var(--s2)}
+.dias-barra i.passou{background:rgba(255,181,71,.42)}
+.dias-barra i.hoje{background:var(--ac)}
+.dias-barra.continua{display:block;background:var(--s2);border-radius:4px;overflow:hidden}
+.dias-barra.continua b{display:block;height:100%;background:var(--ac);border-radius:4px}
+.dias-legenda{display:flex;justify-content:space-between;gap:12px;margin-top:8px;font-size:13px;color:var(--mut)}
+.dias-legenda span:first-child{color:var(--txt);font-weight:600}
+
+/* ---------- cartão de embarque (teto do dia) ---------- */
+.ticket{--estado:var(--ok);position:relative;margin-top:22px;background:var(--s1);border-radius:var(--raio-g)}
+.ticket.atencao{--estado:var(--atencao)}
+.ticket.estourou{--estado:var(--estourou)}
+.ticket-topo{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:22px 22px 16px}
+.ticket-valor{min-width:0}
+.rot{font-size:13px;color:var(--mut);font-weight:500}
+.teto{margin-top:6px;font-size:clamp(32px,10.5vw,44px);font-weight:800;letter-spacing:-.03em;line-height:1.05;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.cur{font-size:.42em;font-weight:600;color:var(--mut);margin-right:.35em;letter-spacing:0}
+.alerta{margin-top:8px;font-size:14px;font-weight:600;color:var(--estado);line-height:1.35}
+.alerta:empty{display:none}
+.alerta.neutro{color:var(--mut);font-weight:500}
+.anel{position:relative;width:96px;height:96px;flex:none}
+.anel svg{width:100%;height:100%;transform:rotate(-90deg)}
+.trilho{fill:none;stroke:var(--s2);stroke-width:9}
+.arco{fill:none;stroke:var(--estado);stroke-width:9;stroke-linecap:round;stroke-dasharray:263.9;stroke-dashoffset:263.9;transition:stroke-dashoffset .9s cubic-bezier(.2,.7,.2,1),stroke .3s}
+.anel-txt{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.anel-txt strong{font-size:20px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.anel-txt span{font-size:11px;color:var(--mut);margin-top:1px}
+.picote{position:relative;height:24px}
+.picote::before{content:"";position:absolute;left:22px;right:22px;top:11px;border-top:2px dashed var(--linha2)}
+.picote i{position:absolute;top:0;width:24px;height:24px;border-radius:50%;background:var(--bg)}
+.picote i:first-child{left:-12px}
+.picote i:last-child{right:-12px}
+.ticket-base{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:14px 22px 22px}
+.ticket-base strong{display:block;margin-top:4px;font-size:20px;font-weight:700;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.ticket-base .neg{color:var(--estourou)}
+
+/* ---------- blocos ---------- */
+.bloco{margin-top:16px;background:var(--s1);border-radius:var(--raio-m);padding:18px}
+.bloco-topo{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px}
+.bloco h2{margin:0;font-size:16px;font-weight:700;letter-spacing:-.01em}
+.bloco-topo span{font-size:14px;color:var(--mut);font-variant-numeric:tabular-nums}
+
+.resumo-linhas{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.resumo-linhas strong{display:block;margin-top:4px;font-size:19px;font-weight:700;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.resumo-linhas .neg{color:var(--estourou)}
+.total-barra{height:8px;border-radius:4px;background:var(--s2);margin-top:16px;overflow:hidden}
+.total-barra b{display:block;height:100%;width:0;border-radius:4px;background:var(--ac);transition:width .6s ease}
+.total-barra.estourou b{background:var(--estourou)}
+.total-legenda{display:flex;justify-content:space-between;gap:12px;margin-top:8px;font-size:13px;color:var(--mut);font-variant-numeric:tabular-nums}
+
+.cat-ic{width:44px;height:44px;border-radius:var(--raio-p);display:grid;place-items:center;flex:none;color:var(--c);background:color-mix(in srgb,var(--c) 16%,transparent)}
+.cat-ic .ic{width:22px;height:22px}
+.item{display:grid;grid-template-columns:44px 1fr auto 40px;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--linha)}
+.item:first-child{border-top:none;padding-top:0}
+.item:last-child{padding-bottom:0}
+.item-t{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item-s{margin-top:2px;font-size:13px;color:var(--mut)}
+.item-v{font-weight:700;font-variant-numeric:tabular-nums}
+.del{width:40px;height:44px;border:none;background:transparent;color:var(--mut);display:grid;place-items:center;border-radius:12px;cursor:pointer}
+.del .ic{width:20px;height:20px}
+.vazio{margin:0;color:var(--mut);font-size:15px;line-height:1.5}
+
+.cat-linha{display:grid;grid-template-columns:36px 1fr 104px;align-items:center;gap:12px;padding:9px 0}
+.cat-linha .cat-ic{width:36px;height:36px;border-radius:12px}
+.cat-linha .cat-ic .ic{width:19px;height:19px}
+.cat-nome{font-size:15px;font-weight:600}
+.mini{height:6px;border-radius:3px;background:var(--s2);margin-top:7px;overflow:hidden}
+.mini b{display:block;height:100%;border-radius:3px;background:var(--c)}
+.cat-valor{text-align:right;font-weight:700;font-size:15px;font-variant-numeric:tabular-nums}
+
+.encerrada{margin-top:22px;background:var(--s1);border-radius:var(--raio-g);padding:28px 22px;text-align:center}
+.encerrada strong{display:block;font-size:20px;font-weight:700;letter-spacing:-.01em}
+.encerrada p{margin:10px 0 0;color:var(--mut);font-size:15px;line-height:1.5}
+
+/* ---------- botões ---------- */
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:60px;border:none;border-radius:var(--raio-m);background:var(--ac);color:var(--ac-ink);font-size:18px;font-weight:700;cursor:pointer}
+.btn .ic{width:22px;height:22px;stroke-width:2.4}
+.btn:active{transform:scale(.985)}
+.acao{position:fixed;left:0;right:0;bottom:0;z-index:5;padding:20px 18px calc(16px + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--bg) 68%,transparent)}
+.acao .btn{max-width:444px;margin:0 auto}
+
+/* ---------- formulários ---------- */
+label{display:block;margin-top:18px;font-size:14px;font-weight:500;color:var(--mut)}
+input{width:100%;min-height:56px;margin-top:8px;padding:0 16px;border-radius:var(--raio-p);border:1.5px solid var(--linha);background:var(--s1);color:var(--txt);font-family:inherit;font-size:17px;color-scheme:dark}
+input:focus{outline:none;border-color:var(--ac)}
+input::placeholder{color:#5d6985}
+.grade2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.grade2 label{min-width:0}
+input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
+.erro{margin-top:14px;min-height:20px;font-size:14px;font-weight:600;color:var(--estourou);line-height:1.4}
+
+.hero-marca{padding:36px 0 8px}
+.hero-marca .logo{width:68px;height:68px;border-radius:20px}
+.hero-marca h1{margin:20px 0 0;font-size:34px;font-weight:800;letter-spacing:-.035em;line-height:1.05}
+.hero-marca p{margin:10px 0 0;color:var(--mut);font-size:16px;line-height:1.5;max-width:30ch}
+.form-card{margin-top:22px;background:var(--s1);border-radius:var(--raio-g);padding:4px 20px 22px}
+.form-card .btn{margin-top:8px}
+
+.valor-box{display:flex;align-items:center;gap:12px;margin-top:8px;padding:24px 22px;background:var(--s1);border-radius:var(--raio-g);border:1.5px solid transparent}
+.valor-box:focus-within{border-color:var(--ac)}
+.valor-box .moeda{font-size:22px;font-weight:600;color:var(--mut)}
+.valor-box input{flex:1;min-width:0;min-height:0;margin:0;padding:0;border:none;background:transparent;font-size:clamp(34px,11vw,46px);font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.valor-box input:focus{border:none}
+.sec-titulo{margin:22px 0 10px;font-size:14px;font-weight:500;color:var(--mut)}
+.cats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.cat{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:86px;padding:12px 6px;border:1.5px solid transparent;border-radius:16px;background:var(--s1);color:var(--mut);font-size:13px;font-weight:600;cursor:pointer}
+.cat .ic{width:26px;height:26px;color:var(--c)}
+.cat[aria-checked="true"]{border-color:var(--c);color:var(--txt);background:color-mix(in srgb,var(--c) 14%,var(--s1))}
+
+@media (prefers-reduced-motion:reduce){
+  .arco,.total-barra b{transition:none}
+  .btn:active{transform:none}
+}
 </style>
 </head>
 <body>
 
-<!-- Tela 1: configuração da viagem -->
+<!-- ícones reutilizáveis -->
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="g-fundo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFC966"/>
+      <stop offset="1" stop-color="#FF9A2E"/>
+    </linearGradient>
+  </defs>
+  <symbol id="logo" viewBox="0 0 512 512">
+    <rect width="512" height="512" rx="116" fill="url(#g-fundo)"/>
+    <polygon points="392,70 146,176 238,220 292,336" fill="#FFF4DC"/>
+<polygon points="392,70 238,220 292,336" fill="#E9D2A6"/>
+    <path d="M116 268H396V336C396 388 352 430 296 430H216C160 430 116 388 116 336Z" fill="#0A1020"/>
+    <line x1="150" y1="300" x2="362" y2="300" stroke="#FFB547" stroke-width="9" stroke-linecap="round" stroke-dasharray="2 22"/>
+  </symbol>
+  <symbol id="i-ajustes" viewBox="0 0 24 24"><path d="M4 7h9M19 7h1M4 17h1M11 17h9"/><circle cx="16" cy="7" r="2.2"/><circle cx="8" cy="17" r="2.2"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-voltar" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-lixo" viewBox="0 0 24 24"><path d="M5 7h14M10 7V5h4v2M7 7l1 12h8l1-12M10 11v5M14 11v5"/></symbol>
+  <symbol id="i-comida" viewBox="0 0 24 24"><path d="M5 3v6a3 3 0 0 0 6 0V3M8 3v18M18 21V3c-2.6 1.5-4 4.6-4 8h4"/></symbol>
+  <symbol id="i-carro" viewBox="0 0 24 24"><path d="M4 16v-3a2 2 0 0 1 1.4-1.9L7 7.5A2 2 0 0 1 8.8 6.5h6.4a2 2 0 0 1 1.8 1l1.6 3.6A2 2 0 0 1 20 13v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><circle cx="8" cy="17.5" r="1.5"/><circle cx="16" cy="17.5" r="1.5"/></symbol>
+  <symbol id="i-cama" viewBox="0 0 24 24"><path d="M3 6v13M3 15h18v4M21 15v-3a3 3 0 0 0-3-3h-8v6"/><circle cx="6.5" cy="11" r="1.7"/></symbol>
+  <symbol id="i-ingresso" viewBox="0 0 24 24"><path d="M4 7.5A1.5 1.5 0 0 1 5.5 6h13A1.5 1.5 0 0 1 20 7.5V10a2 2 0 0 0 0 4v2.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 16.5V14a2 2 0 0 0 0-4z"/><path d="M14.5 6.5v11" stroke-dasharray="2 2.4"/></symbol>
+  <symbol id="i-sacola" viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V7a3 3 0 0 1 6 0v1"/></symbol>
+  <symbol id="i-outros" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="18" cy="12" r="1.4" fill="currentColor"/></symbol>
+</svg>
+
+<!-- Tela: configuração da viagem -->
 <section id="tela-config" class="tela">
-  <h1 id="cfg-titulo">Nova viagem</h1>
-  <div class="sub">Configure uma vez. Você pode editar depois sem perder as despesas.</div>
-  <div class="card">
-    <label>Nome da viagem
-      <input id="cfg-nome" type="text" placeholder="Anaheim 2027">
+  <div id="cfg-bar" class="barra-app" style="display:none">
+    <button id="cfg-voltar" class="icone-btn" type="button" aria-label="Voltar"><svg class="ic"><use href="#i-voltar"/></svg></button>
+    <h2>Editar viagem</h2>
+  </div>
+
+  <header id="cfg-hero" class="hero-marca">
+    <svg class="logo" role="img" aria-label="Bolso Viagem"><use href="#logo"/></svg>
+    <h1>Bolso Viagem</h1>
+    <p>Quanto você pode gastar hoje, sempre atualizado.</p>
+  </header>
+
+  <div class="form-card">
+    <label for="cfg-nome">Nome da viagem
+      <input id="cfg-nome" type="text" placeholder="Anaheim 2027" autocomplete="off">
     </label>
-    <label>Destino
-      <input id="cfg-destino" type="text" placeholder="Anaheim, Califórnia">
+    <label for="cfg-destino">Destino
+      <input id="cfg-destino" type="text" placeholder="Anaheim, Califórnia" autocomplete="off">
     </label>
-    <label>Data de início
-      <input id="cfg-inicio" type="date">
-    </label>
-    <label>Data de fim
-      <input id="cfg-fim" type="date">
-    </label>
-    <label>Moeda
-      <input id="cfg-moeda" type="text" placeholder="US$, CA$, R$">
-    </label>
-    <label>Orçamento total
-      <input id="cfg-orcamento" type="text" inputmode="decimal" placeholder="0,00">
-    </label>
-    <div id="cfg-erro" class="erro"></div>
-    <button id="cfg-salvar" class="btn">Começar</button>
-    <button id="cfg-voltar" class="btn sec" style="display:none">Voltar</button>
+    <div class="grade2">
+      <label for="cfg-inicio">Início
+        <input id="cfg-inicio" type="date">
+      </label>
+      <label for="cfg-fim">Fim
+        <input id="cfg-fim" type="date">
+      </label>
+    </div>
+    <div class="grade2">
+      <label for="cfg-moeda">Moeda
+        <input id="cfg-moeda" type="text" placeholder="US$" autocomplete="off">
+      </label>
+      <label for="cfg-orcamento">Orçamento total
+        <input id="cfg-orcamento" type="text" inputmode="decimal" placeholder="0,00" autocomplete="off">
+      </label>
+    </div>
+    <div id="cfg-erro" class="erro" role="alert"></div>
+    <button id="cfg-salvar" class="btn" type="button">Começar</button>
   </div>
 </section>
 
-<!-- Tela 2: Hoje -->
+<!-- Tela: Hoje -->
 <section id="tela-hoje" class="tela">
-  <div class="topo">
-    <div>
-      <h1 id="h-nome"></h1>
-      <div class="sub" id="h-destino"></div>
-      <div class="sub" id="h-dia"></div>
+  <div class="barra-app">
+    <div class="marca-mini">
+      <svg class="logo" role="img" aria-label="Logo"><use href="#logo"/></svg>
+      <span>Bolso Viagem</span>
     </div>
-    <button id="btn-config" class="btn-eng" aria-label="Configurar viagem">⚙</button>
+    <button id="btn-config" class="icone-btn" type="button" aria-label="Editar viagem"><svg class="ic"><use href="#i-ajustes"/></svg></button>
   </div>
 
-  <div id="card-teto" class="card">
-    <div class="lbl">Teto de hoje</div>
-    <div class="teto" id="teto"></div>
-    <div class="linha"><span>Já gasto hoje</span><strong id="gasto-hoje"></strong></div>
-    <div class="linha"><span>Restante hoje</span><strong id="restante-hoje"></strong></div>
-    <div class="barra"><div id="barra"></div></div>
-    <div id="alerta" class="alerta"></div>
+  <div class="viagem">
+    <h1 id="h-nome"></h1>
+    <div class="local"><svg class="ic"><use href="#i-pin"/></svg><span id="h-destino"></span></div>
+    <div class="periodo" id="h-periodo"></div>
   </div>
 
-  <div id="aviso-fim" class="card aviso" style="display:none"></div>
+  <div id="dias-barra" class="dias-barra" role="img" aria-label="Progresso dos dias da viagem"></div>
+  <div class="dias-legenda"><span id="h-dia"></span><span id="h-restam"></span></div>
 
-  <button id="btn-nova" class="btn">+ Despesa</button>
+  <div id="card-teto" class="ticket">
+    <div class="ticket-topo">
+      <div class="ticket-valor">
+        <div class="rot">Teto de hoje</div>
+        <div class="teto" id="teto"></div>
+        <div id="alerta" class="alerta"></div>
+      </div>
+      <div class="anel" role="img" aria-label="Quanto do teto de hoje já foi usado">
+        <svg viewBox="0 0 100 100"><circle class="trilho" cx="50" cy="50" r="42"/><circle id="anel-arco" class="arco" cx="50" cy="50" r="42"/></svg>
+        <div class="anel-txt"><strong id="anel-pct">0%</strong><span>usado</span></div>
+      </div>
+    </div>
+    <div class="picote"><i></i><i></i></div>
+    <div class="ticket-base">
+      <div><div class="rot">Já gasto hoje</div><strong id="gasto-hoje"></strong></div>
+      <div><div class="rot">Restante hoje</div><strong id="restante-hoje"></strong></div>
+    </div>
+  </div>
 
-  <div class="card">
-    <div class="lbl">Gastos de hoje</div>
+  <div id="aviso-fim" class="encerrada" style="display:none"></div>
+
+  <div class="bloco" id="bloco-viagem">
+    <div class="bloco-topo"><h2>Viagem toda</h2><span id="r-pct"></span></div>
+    <div class="resumo-linhas">
+      <div><div class="rot">Gasto até agora</div><strong id="r-gasto"></strong></div>
+      <div><div class="rot">Saldo</div><strong id="r-saldo"></strong></div>
+    </div>
+    <div id="total-barra" class="total-barra"><b id="total-fill"></b></div>
+    <div class="total-legenda"><span>Orçamento total</span><span id="r-orc"></span></div>
+  </div>
+
+  <div class="bloco">
+    <div class="bloco-topo"><h2>Gastos de hoje</h2><span id="lista-total"></span></div>
     <div id="lista"></div>
   </div>
+
+  <div class="bloco" id="bloco-cat" style="display:none">
+    <div class="bloco-topo"><h2>Gastos por categoria</h2></div>
+    <div id="cat-lista"></div>
+  </div>
+
+  <div id="acao-nova" class="acao">
+    <button id="btn-nova" class="btn" type="button"><svg class="ic"><use href="#i-plus"/></svg>Despesa</button>
+  </div>
 </section>
 
-<!-- Tela 3: nova despesa -->
+<!-- Tela: nova despesa -->
 <section id="tela-despesa" class="tela">
-  <h1>Nova despesa</h1>
-  <div class="sub" id="d-data"></div>
-  <div class="card">
-    <label>Valor
-      <input id="d-valor" type="text" inputmode="decimal" placeholder="0,00">
-    </label>
-    <label>Categoria
-      <select id="d-cat"></select>
-    </label>
-    <label>Descrição (opcional)
-      <input id="d-desc" type="text" placeholder="Almoço, ingresso...">
-    </label>
-    <div id="d-erro" class="erro"></div>
-    <button id="d-salvar" class="btn">Salvar</button>
-    <button id="d-cancelar" class="btn sec">Cancelar</button>
+  <div class="barra-app">
+    <button id="d-cancelar" class="icone-btn" type="button" aria-label="Voltar"><svg class="ic"><use href="#i-voltar"/></svg></button>
+    <h2>Nova despesa</h2>
+    <span class="barra-data" id="d-data"></span>
+  </div>
+
+  <div class="valor-box">
+    <span class="moeda" id="d-moeda"></span>
+    <input id="d-valor" type="text" inputmode="decimal" placeholder="0,00" autocomplete="off" aria-label="Valor">
+  </div>
+
+  <div class="sec-titulo" id="d-cat-rot">Categoria</div>
+  <div id="d-cats" class="cats" role="radiogroup" aria-labelledby="d-cat-rot"></div>
+
+  <label for="d-desc">Descrição (opcional)
+    <input id="d-desc" type="text" placeholder="Almoço, ingresso..." autocomplete="off">
+  </label>
+  <div id="d-erro" class="erro" role="alert"></div>
+
+  <div class="acao">
+    <button id="d-salvar" class="btn" type="button">Salvar</button>
   </div>
 </section>
 
 <script>
 const CHAVE = 'bolsoViagem';
 const CATEGORIAS = ['Alimentação', 'Transporte', 'Hospedagem', 'Ingressos', 'Compras', 'Outros'];
+const ICONE = { 'Alimentação':'i-comida', 'Transporte':'i-carro', 'Hospedagem':'i-cama', 'Ingressos':'i-ingresso', 'Compras':'i-sacola', 'Outros':'i-outros' };
+const COR = { 'Alimentação':'#FB923C', 'Transporte':'#38BDF8', 'Hospedagem':'#A78BFA', 'Ingressos':'#F472B6', 'Compras':'#34D399', 'Outros':'#94A3B8' };
+const MESES = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+const SVGNS = 'http://www.w3.org/2000/svg';
+const CIRC = 263.9;
+
 const $ = id => document.getElementById(id);
 const val = id => $(id).value.trim();
 
@@ -150,7 +358,7 @@ function salvar() {
 }
 let estado = carregar();
 
-// ---------- Datas (sempre como AAAA-MM-DD local, evita problema de fuso) ----------
+// ---------- Datas (sempre AAAA-MM-DD local, evita problema de fuso) ----------
 const pad = n => String(n).padStart(2, '0');
 function hojeStr() {
   const d = new Date();
@@ -167,16 +375,58 @@ function formatarData(s) {
   const [y, m, d] = s.split('-');
   return `${d}/${m}/${y}`;
 }
+function diaMes(s) {
+  const [, m, d] = s.split('-').map(Number);
+  return `${d} ${MESES[m - 1]}`;
+}
+function textoPeriodo(v) {
+  const y1 = v.inicio.slice(0, 4), y2 = v.fim.slice(0, 4);
+  return y1 === y2
+    ? `${diaMes(v.inicio)} a ${diaMes(v.fim)} de ${y2}`
+    : `${diaMes(v.inicio)} de ${y1} a ${diaMes(v.fim)} de ${y2}`;
+}
 
 // ---------- Números ----------
 function parseNum(v) {
   return parseFloat(String(v).replace(',', '.'));
 }
-function fmt(v) {
+function partes(v) {
   const n = Math.abs(v) < 0.005 ? 0 : v;
-  const s = Math.abs(n).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const sinal = n < 0 ? '-' : '';
-  return `${sinal}${estado.viagem.moeda} ${s}`.trim();
+  const num = Math.abs(n).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return { sinal: n < 0 ? '-' : '', moeda: estado.viagem.moeda, num };
+}
+function fmt(v) {
+  const p = partes(v);
+  return `${p.sinal}${p.moeda} ${p.num}`;
+}
+// Escreve um valor com o símbolo da moeda em tamanho menor
+function dinheiro(el, v) {
+  const p = partes(v);
+  el.textContent = '';
+  const c = document.createElement('span');
+  c.className = 'cur';
+  c.textContent = p.sinal + p.moeda;
+  const n = document.createElement('span');
+  n.textContent = p.num;
+  el.append(c, n);
+}
+
+// ---------- Ícones ----------
+function icone(id) {
+  const s = document.createElementNS(SVGNS, 'svg');
+  s.setAttribute('class', 'ic');
+  s.setAttribute('aria-hidden', 'true');
+  const u = document.createElementNS(SVGNS, 'use');
+  u.setAttribute('href', '#' + (id || 'i-outros'));
+  s.appendChild(u);
+  return s;
+}
+function iconeCategoria(nome, extra) {
+  const box = document.createElement('div');
+  box.className = 'cat-ic' + (extra ? ' ' + extra : '');
+  box.style.setProperty('--c', COR[nome] || COR['Outros']);
+  box.appendChild(icone(ICONE[nome]));
+  return box;
 }
 
 // ---------- Cálculos ----------
@@ -218,20 +468,41 @@ function mostrar(id) {
   document.querySelectorAll('.tela').forEach(t => t.classList.toggle('ativa', t.id === id));
   window.scrollTo(0, 0);
 }
+// O botão voltar do Android fecha a tela atual e volta para "Hoje"
+function irPara(id) {
+  if (estado.viagem) history.pushState({ t: id }, '');
+  mostrar(id);
+}
+function voltarHoje() {
+  if (history.state && history.state.t) {
+    history.back();
+  } else {
+    renderHoje();
+    mostrar('tela-hoje');
+  }
+}
+window.addEventListener('popstate', () => {
+  if (estado.viagem) {
+    renderHoje();
+    mostrar('tela-hoje');
+  }
+});
 
 // ---------- Tela de configuração ----------
 function abrirConfig() {
   const v = estado.viagem || {};
-  $('cfg-titulo').textContent = estado.viagem ? 'Editar viagem' : 'Nova viagem';
+  const editando = !!estado.viagem;
   $('cfg-nome').value = v.nome || '';
   $('cfg-destino').value = v.destino || '';
   $('cfg-inicio').value = v.inicio || '';
   $('cfg-fim').value = v.fim || '';
   $('cfg-moeda').value = v.moeda || '';
   $('cfg-orcamento').value = v.orcamento != null ? String(v.orcamento).replace('.', ',') : '';
-  $('cfg-voltar').style.display = estado.viagem ? 'block' : 'none';
+  $('cfg-hero').style.display = editando ? 'none' : 'block';
+  $('cfg-bar').style.display = editando ? 'flex' : 'none';
+  $('cfg-salvar').textContent = editando ? 'Salvar' : 'Começar';
   $('cfg-erro').textContent = '';
-  mostrar('tela-config');
+  irPara('tela-config');
 }
 
 function salvarConfig() {
@@ -257,82 +528,128 @@ function salvarConfig() {
   // Editar a viagem não apaga as despesas
   estado.viagem = { nome, destino, inicio, fim, moeda, orcamento };
   salvar();
-  renderHoje();
-  mostrar('tela-hoje');
+  voltarHoje();
 }
 
 // ---------- Tela Hoje ----------
+function desenharDias(c) {
+  const box = $('dias-barra');
+  box.textContent = '';
+  if (c.diasTotais <= 31) {
+    box.classList.remove('continua');
+    for (let i = 1; i <= c.diasTotais; i++) {
+      const s = document.createElement('i');
+      if (c.encerrada || i < c.diaAtual) s.className = 'passou';
+      else if (i === c.diaAtual) s.className = 'hoje';
+      box.appendChild(s);
+    }
+  } else {
+    box.classList.add('continua');
+    const f = document.createElement('b');
+    f.style.width = Math.min(100, (c.diaAtual / c.diasTotais) * 100) + '%';
+    box.appendChild(f);
+  }
+}
+
 function renderHoje() {
   if (!estado.viagem) { abrirConfig(); return; }
   const v = estado.viagem;
   const c = calcular();
 
   $('h-nome').textContent = v.nome;
-  $('h-destino').textContent = v.destino || '';
+  $('h-destino').textContent = v.destino || 'Destino não informado';
+  $('h-periodo').textContent = textoPeriodo(v);
+  desenharDias(c);
 
   if (c.antes) {
     const faltam = diffDias(c.hoje, v.inicio);
     $('h-dia').textContent = `Começa em ${faltam} ${faltam === 1 ? 'dia' : 'dias'}`;
+    $('h-restam').textContent = `${c.diasTotais} ${c.diasTotais === 1 ? 'dia' : 'dias'} de viagem`;
   } else if (c.encerrada) {
     $('h-dia').textContent = 'Viagem encerrada';
+    $('h-restam').textContent = '';
   } else {
-    $('h-dia').textContent = `Dia ${c.diaAtual} de ${c.diasTotais} · ${c.diasRestantes} ${c.diasRestantes === 1 ? 'dia restante' : 'dias restantes'}`;
+    $('h-dia').textContent = `Dia ${c.diaAtual} de ${c.diasTotais}`;
+    $('h-restam').textContent = `${c.diasRestantes} ${c.diasRestantes === 1 ? 'dia restante' : 'dias restantes'}`;
   }
 
   const cardTeto = $('card-teto');
   const avisoFim = $('aviso-fim');
-  const btnNova = $('btn-nova');
+  const acao = $('acao-nova');
 
   if (c.encerrada) {
     cardTeto.style.display = 'none';
-    btnNova.style.display = 'none';
+    acao.style.display = 'none';
     avisoFim.style.display = 'block';
-    avisoFim.innerHTML = '';
-    const p1 = document.createElement('div');
-    p1.textContent = 'Essa viagem já terminou. Boa volta!';
-    const p2 = document.createElement('div');
-    p2.style.marginTop = '12px';
-    p2.textContent = `Total gasto: ${fmt(c.totalGasto)} de ${fmt(v.orcamento)}`;
-    avisoFim.append(p1, p2);
+    avisoFim.textContent = '';
+    const t = document.createElement('strong');
+    t.textContent = 'Essa viagem já terminou. Boa volta!';
+    const p = document.createElement('p');
+    p.textContent = `Você gastou ${fmt(c.totalGasto)} de ${fmt(v.orcamento)}.`;
+    avisoFim.append(t, p);
   } else {
     cardTeto.style.display = 'block';
-    btnNova.style.display = 'block';
+    acao.style.display = 'block';
     avisoFim.style.display = 'none';
 
-    $('teto').textContent = fmt(c.teto);
-    $('gasto-hoje').textContent = fmt(c.gastoHoje);
+    dinheiro($('teto'), c.teto);
+    dinheiro($('gasto-hoje'), c.gastoHoje);
     const restEl = $('restante-hoje');
-    restEl.textContent = fmt(c.restanteHoje);
+    dinheiro(restEl, c.restanteHoje);
     restEl.classList.toggle('neg', c.restanteHoje < 0);
 
     // Semáforo: verde < 80%, amarelo 80–100%, vermelho > 100%
-    const barra = $('barra');
     const alerta = $('alerta');
-    let cor, largura, msg = '';
+    let estadoCls, frac, pctTxt, msg = '', neutro = false;
     if (c.teto <= 0) {
-      cor = 'vermelho';
-      largura = 100;
+      estadoCls = 'estourou';
+      frac = 1;
+      pctTxt = '100%';
       msg = 'Orçamento esgotado';
     } else {
       const pct = c.gastoHoje / c.teto;
-      cor = pct < 0.8 ? 'verde' : pct <= 1 ? 'amarelo' : 'vermelho';
-      largura = Math.min(pct, 1) * 100;
+      estadoCls = pct < 0.8 ? 'ok' : pct <= 1 ? 'atencao' : 'estourou';
+      frac = Math.min(pct, 1);
+      pctTxt = Math.round(pct * 100) + '%';
       if (pct > 1) msg = `Passou do teto de hoje em ${fmt(-c.restanteHoje)}`;
     }
-    barra.className = cor;
-    barra.style.width = largura + '%';
+    if (c.antes) {
+      const faltam = diffDias(c.hoje, v.inicio);
+      msg = `A viagem começa em ${faltam} ${faltam === 1 ? 'dia' : 'dias'}. Os gastos entram a partir do primeiro dia.`;
+      neutro = true;
+    }
+    cardTeto.className = 'ticket ' + (estadoCls === 'ok' ? '' : estadoCls);
+    alerta.className = 'alerta' + (neutro ? ' neutro' : '');
     alerta.textContent = msg;
+    $('anel-pct').textContent = pctTxt;
+    const arco = $('anel-arco');
+    requestAnimationFrame(() => {
+      arco.style.strokeDashoffset = String(CIRC * (1 - frac));
+    });
   }
 
-  // Lista de gastos de hoje
+  // Viagem toda
+  dinheiro($('r-gasto'), c.totalGasto);
+  const saldoEl = $('r-saldo');
+  dinheiro(saldoEl, c.saldo);
+  saldoEl.classList.toggle('neg', c.saldo < 0);
+  $('r-orc').textContent = fmt(v.orcamento);
+  const usoTotal = c.totalGasto / v.orcamento;
+  $('r-pct').textContent = `${Math.round(usoTotal * 100)}% usado`;
+  $('total-barra').classList.toggle('estourou', usoTotal > 1);
+  requestAnimationFrame(() => {
+    $('total-fill').style.width = Math.min(usoTotal, 1) * 100 + '%';
+  });
+
+  // Gastos de hoje
   const lista = $('lista');
-  lista.innerHTML = '';
+  lista.textContent = '';
   const doDia = estado.despesas.filter(d => d.data === c.hoje).slice().reverse();
+  $('lista-total').textContent = doDia.length ? fmt(c.gastoHoje) : '';
   if (!doDia.length) {
-    const vazio = document.createElement('div');
-    vazio.className = 'sub';
-    vazio.style.padding = '12px 0';
-    vazio.textContent = 'Nenhum gasto hoje.';
+    const vazio = document.createElement('p');
+    vazio.className = 'vazio';
+    vazio.textContent = 'Nenhum gasto hoje. Toque em Despesa para registrar o primeiro.';
     lista.appendChild(vazio);
   }
   doDia.forEach(d => {
@@ -340,15 +657,27 @@ function renderHoje() {
     item.className = 'item';
 
     const info = document.createElement('div');
+    info.style.minWidth = '0';
     const titulo = document.createElement('div');
-    titulo.textContent = fmt(d.valor);
-    const sub = document.createElement('small');
-    sub.textContent = [d.categoria, d.descricao].filter(Boolean).join(' · ');
-    info.append(titulo, sub);
+    titulo.className = 'item-t';
+    titulo.textContent = d.descricao || d.categoria;
+    info.appendChild(titulo);
+    if (d.descricao) {
+      const sub = document.createElement('div');
+      sub.className = 'item-s';
+      sub.textContent = d.categoria;
+      info.appendChild(sub);
+    }
+
+    const valor = document.createElement('div');
+    valor.className = 'item-v';
+    valor.textContent = fmt(d.valor);
 
     const btn = document.createElement('button');
     btn.className = 'del';
-    btn.textContent = 'Apagar';
+    btn.type = 'button';
+    btn.setAttribute('aria-label', 'Apagar despesa');
+    btn.appendChild(icone('i-lixo'));
     btn.onclick = () => {
       if (confirm('Apagar esta despesa?')) {
         estado.despesas = estado.despesas.filter(x => x.id !== d.id);
@@ -357,32 +686,84 @@ function renderHoje() {
       }
     };
 
-    item.append(info, btn);
+    item.append(iconeCategoria(d.categoria), info, valor, btn);
     lista.appendChild(item);
+  });
+
+  // Gastos por categoria (viagem toda)
+  const porCat = {};
+  estado.despesas.forEach(d => { porCat[d.categoria] = (porCat[d.categoria] || 0) + d.valor; });
+  const ordenadas = Object.entries(porCat).sort((a, b) => b[1] - a[1]);
+  const catLista = $('cat-lista');
+  catLista.textContent = '';
+  $('bloco-cat').style.display = ordenadas.length ? 'block' : 'none';
+  ordenadas.forEach(([nome, total]) => {
+    const linha = document.createElement('div');
+    linha.className = 'cat-linha';
+    linha.style.setProperty('--c', COR[nome] || COR['Outros']);
+
+    const meio = document.createElement('div');
+    const n = document.createElement('div');
+    n.className = 'cat-nome';
+    n.textContent = nome;
+    const mini = document.createElement('div');
+    mini.className = 'mini';
+    const b = document.createElement('b');
+    b.style.width = (total / c.totalGasto) * 100 + '%';
+    mini.appendChild(b);
+    meio.append(n, mini);
+
+    const vlr = document.createElement('div');
+    vlr.className = 'cat-valor';
+    vlr.textContent = fmt(total);
+
+    linha.append(iconeCategoria(nome), meio, vlr);
+    catLista.appendChild(linha);
   });
 }
 
 // ---------- Tela Nova despesa ----------
+let catSel = CATEGORIAS[0];
+
+function marcarCategoria() {
+  document.querySelectorAll('#d-cats .cat').forEach(b => {
+    b.setAttribute('aria-checked', b.dataset.nome === catSel ? 'true' : 'false');
+  });
+}
+function montarCategorias() {
+  const box = $('d-cats');
+  box.textContent = '';
+  CATEGORIAS.forEach(nome => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'cat';
+    b.dataset.nome = nome;
+    b.setAttribute('role', 'radio');
+    b.style.setProperty('--c', COR[nome]);
+    b.appendChild(icone(ICONE[nome]));
+    const s = document.createElement('span');
+    s.textContent = nome;
+    b.appendChild(s);
+    b.onclick = () => { catSel = nome; marcarCategoria(); };
+    box.appendChild(b);
+  });
+  marcarCategoria();
+}
+
 function abrirDespesa() {
   $('d-valor').value = '';
   $('d-desc').value = '';
   $('d-erro').textContent = '';
-  const sel = $('d-cat');
-  sel.innerHTML = '';
-  CATEGORIAS.forEach(c => {
-    const o = document.createElement('option');
-    o.value = c;
-    o.textContent = c;
-    sel.appendChild(o);
-  });
-  $('d-data').textContent = `Data: ${formatarData(hojeStr())}`;
-  mostrar('tela-despesa');
+  $('d-moeda').textContent = estado.viagem.moeda;
+  $('d-data').textContent = formatarData(hojeStr());
+  catSel = CATEGORIAS[0];
+  montarCategorias();
+  irPara('tela-despesa');
   setTimeout(() => $('d-valor').focus(), 150);
 }
 
 function salvarDespesa() {
   const valor = parseNum(val('d-valor'));
-  const categoria = $('d-cat').value;
   const descricao = val('d-desc');
   const hoje = hojeStr();
   const v = estado.viagem;
@@ -399,22 +780,21 @@ function salvarDespesa() {
   estado.despesas.push({
     id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
     valor: Math.round(valor * 100) / 100,
-    categoria,
+    categoria: catSel,
     descricao,
     data: hoje
   });
   salvar();
-  renderHoje();
-  mostrar('tela-hoje');
+  voltarHoje();
 }
 
 // ---------- Eventos ----------
 $('cfg-salvar').onclick = salvarConfig;
-$('cfg-voltar').onclick = () => { renderHoje(); mostrar('tela-hoje'); };
+$('cfg-voltar').onclick = voltarHoje;
 $('btn-config').onclick = abrirConfig;
 $('btn-nova').onclick = abrirDespesa;
 $('d-salvar').onclick = salvarDespesa;
-$('d-cancelar').onclick = () => { renderHoje(); mostrar('tela-hoje'); };
+$('d-cancelar').onclick = voltarHoje;
 
 // Atualiza a tela ao voltar para o app (pode ter virado o dia)
 document.addEventListener('visibilitychange', () => {
@@ -422,6 +802,7 @@ document.addEventListener('visibilitychange', () => {
 });
 
 // ---------- Início ----------
+history.replaceState(null, '');
 if (estado.viagem) {
   renderHoje();
   mostrar('tela-hoje');

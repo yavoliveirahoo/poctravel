@@ -1,7 +1,10 @@
 // Service Worker do Bolso Viagem: cache-first do próprio app.
 // Ao alterar qualquer arquivo, aumente o número da versão abaixo para forçar a atualização.
-const CACHE = 'bolso-viagem-v1';
-const ARQUIVOS = ['./', './index.html', './manifest.json', './icon.svg'];
+const CACHE = 'bolso-viagem-v2';
+const ARQUIVOS = [
+  './', './index.html', './manifest.json',
+  './icon.svg', './icon-192.png', './icon-512.png', './icon-maskable-512.png'
+];
 
 self.addEventListener('install', event => {
   event.waitUntil(
