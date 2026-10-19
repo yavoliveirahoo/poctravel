@@ -2,7 +2,7 @@
 // Estratégia: rede primeiro (pega sempre a versão mais nova quando há internet)
 // e cache como reserva (o app continua abrindo 100% offline).
 // Ao publicar uma versão nova, aumente o número abaixo.
-const CACHE = 'bolso-viagem-v3';
+const CACHE = 'bolso-viagem-v4';
 const ARQUIVOS = [
   './', './index.html', './manifest.json',
   './icon.svg', './icon-192.png', './icon-512.png', './icon-maskable-512.png'
@@ -38,7 +38,7 @@ self.addEventListener('fetch', event => {
         return resp;
       })
       .catch(() =>
-        caches.match(req).then(cached => cached || caches.match('./index.html'))
+        caches.match(req, { ignoreSearch: true }).then(cached => cached || caches.match('./index.html'))
       )
   );
 });
