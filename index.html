@@ -100,11 +100,13 @@ button{font-family:inherit}
 
 .cat-ic{width:44px;height:44px;border-radius:var(--raio-p);display:grid;place-items:center;flex:none;color:var(--c);background:color-mix(in srgb,var(--c) 16%,transparent)}
 .cat-ic .ic{width:22px;height:22px}
-.item{display:grid;grid-template-columns:44px 1fr auto 40px;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--linha)}
+.item{display:grid;grid-template-columns:minmax(0,1fr) 40px;align-items:center;gap:6px;padding:12px 0;border-top:1px solid var(--linha)}
+.item-main{display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:12px;min-width:0;padding:4px 0;margin:-4px 0;border:none;border-radius:12px;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.item-main:active{background:var(--s2)}
 .item:first-child{border-top:none;padding-top:0}
 .item:last-child{padding-bottom:0}
 .item-t{font-weight:600;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:anywhere}
-.item-s{margin-top:2px;font-size:13px;color:var(--mut)}
+.item-s{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;margin-top:3px;font-size:13px;color:var(--mut)}
 .item-v{font-weight:700;font-variant-numeric:tabular-nums}
 .del{width:40px;height:44px;border:none;background:transparent;color:var(--mut);display:grid;place-items:center;border-radius:12px;cursor:pointer}
 .del .ic{width:20px;height:20px}
@@ -164,8 +166,7 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
 .forma-topo strong{font-size:15px;font-weight:700}
 .forma-base{margin-top:6px;font-size:13px;color:var(--mut)}
 .forma-base .neg{color:var(--estourou);font-weight:600}
-.tag{display:inline-flex;align-items:center;gap:4px;margin-left:8px;padding:1px 8px 1px 6px;border-radius:999px;font-size:12px;font-weight:600;color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);vertical-align:1px}
-.tag:first-child{margin-left:0}
+.tag{display:inline-flex;align-items:center;gap:4px;padding:1px 8px 1px 6px;border-radius:999px;font-size:12px;font-weight:600;color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);vertical-align:1px}
 .tag .ic{width:13px;height:13px}
 .bloco-link{display:block;width:100%;text-align:left;border:none;color:inherit;font:inherit;cursor:pointer}
 .bloco-link .bloco-topo{align-items:center;margin-bottom:8px}
@@ -175,6 +176,18 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
 .nota{margin:14px 0 0;font-size:13px;color:var(--mut);line-height:1.5}
 .custo{display:flex;justify-content:space-between;gap:12px;margin-top:16px;padding-top:14px;border-top:1px solid var(--linha);font-size:15px;font-variant-numeric:tabular-nums}
 .custo strong{font-weight:700}
+.link-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:48px;margin-top:16px;border:1px solid var(--linha2);border-radius:14px;background:transparent;color:var(--txt);font:inherit;font-size:15px;font-weight:600;cursor:pointer}
+.link-btn .ic{width:18px;height:18px}
+.apagar-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:54px;margin-top:22px;border:1.5px solid rgba(244,63,94,.45);border-radius:16px;background:transparent;color:var(--estourou);font:inherit;font-size:16px;font-weight:700;cursor:pointer}
+.apagar-btn .ic{width:20px;height:20px}
+.scan-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:56px;margin-top:4px;border:1.5px dashed var(--linha2);border-radius:16px;background:transparent;color:var(--txt);font:inherit;font-size:16px;font-weight:600;cursor:pointer}
+.scan-btn .ic{width:22px;height:22px;color:var(--ac)}
+.scan-btn:disabled{opacity:.55;cursor:progress}
+.scan-status{margin-top:10px;font-size:14px;line-height:1.45;color:var(--mut)}
+.scan-status:empty{display:none}
+.scan-status.ok{color:var(--ok)}
+.scan-status.erro{color:var(--estourou)}
+.dica{margin:4px 0 0;font-size:14px;color:var(--mut)}
 .encerrada .formas-fim{margin-top:14px;display:grid;gap:6px;font-size:15px;color:var(--txt);font-variant-numeric:tabular-nums}
 
 .valor-box{display:flex;align-items:center;gap:12px;margin-top:8px;padding:24px 22px;background:var(--s1);border-radius:var(--raio-g);border:1.5px solid transparent}
@@ -226,6 +239,8 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
   <symbol id="i-aviao" viewBox="0 0 24 24"><path d="M21 3L3 10.5l7 2.5 2.5 7z"/><path d="M21 3L10 13"/></symbol>
   <symbol id="i-escudo" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></symbol>
   <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l2-2.5h6L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+  <symbol id="i-lista" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></symbol>
   <symbol id="i-outros" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="18" cy="12" r="1.4" fill="currentColor"/></symbol>
 </svg>
 
@@ -335,6 +350,7 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
   <div class="bloco">
     <div class="bloco-topo"><h2>Gastos de hoje</h2><span id="lista-total"></span></div>
     <div id="lista"></div>
+    <button id="btn-todos" class="link-btn" type="button"><svg class="ic"><use href="#i-lista"/></svg>Ver todos os gastos</button>
   </div>
 
   <div class="bloco" id="bloco-cat" style="display:none">
@@ -351,9 +367,12 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
 <section id="tela-despesa" class="tela">
   <div class="barra-app">
     <button id="d-cancelar" class="icone-btn" type="button" aria-label="Voltar"><svg class="ic"><use href="#i-voltar"/></svg></button>
-    <h2>Nova despesa</h2>
-    <span class="barra-data" id="d-data"></span>
+    <h2 id="d-titulo">Nova despesa</h2>
   </div>
+
+  <button id="d-scan" class="scan-btn" type="button"><svg class="ic"><use href="#i-camera"/></svg>Escanear nota</button>
+  <input id="d-foto" type="file" accept="image/*" hidden>
+  <div id="d-scan-status" class="scan-status" role="status" aria-live="polite"></div>
 
   <div class="valor-box">
     <span class="moeda" id="d-moeda"></span>
@@ -369,10 +388,27 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
   <label for="d-desc">Descrição (opcional)
     <input id="d-desc" type="text" placeholder="Almoço, ingresso..." autocomplete="off">
   </label>
+  <label for="d-data-in">Data
+    <input id="d-data-in" type="date">
+  </label>
   <div id="d-erro" class="erro" role="alert"></div>
+  <button id="d-apagar" class="apagar-btn" type="button" style="display:none"><svg class="ic"><use href="#i-lixo"/></svg>Apagar despesa</button>
 
   <div class="acao">
     <button id="d-salvar" class="btn" type="button">Salvar</button>
+  </div>
+</section>
+
+<!-- Tela: todos os gastos -->
+<section id="tela-todos" class="tela">
+  <div class="barra-app">
+    <button id="todos-voltar" class="icone-btn" type="button" aria-label="Voltar"><svg class="ic"><use href="#i-voltar"/></svg></button>
+    <h2>Todos os gastos</h2>
+  </div>
+  <p class="dica" id="todos-total"></p>
+  <div id="todos-lista"></div>
+  <div class="acao">
+    <button id="btn-nova-todos" class="btn" type="button"><svg class="ic"><use href="#i-plus"/></svg>Despesa</button>
   </div>
 </section>
 
@@ -408,7 +444,7 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
 <section id="tela-pre-form" class="tela">
   <div class="barra-app">
     <button id="p-voltar" class="icone-btn" type="button" aria-label="Voltar"><svg class="ic"><use href="#i-voltar"/></svg></button>
-    <h2>Novo pagamento</h2>
+    <h2 id="p-titulo">Novo pagamento</h2>
   </div>
 
   <div class="valor-box">
@@ -429,6 +465,7 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
     <input id="p-data" type="date">
   </label>
   <div id="p-erro" class="erro" role="alert"></div>
+  <button id="p-apagar" class="apagar-btn" type="button" style="display:none"><svg class="ic"><use href="#i-lixo"/></svg>Apagar pagamento</button>
 
   <div class="acao">
     <button id="p-salvar" class="btn" type="button">Salvar</button>
@@ -436,7 +473,7 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
 </section>
 
 <script>
-const VERSAO = '6';
+const VERSAO = '7';
 const CHAVE = 'bolsoViagem';
 const CATEGORIAS = ['Alimentação', 'Transporte', 'Hospedagem', 'Ingressos', 'Compras', 'Outros'];
 const ICONE = { 'Alimentação':'i-comida', 'Transporte':'i-carro', 'Hospedagem':'i-cama', 'Ingressos':'i-ingresso', 'Compras':'i-sacola', 'Outros':'i-outros' };
@@ -650,14 +687,22 @@ function voltarHoje() {
 window.addEventListener('popstate', () => {
   if (!estado.viagem) return;
   const t = history.state && history.state.t;
-  if (t === 'tela-pre') {
-    renderPre();
-    mostrar('tela-pre');
+  const telas = { 'tela-pre': renderPre, 'tela-todos': renderTodos };
+  if (telas[t]) {
+    telas[t]();
+    mostrar(t);
   } else {
     renderHoje();
     mostrar('tela-hoje');
   }
 });
+function renderAtual() {
+  const id = (document.querySelector('.tela.ativa') || {}).id;
+  if (id === 'tela-todos') renderTodos();
+  else if (id === 'tela-pre') renderPre();
+  else renderHoje();
+}
+const novoId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 
 // ---------- Tela de configuração ----------
 function abrirConfig() {
@@ -920,42 +965,8 @@ function renderHoje() {
     vazio.textContent = 'Nenhum gasto hoje. Toque em Despesa para registrar o primeiro.';
     lista.appendChild(vazio);
   }
-  doDia.forEach(d => {
-    const item = document.createElement('div');
-    item.className = 'item';
-
-    const info = document.createElement('div');
-    info.style.minWidth = '0';
-    const titulo = document.createElement('div');
-    titulo.className = 'item-t';
-    titulo.textContent = d.descricao || d.categoria;
-    info.appendChild(titulo);
-    const sub = document.createElement('div');
-    sub.className = 'item-s';
-    if (d.descricao) sub.appendChild(document.createTextNode(d.categoria));
-    sub.appendChild(tagForma(d.forma));
-    info.appendChild(sub);
-
-    const valor = document.createElement('div');
-    valor.className = 'item-v';
-    valor.textContent = fmt(d.valor);
-
-    const btn = document.createElement('button');
-    btn.className = 'del';
-    btn.type = 'button';
-    btn.setAttribute('aria-label', 'Apagar despesa');
-    btn.appendChild(icone('i-lixo'));
-    btn.onclick = () => {
-      if (confirm('Apagar esta despesa?')) {
-        estado.despesas = estado.despesas.filter(x => x.id !== d.id);
-        salvar();
-        renderHoje();
-      }
-    };
-
-    item.append(iconeCategoria(d.categoria), info, valor, btn);
-    lista.appendChild(item);
-  });
+  doDia.forEach(d => lista.appendChild(itemDespesa(d)));
+  $('btn-todos').style.display = estado.despesas.length ? 'flex' : 'none';
 
   // Gastos por categoria (viagem toda)
   const porCat = {};
@@ -1044,46 +1055,360 @@ function montarCategorias() {
   marcarCategoria();
 }
 
-function abrirDespesa() {
-  $('d-valor').value = '';
-  $('d-desc').value = '';
+let editId = null;
+
+function abrirDespesa(id) {
+  const v = estado.viagem;
+  const d = id ? estado.despesas.find(x => x.id === id) : null;
+  editId = d ? d.id : null;
+  $('d-titulo').textContent = d ? 'Editar despesa' : 'Nova despesa';
+  $('d-valor').value = d ? d.valor.toFixed(2).replace('.', ',') : '';
+  $('d-desc').value = d ? (d.descricao || '') : '';
+  const campoData = $('d-data-in');
+  campoData.min = v.inicio;
+  campoData.max = v.fim;
+  campoData.value = d ? d.data : hojeStr();
   $('d-erro').textContent = '';
-  $('d-moeda').textContent = estado.viagem.moeda;
-  $('d-data').textContent = formatarData(hojeStr());
-  catSel = CATEGORIAS[0];
+  mostrarStatusScan('', '');
+  $('d-moeda').textContent = v.moeda;
+  catSel = d && CATEGORIAS.includes(d.categoria) ? d.categoria : CATEGORIAS[0];
   montarCategorias();
-  formaSel = FORMAS[estado.ultimaForma] ? estado.ultimaForma : 'cartao';
+  formaSel = d && FORMAS[d.forma] ? d.forma : (FORMAS[estado.ultimaForma] ? estado.ultimaForma : 'cartao');
   montarFormas();
+  $('d-apagar').style.display = d ? 'flex' : 'none';
+  $('d-scan').style.display = d ? 'none' : 'flex';
   irPara('tela-despesa');
-  setTimeout(() => $('d-valor').focus(), 150);
 }
 
 function salvarDespesa() {
   const valor = parseNum(val('d-valor'));
   const descricao = val('d-desc');
-  const hoje = hojeStr();
+  const data = $('d-data-in').value;
   const v = estado.viagem;
 
   let erro = '';
   if (!(valor > 0)) erro = 'O valor deve ser maior que zero.';
-  else if (hoje < v.inicio || hoje > v.fim) erro = 'Hoje está fora do período da viagem. Não é possível registrar a despesa.';
+  else if (!data) erro = 'Informe a data da despesa.';
+  else if (data < v.inicio || data > v.fim)
+    erro = `A data precisa estar dentro da viagem (${formatarData(v.inicio)} a ${formatarData(v.fim)}).`;
 
   if (erro) {
     $('d-erro').textContent = erro;
     return;
   }
 
-  estado.despesas.push({
-    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
-    valor: Math.round(valor * 100) / 100,
-    categoria: catSel,
-    forma: formaSel,
-    descricao,
-    data: hoje
-  });
+  const dados = { valor: Math.round(valor * 100) / 100, categoria: catSel, forma: formaSel, descricao, data };
+  if (editId) {
+    const d = estado.despesas.find(x => x.id === editId);
+    if (d) Object.assign(d, dados);
+  } else {
+    estado.despesas.push({ id: novoId(), ...dados });
+  }
   estado.ultimaForma = formaSel;
   salvar();
   voltarHoje();
+}
+
+function apagarDespesa() {
+  if (!editId || !confirm('Apagar esta despesa?')) return;
+  estado.despesas = estado.despesas.filter(x => x.id !== editId);
+  salvar();
+  voltarHoje();
+}
+
+// ---------- Itens de lista (tocar para editar) ----------
+function criarItem({ icBox, titulo, sub, valor, rotulo, aoEditar, aoApagar }) {
+  const item = document.createElement('div');
+  item.className = 'item';
+
+  const main = document.createElement('button');
+  main.type = 'button';
+  main.className = 'item-main';
+  main.setAttribute('aria-label', `Editar ${rotulo}: ${titulo}, ${valor}`);
+  const info = document.createElement('div');
+  info.style.minWidth = '0';
+  const t = document.createElement('div');
+  t.className = 'item-t';
+  t.textContent = titulo;
+  const s = document.createElement('div');
+  s.className = 'item-s';
+  sub.forEach(n => {
+    if (!n) return;
+    if (typeof n === 'string') {
+      const sp = document.createElement('span');
+      sp.textContent = n;
+      s.appendChild(sp);
+    } else {
+      s.appendChild(n);
+    }
+  });
+  info.append(t, s);
+  const v = document.createElement('div');
+  v.className = 'item-v';
+  v.textContent = valor;
+  main.append(icBox, info, v);
+  main.onclick = aoEditar;
+
+  const del = document.createElement('button');
+  del.type = 'button';
+  del.className = 'del';
+  del.setAttribute('aria-label', `Apagar ${rotulo}`);
+  del.appendChild(icone('i-lixo'));
+  del.onclick = aoApagar;
+
+  item.append(main, del);
+  return item;
+}
+
+function itemDespesa(d) {
+  return criarItem({
+    icBox: iconeCategoria(d.categoria),
+    titulo: d.descricao || d.categoria,
+    sub: [d.descricao ? d.categoria : '', tagForma(d.forma)],
+    valor: fmt(d.valor),
+    rotulo: 'despesa',
+    aoEditar: () => abrirDespesa(d.id),
+    aoApagar: () => {
+      if (!confirm('Apagar esta despesa?')) return;
+      estado.despesas = estado.despesas.filter(x => x.id !== d.id);
+      salvar();
+      renderAtual();
+    }
+  });
+}
+
+function itemPre(d) {
+  const t = tipoPre(d.tipo);
+  return criarItem({
+    icBox: iconeBox(t.ic, t.cor),
+    titulo: d.descricao || d.tipo,
+    sub: [[d.descricao ? d.tipo : '', d.data ? formatarData(d.data) : ''].filter(Boolean).join(', '), tagForma(d.forma)],
+    valor: fmt(d.valor),
+    rotulo: 'pagamento',
+    aoEditar: () => abrirPreForm(d.id),
+    aoApagar: () => {
+      if (!confirm('Apagar este pagamento?')) return;
+      estado.prePagos = estado.prePagos.filter(x => x.id !== d.id);
+      salvar();
+      renderPre();
+    }
+  });
+}
+
+// ---------- Tela Todos os gastos ----------
+const DIAS_SEMANA = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+
+function renderTodos() {
+  const box = $('todos-lista');
+  box.textContent = '';
+  const c = calcular();
+  const n = estado.despesas.length;
+  $('todos-total').textContent = n
+    ? `${n} ${n === 1 ? 'gasto' : 'gastos'}, ${fmt(c.totalGasto)} no total. Toque num gasto para editar.`
+    : '';
+  if (!n) {
+    const bloco = document.createElement('div');
+    bloco.className = 'bloco';
+    const vazio = document.createElement('p');
+    vazio.className = 'vazio';
+    vazio.textContent = 'Nenhum gasto registrado ainda. Toque em Despesa para lançar o primeiro.';
+    bloco.appendChild(vazio);
+    box.appendChild(bloco);
+    return;
+  }
+  const porDia = {};
+  estado.despesas.forEach(d => { (porDia[d.data] = porDia[d.data] || []).push(d); });
+  Object.keys(porDia).sort().reverse().forEach(dia => {
+    const itens = porDia[dia];
+    const bloco = document.createElement('div');
+    bloco.className = 'bloco';
+    const topo = document.createElement('div');
+    topo.className = 'bloco-topo';
+    const h = document.createElement('h2');
+    h.textContent = `${DIAS_SEMANA[paraDate(dia).getDay()]}, ${diaMes(dia)}${dia === c.hoje ? ' (hoje)' : ''}`;
+    const soma = document.createElement('span');
+    soma.textContent = fmt(itens.reduce((s, d) => s + d.valor, 0));
+    topo.append(h, soma);
+    const lista = document.createElement('div');
+    itens.slice().reverse().forEach(d => lista.appendChild(itemDespesa(d)));
+    bloco.append(topo, lista);
+    box.appendChild(bloco);
+  });
+}
+
+function abrirTodos() {
+  renderTodos();
+  irPara('tela-todos');
+}
+
+// ---------- Leitura de nota (OCR no próprio celular) ----------
+const OCR_BASE = new URL('vendor/tesseract/', location.href).href;
+let ocrWorker = null;
+let ocrCarregando = null;
+let ocrProgresso = () => {};
+
+function mostrarStatusScan(texto, tipo) {
+  const el = $('d-scan-status');
+  el.textContent = texto;
+  el.className = 'scan-status' + (tipo ? ' ' + tipo : '');
+}
+
+function carregarScript(src) {
+  return new Promise((ok, falha) => {
+    if (window.Tesseract) return ok();
+    const sc = document.createElement('script');
+    sc.src = src;
+    sc.onload = () => ok();
+    sc.onerror = () => falha(new Error('Falha ao carregar ' + src));
+    document.head.appendChild(sc);
+  });
+}
+
+function obterOcr() {
+  if (ocrWorker) return Promise.resolve(ocrWorker);
+  if (!ocrCarregando) {
+    ocrCarregando = (async () => {
+      await carregarScript(OCR_BASE + 'tesseract.min.js');
+      const w = await Tesseract.createWorker('eng', 1, {
+        workerPath: OCR_BASE + 'worker.min.js',
+        corePath: OCR_BASE + 'core',
+        langPath: OCR_BASE + 'lang',
+        workerBlobURL: false,
+        logger: m => { if (m.status === 'recognizing text') ocrProgresso(m.progress); }
+      });
+      ocrWorker = w;
+      return w;
+    })().catch(e => { ocrCarregando = null; throw e; });
+  }
+  return ocrCarregando;
+}
+
+async function prepararImagem(file) {
+  const img = await createImageBitmap(file);
+  const escala = Math.min(1, 2000 / Math.max(img.width, img.height));
+  const cv = document.createElement('canvas');
+  cv.width = Math.round(img.width * escala);
+  cv.height = Math.round(img.height * escala);
+  const ctx = cv.getContext('2d');
+  ctx.filter = 'grayscale(1) contrast(1.3)';
+  ctx.drawImage(img, 0, 0, cv.width, cv.height);
+  return cv;
+}
+
+// Números como 45.20, 1,234.56, 1.234,56 ou 12,50
+const RE_VALOR = /\d{1,3}(?:[.,]?\d{3})*[.,]\d{2}(?!\d)/g;
+function numeroNota(txt) {
+  const m = txt.match(/^(.*)[.,](\d{2})$/);
+  if (!m) return NaN;
+  return parseFloat(m[1].replace(/[.,]/g, '') + '.' + m[2]);
+}
+
+const PALAVRAS_CATEGORIA = [
+  ['Alimentação', /(restaurant|grill|cafe|café|coffee|starbucks|mcdonald|burger|pizza|taco|kitchen|diner|bakery|subway|chipotle|wendy|in-n-out|food|lanchonete|padaria|\bbar\b)/i],
+  ['Transporte', /(uber|lyft|taxi|\bgas\b|fuel|shell|chevron|exxon|\barco\b|parking|metro|transit|toll|posto|combust)/i],
+  ['Hospedagem', /(hotel|\binn\b|motel|suites|airbnb|lodge|hostel)/i],
+  ['Ingressos', /(ticket|admission|disney|universal|studios?\b|museum|\bpark\b|\btour\b|ingresso)/i],
+  ['Compras', /(walmart|target|costco|store|\bmart\b|outlet|\bshop|\bmall\b|cvs|walgreens|souvenir|gift|loja|mercado)/i]
+];
+
+function nomeLoja(linhas) {
+  for (const l of linhas.slice(0, 6)) {
+    const letras = (l.match(/[A-Za-zÀ-ÿ]/g) || []).length;
+    if (letras < 3 || letras / l.length < 0.6) continue;
+    if (/(receipt|recibo|welcome|bem[- ]?vindo|thank|obrigad|\btel\b|phone|www|http|@)/i.test(l)) continue;
+    const limpo = l.replace(/[^A-Za-zÀ-ÿ0-9&' .-]/g, '').replace(/\s+/g, ' ').trim();
+    if (limpo.length < 3) continue;
+    const nome = limpo === limpo.toUpperCase()
+      ? limpo.toLowerCase().replace(/(^|\s)\S/g, x => x.toUpperCase())
+      : limpo;
+    return nome.slice(0, 40);
+  }
+  return '';
+}
+
+function lerNota(texto) {
+  const v = estado.viagem;
+  const linhas = texto.split('\n').map(l => l.trim()).filter(Boolean);
+  const valoresDe = l => (l.match(RE_VALOR) || []).map(numeroNota).filter(n => n > 0 && n < 1e6);
+
+  // Total: linha com "total" (sem ser subtotal, imposto etc.); se houver várias, a maior
+  const ehTotal = /(total|amount\s*due|balance\s*due|a\s*pagar|valor\s*pago|grand)/i;
+  const naoTotal = /(sub\s*-?\s*total|tax|imposto|saving|desconto|discount|troco|change|\btip\b|gorjeta|items?\s*sold|qtd|quant)/i;
+  const candidatos = [];
+  linhas.forEach((l, i) => {
+    if (!ehTotal.test(l) || naoTotal.test(l)) return;
+    let vs = valoresDe(l);
+    if (!vs.length && linhas[i + 1]) vs = valoresDe(linhas[i + 1]);
+    if (vs.length) candidatos.push(vs[vs.length - 1]);
+  });
+  let valor = candidatos.length ? Math.max(...candidatos) : null;
+  if (valor == null) {
+    const todos = linhas.flatMap(valoresDe);
+    if (todos.length) valor = Math.max(...todos);
+  }
+
+  // Data: aceita AAAA-MM-DD, MM/DD/AAAA e DD/MM/AAAA; usa só se cair dentro da viagem
+  const montar = (y, m, d) => {
+    if (y < 100) y += 2000;
+    if (m < 1 || m > 12 || d < 1 || d > 31) return null;
+    return `${y}-${pad(m)}-${pad(d)}`;
+  };
+  const dentro = s => s && s >= v.inicio && s <= v.fim;
+  let data = null;
+  for (const l of linhas) {
+    let m = l.match(/(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})/);
+    if (m && dentro(montar(+m[1], +m[2], +m[3]))) { data = montar(+m[1], +m[2], +m[3]); break; }
+    m = l.match(/\b(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{2,4})\b/);
+    if (m) {
+      const opcoes = [montar(+m[3], +m[1], +m[2]), montar(+m[3], +m[2], +m[1])];
+      const ok = opcoes.find(dentro);
+      if (ok) { data = ok; break; }
+    }
+  }
+
+  let categoria = null;
+  for (const [nome, re] of PALAVRAS_CATEGORIA) {
+    if (re.test(texto)) { categoria = nome; break; }
+  }
+
+  return { valor, data, descricao: nomeLoja(linhas), categoria };
+}
+
+function listaPt(itens) {
+  if (itens.length <= 1) return itens.join('');
+  return itens.slice(0, -1).join(', ') + ' e ' + itens[itens.length - 1];
+}
+
+function aplicarLeitura(r) {
+  const achou = [];
+  if (r.valor) { $('d-valor').value = r.valor.toFixed(2).replace('.', ','); achou.push('o valor'); }
+  if (r.data) { $('d-data-in').value = r.data; achou.push('a data'); }
+  if (r.descricao && !val('d-desc')) { $('d-desc').value = r.descricao; achou.push('o estabelecimento'); }
+  if (r.categoria) { catSel = r.categoria; marcarCategoria(); achou.push('a categoria'); }
+  if (!r.valor) {
+    mostrarStatusScan('Não encontrei o total na nota. Digite o valor e confira os outros campos.', 'erro');
+  } else {
+    mostrarStatusScan(`Li ${listaPt(achou)} da nota. Confira e toque em Salvar.`, 'ok');
+  }
+}
+
+async function escanearNota(file) {
+  if (!file) return;
+  const btn = $('d-scan');
+  btn.disabled = true;
+  try {
+    mostrarStatusScan(ocrWorker ? 'Lendo a nota…' : 'Preparando o leitor de notas. Na primeira vez demora um pouco…', '');
+    ocrProgresso = pr => mostrarStatusScan(`Lendo a nota… ${Math.round(pr * 100)}%`, '');
+    const worker = await obterOcr();
+    const imagem = await prepararImagem(file);
+    const { data } = await worker.recognize(imagem);
+    aplicarLeitura(lerNota(data.text || ''));
+  } catch (e) {
+    mostrarStatusScan('Não consegui ler a nota. Na primeira vez o leitor precisa de internet para ser baixado. Você pode digitar os dados normalmente.', 'erro');
+  } finally {
+    btn.disabled = false;
+    $('d-foto').value = '';
+  }
 }
 
 // ---------- Escolha genérica (botões tipo rádio) ----------
@@ -1129,43 +1454,8 @@ function renderPre() {
     lista.appendChild(vazio);
     return;
   }
-  estado.prePagos.slice().sort((a, b) => (b.data || '').localeCompare(a.data || '')).forEach(d => {
-    const t = tipoPre(d.tipo);
-    const item = document.createElement('div');
-    item.className = 'item';
-
-    const info = document.createElement('div');
-    info.style.minWidth = '0';
-    const titulo = document.createElement('div');
-    titulo.className = 'item-t';
-    titulo.textContent = d.descricao || d.tipo;
-    const sub = document.createElement('div');
-    sub.className = 'item-s';
-    const quando = d.data ? formatarData(d.data) : '';
-    sub.appendChild(document.createTextNode([d.descricao ? d.tipo : '', quando].filter(Boolean).join(', ')));
-    sub.appendChild(tagForma(d.forma));
-    info.append(titulo, sub);
-
-    const valor = document.createElement('div');
-    valor.className = 'item-v';
-    valor.textContent = fmt(d.valor);
-
-    const btn = document.createElement('button');
-    btn.className = 'del';
-    btn.type = 'button';
-    btn.setAttribute('aria-label', 'Apagar pagamento');
-    btn.appendChild(icone('i-lixo'));
-    btn.onclick = () => {
-      if (confirm('Apagar este pagamento?')) {
-        estado.prePagos = estado.prePagos.filter(x => x.id !== d.id);
-        salvar();
-        renderPre();
-      }
-    };
-
-    item.append(iconeBox(t.ic, t.cor), info, valor, btn);
-    lista.appendChild(item);
-  });
+  estado.prePagos.slice().sort((a, b) => (b.data || '').localeCompare(a.data || ''))
+    .forEach(d => lista.appendChild(itemPre(d)));
 }
 
 function abrirPre() {
@@ -1176,19 +1466,25 @@ function abrirPre() {
 let preForma = 'cartao';
 let preTipo = TIPOS_PRE[0].k;
 
-function abrirPreForm() {
-  $('p-valor').value = '';
-  $('p-desc').value = '';
-  $('p-data').value = hojeStr();
+let preEditId = null;
+
+function abrirPreForm(id) {
+  const d = id ? estado.prePagos.find(x => x.id === id) : null;
+  preEditId = d ? d.id : null;
+  $('p-titulo').textContent = d ? 'Editar pagamento' : 'Novo pagamento';
+  $('p-valor').value = d ? d.valor.toFixed(2).replace('.', ',') : '';
+  $('p-desc').value = d ? (d.descricao || '') : '';
+  $('p-data').value = d && d.data ? d.data : hojeStr();
   $('p-erro').textContent = '';
   $('p-moeda').textContent = estado.viagem.moeda;
-  preForma = 'cartao';
-  preTipo = TIPOS_PRE[0].k;
+  preForma = d && FORMAS[d.forma] ? d.forma : 'cartao';
+  preTipo = d ? tipoPre(d.tipo).k : TIPOS_PRE[0].k;
   montarEscolha('p-formas', ORDEM_FORMAS.map(k => ({ k, nome: FORMAS[k].nome, ic: FORMAS[k].ic, cor: FORMAS[k].cor })),
     'forma', preForma, k => { preForma = k; });
   montarEscolha('p-tipos', TIPOS_PRE, 'cat', preTipo, k => { preTipo = k; });
+  $('p-apagar').style.display = d ? 'flex' : 'none';
   irPara('tela-pre-form');
-  setTimeout(() => $('p-valor').focus(), 150);
+  if (!d) setTimeout(() => $('p-valor').focus(), 150);
 }
 
 function salvarPre() {
@@ -1201,16 +1497,22 @@ function salvarPre() {
     $('p-erro').textContent = erro;
     return;
   }
-  estado.prePagos.push({
-    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
-    valor: Math.round(valor * 100) / 100,
-    tipo: preTipo,
-    forma: preForma,
-    descricao: val('p-desc'),
-    data
-  });
+  const dados = { valor: Math.round(valor * 100) / 100, tipo: preTipo, forma: preForma, descricao: val('p-desc'), data };
+  if (preEditId) {
+    const d = estado.prePagos.find(x => x.id === preEditId);
+    if (d) Object.assign(d, dados);
+  } else {
+    estado.prePagos.push({ id: novoId(), ...dados });
+  }
   salvar();
   voltarHoje();   // volta para a lista de pagamentos
+}
+
+function apagarPre() {
+  if (!preEditId || !confirm('Apagar este pagamento?')) return;
+  estado.prePagos = estado.prePagos.filter(x => x.id !== preEditId);
+  salvar();
+  voltarHoje();
 }
 
 // ---------- Eventos ----------
@@ -1218,14 +1520,21 @@ $('cfg-salvar').onclick = salvarConfig;
 ['cfg-dinheiro', 'cfg-cartao', 'cfg-moeda'].forEach(id => $(id).addEventListener('input', atualizarTotalCfg));
 $('cfg-voltar').onclick = voltarHoje;
 $('btn-config').onclick = abrirConfig;
-$('btn-nova').onclick = abrirDespesa;
+$('btn-nova').onclick = () => abrirDespesa();
+$('btn-nova-todos').onclick = () => abrirDespesa();
+$('btn-todos').onclick = abrirTodos;
+$('todos-voltar').onclick = voltarHoje;
+$('d-apagar').onclick = apagarDespesa;
+$('d-scan').onclick = () => $('d-foto').click();
+$('d-foto').addEventListener('change', e => escanearNota(e.target.files && e.target.files[0]));
 $('d-salvar').onclick = salvarDespesa;
 $('d-cancelar').onclick = voltarHoje;
 $('bloco-pre').onclick = abrirPre;
 $('pre-voltar').onclick = voltarHoje;
-$('btn-novo-pre').onclick = abrirPreForm;
+$('btn-novo-pre').onclick = () => abrirPreForm();
 $('p-voltar').onclick = voltarHoje;
 $('p-salvar').onclick = salvarPre;
+$('p-apagar').onclick = apagarPre;
 
 // Atualiza a tela ao voltar para o app (pode ter virado o dia)
 document.addEventListener('visibilitychange', () => {
