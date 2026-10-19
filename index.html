@@ -146,6 +146,28 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
 .form-card{margin-top:22px;background:var(--s1);border-radius:var(--raio-g);padding:4px 20px 22px}
 .form-card .btn{margin-top:8px}
 .versao{margin:18px 0 0;text-align:center;font-size:13px;color:var(--mut)}
+.form-sub{margin:22px 0 0;font-size:15px;font-weight:700;color:var(--txt)}
+.form-sub + .grade2 label{margin-top:10px}
+.total-orc{margin-top:12px;font-size:14px;color:var(--mut);font-variant-numeric:tabular-nums}
+.total-orc strong{color:var(--txt)}
+.formas{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.forma{display:flex;align-items:center;justify-content:center;gap:10px;min-height:60px;border:1.5px solid transparent;border-radius:16px;background:var(--s1);color:var(--mut);font-size:16px;font-weight:600;cursor:pointer}
+.forma .ic{width:24px;height:24px;color:var(--c)}
+.forma[aria-checked="true"]{border-color:var(--c);color:var(--txt);background:color-mix(in srgb,var(--c) 14%,var(--s1))}
+.formas-box{margin-top:16px}
+.forma-linha{display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:center;padding:14px 0;border-top:1px solid var(--linha)}
+.forma-linha:last-child{padding-bottom:0}
+.forma-linha .cat-ic{width:36px;height:36px;border-radius:12px}
+.forma-linha .cat-ic .ic{width:19px;height:19px}
+.forma-topo,.forma-base{display:flex;justify-content:space-between;gap:10px;font-variant-numeric:tabular-nums}
+.forma-topo span{font-size:15px;font-weight:600}
+.forma-topo strong{font-size:15px;font-weight:700}
+.forma-base{margin-top:6px;font-size:13px;color:var(--mut)}
+.forma-base .neg{color:var(--estourou);font-weight:600}
+.tag{display:inline-flex;align-items:center;gap:4px;margin-left:8px;padding:1px 8px 1px 6px;border-radius:999px;font-size:12px;font-weight:600;color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);vertical-align:1px}
+.tag:first-child{margin-left:0}
+.tag .ic{width:13px;height:13px}
+.encerrada .formas-fim{margin-top:14px;display:grid;gap:6px;font-size:15px;color:var(--txt);font-variant-numeric:tabular-nums}
 
 .valor-box{display:flex;align-items:center;gap:12px;margin-top:8px;padding:24px 22px;background:var(--s1);border-radius:var(--raio-g);border:1.5px solid transparent}
 .valor-box:focus-within{border-color:var(--ac)}
@@ -191,6 +213,8 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
   <symbol id="i-cama" viewBox="0 0 24 24"><path d="M3 6v13M3 15h18v4M21 15v-3a3 3 0 0 0-3-3h-8v6"/><circle cx="6.5" cy="11" r="1.7"/></symbol>
   <symbol id="i-ingresso" viewBox="0 0 24 24"><path d="M4 7.5A1.5 1.5 0 0 1 5.5 6h13A1.5 1.5 0 0 1 20 7.5V10a2 2 0 0 0 0 4v2.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 16.5V14a2 2 0 0 0 0-4z"/><path d="M14.5 6.5v11" stroke-dasharray="2 2.4"/></symbol>
   <symbol id="i-sacola" viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V7a3 3 0 0 1 6 0v1"/></symbol>
+  <symbol id="i-dinheiro" viewBox="0 0 24 24"><rect x="3" y="6.5" width="18" height="11" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6.5 9.5v.01M17.5 14.5v.01"/></symbol>
+  <symbol id="i-cartao" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h4"/></symbol>
   <symbol id="i-outros" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="18" cy="12" r="1.4" fill="currentColor"/></symbol>
 </svg>
 
@@ -222,14 +246,19 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
         <input id="cfg-fim" type="date">
       </label>
     </div>
+    <label for="cfg-moeda">Moeda
+      <input id="cfg-moeda" type="text" placeholder="US$, CA$, R$" autocomplete="off">
+    </label>
+    <div class="form-sub">Orçamento</div>
     <div class="grade2">
-      <label for="cfg-moeda">Moeda
-        <input id="cfg-moeda" type="text" placeholder="US$" autocomplete="off">
+      <label for="cfg-dinheiro">Dinheiro
+        <input id="cfg-dinheiro" type="text" inputmode="decimal" placeholder="0,00" autocomplete="off">
       </label>
-      <label for="cfg-orcamento">Orçamento total
-        <input id="cfg-orcamento" type="text" inputmode="decimal" placeholder="0,00" autocomplete="off">
+      <label for="cfg-cartao">Cartão de crédito
+        <input id="cfg-cartao" type="text" inputmode="decimal" placeholder="0,00" autocomplete="off">
       </label>
     </div>
+    <div class="total-orc">Orçamento total: <strong id="cfg-total">0,00</strong></div>
     <div id="cfg-erro" class="erro" role="alert"></div>
     <button id="cfg-salvar" class="btn" type="button">Começar</button>
   </div>
@@ -284,6 +313,7 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
     </div>
     <div id="total-barra" class="total-barra"><b id="total-fill"></b></div>
     <div class="total-legenda"><span>Orçamento total</span><span id="r-orc"></span></div>
+    <div id="formas-resumo" class="formas-box"></div>
   </div>
 
   <div class="bloco">
@@ -314,6 +344,9 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
     <input id="d-valor" type="text" inputmode="decimal" placeholder="0,00" autocomplete="off" aria-label="Valor">
   </div>
 
+  <div class="sec-titulo" id="d-forma-rot">Forma de pagamento</div>
+  <div id="d-formas" class="formas" role="radiogroup" aria-labelledby="d-forma-rot"></div>
+
   <div class="sec-titulo" id="d-cat-rot">Categoria</div>
   <div id="d-cats" class="cats" role="radiogroup" aria-labelledby="d-cat-rot"></div>
 
@@ -328,11 +361,16 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
 </section>
 
 <script>
-const VERSAO = '4';
+const VERSAO = '5';
 const CHAVE = 'bolsoViagem';
 const CATEGORIAS = ['Alimentação', 'Transporte', 'Hospedagem', 'Ingressos', 'Compras', 'Outros'];
 const ICONE = { 'Alimentação':'i-comida', 'Transporte':'i-carro', 'Hospedagem':'i-cama', 'Ingressos':'i-ingresso', 'Compras':'i-sacola', 'Outros':'i-outros' };
 const COR = { 'Alimentação':'#FB923C', 'Transporte':'#38BDF8', 'Hospedagem':'#A78BFA', 'Ingressos':'#F472B6', 'Compras':'#34D399', 'Outros':'#94A3B8' };
+const FORMAS = {
+  dinheiro: { nome: 'Dinheiro', ic: 'i-dinheiro', cor: '#2DD4BF' },
+  cartao:   { nome: 'Cartão',   ic: 'i-cartao',   cor: '#818CF8' }
+};
+const ORDEM_FORMAS = ['dinheiro', 'cartao'];
 const MESES = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 const SVGNS = 'http://www.w3.org/2000/svg';
 const CIRC = 263.9;
@@ -343,18 +381,28 @@ const val = id => $(id).value.trim();
 // ---------- Armazenamento ----------
 function carregar() {
   const raw = localStorage.getItem(CHAVE);
-  if (!raw) return { viagem: null, despesas: [] };
+  if (!raw) return { viagem: null, despesas: [], ultimaForma: 'cartao' };
   try {
     const o = JSON.parse(raw);
-    return {
+    return migrar({
       viagem: o.viagem || null,
-      despesas: Array.isArray(o.despesas) ? o.despesas : []
-    };
+      despesas: Array.isArray(o.despesas) ? o.despesas : [],
+      ultimaForma: FORMAS[o.ultimaForma] ? o.ultimaForma : 'cartao'
+    });
   } catch (e) {
     // Dado corrompido: guarda cópia de segurança para não perder nada
     localStorage.setItem(CHAVE + '_backup', raw);
-    return { viagem: null, despesas: [] };
+    return { viagem: null, despesas: [], ultimaForma: 'cartao' };
   }
+}
+// Dados de versões antigas: orçamento único vira "dinheiro"; despesas sem forma viram "dinheiro"
+function migrar(e) {
+  if (e.viagem && e.viagem.orcamentoDinheiro == null) {
+    e.viagem.orcamentoDinheiro = e.viagem.orcamento || 0;
+    e.viagem.orcamentoCartao = 0;
+  }
+  e.despesas.forEach(d => { if (!FORMAS[d.forma]) d.forma = 'dinheiro'; });
+  return e;
 }
 function salvar() {
   localStorage.setItem(CHAVE, JSON.stringify(estado));
@@ -423,6 +471,32 @@ function icone(id) {
   u.setAttribute('href', '#' + (id || 'i-outros'));
   s.appendChild(u);
   return s;
+}
+function iconeBox(icId, cor) {
+  const box = document.createElement('div');
+  box.className = 'cat-ic';
+  box.style.setProperty('--c', cor);
+  box.appendChild(icone(icId));
+  return box;
+}
+function tagForma(k) {
+  const f = FORMAS[k] || FORMAS.dinheiro;
+  const t = document.createElement('span');
+  t.className = 'tag';
+  t.style.setProperty('--c', f.cor);
+  t.appendChild(icone(f.ic));
+  t.appendChild(document.createTextNode(f.nome));
+  return t;
+}
+function lerValor(id) {
+  const t = val(id);
+  return t === '' ? 0 : parseNum(t);
+}
+function gastoPorForma(k) {
+  return estado.despesas.filter(d => d.forma === k).reduce((s, d) => s + d.valor, 0);
+}
+function orcamentoDaForma(v, k) {
+  return k === 'dinheiro' ? v.orcamentoDinheiro : v.orcamentoCartao;
 }
 function iconeCategoria(nome, extra) {
   const box = document.createElement('div');
@@ -500,12 +574,24 @@ function abrirConfig() {
   $('cfg-inicio').value = v.inicio || '';
   $('cfg-fim').value = v.fim || '';
   $('cfg-moeda').value = v.moeda || '';
-  $('cfg-orcamento').value = v.orcamento != null ? String(v.orcamento).replace('.', ',') : '';
+  const paraCampo = n => (n != null && n !== 0) ? String(n).replace('.', ',') : '';
+  $('cfg-dinheiro').value = paraCampo(v.orcamentoDinheiro);
+  $('cfg-cartao').value = paraCampo(v.orcamentoCartao);
+  atualizarTotalCfg();
   $('cfg-hero').style.display = editando ? 'none' : 'block';
   $('cfg-bar').style.display = editando ? 'flex' : 'none';
   $('cfg-salvar').textContent = editando ? 'Salvar' : 'Começar';
   $('cfg-erro').textContent = '';
   irPara('tela-config');
+}
+
+function atualizarTotalCfg() {
+  const d = lerValor('cfg-dinheiro');
+  const c = lerValor('cfg-cartao');
+  const moeda = val('cfg-moeda');
+  if (isNaN(d) || isNaN(c)) { $('cfg-total').textContent = '—'; return; }
+  const num = (d + c).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  $('cfg-total').textContent = `${moeda} ${num}`.trim();
 }
 
 function salvarConfig() {
@@ -514,14 +600,17 @@ function salvarConfig() {
   const inicio = $('cfg-inicio').value;
   const fim = $('cfg-fim').value;
   const moeda = val('cfg-moeda');
-  const orcamento = parseNum(val('cfg-orcamento'));
+  const orcamentoDinheiro = lerValor('cfg-dinheiro');
+  const orcamentoCartao = lerValor('cfg-cartao');
 
   let erro = '';
   if (!nome) erro = 'Informe o nome da viagem.';
   else if (!inicio || !fim) erro = 'Informe as datas de início e fim.';
   else if (fim < inicio) erro = 'A data fim deve ser igual ou posterior à data início.';
   else if (!moeda) erro = 'Informe a moeda (ex.: US$, CA$, R$).';
-  else if (!(orcamento > 0)) erro = 'O orçamento total deve ser maior que zero.';
+  else if (isNaN(orcamentoDinheiro) || isNaN(orcamentoCartao) || orcamentoDinheiro < 0 || orcamentoCartao < 0)
+    erro = 'Informe valores válidos para dinheiro e cartão (pode deixar um deles em branco).';
+  else if (!(orcamentoDinheiro + orcamentoCartao > 0)) erro = 'O orçamento total (dinheiro + cartão) deve ser maior que zero.';
 
   if (erro) {
     $('cfg-erro').textContent = erro;
@@ -529,7 +618,8 @@ function salvarConfig() {
   }
 
   // Editar a viagem não apaga as despesas
-  estado.viagem = { nome, destino, inicio, fim, moeda, orcamento };
+  const orcamento = Math.round((orcamentoDinheiro + orcamentoCartao) * 100) / 100;
+  estado.viagem = { nome, destino, inicio, fim, moeda, orcamentoDinheiro, orcamentoCartao, orcamento };
   salvar();
   voltarHoje();
 }
@@ -589,7 +679,14 @@ function renderHoje() {
     t.textContent = 'Essa viagem já terminou. Boa volta!';
     const p = document.createElement('p');
     p.textContent = `Você gastou ${fmt(c.totalGasto)} de ${fmt(v.orcamento)}.`;
-    avisoFim.append(t, p);
+    const fim = document.createElement('div');
+    fim.className = 'formas-fim';
+    ORDEM_FORMAS.forEach(k => {
+      const linha = document.createElement('div');
+      linha.textContent = `${FORMAS[k].nome}: ${fmt(gastoPorForma(k))} de ${fmt(orcamentoDaForma(v, k))}`;
+      fim.appendChild(linha);
+    });
+    avisoFim.append(t, p, fim);
   } else {
     cardTeto.style.display = 'block';
     acao.style.display = 'block';
@@ -644,6 +741,53 @@ function renderHoje() {
     $('total-fill').style.width = Math.min(usoTotal, 1) * 100 + '%';
   });
 
+  // Dinheiro x cartão (viagem toda)
+  const formasBox = $('formas-resumo');
+  formasBox.textContent = '';
+  ORDEM_FORMAS.forEach(k => {
+    const f = FORMAS[k];
+    const orc = orcamentoDaForma(v, k);
+    const gasto = gastoPorForma(k);
+    const resta = orc - gasto;
+
+    const linha = document.createElement('div');
+    linha.className = 'forma-linha';
+    linha.style.setProperty('--c', f.cor);
+
+    const meio = document.createElement('div');
+    const topo = document.createElement('div');
+    topo.className = 'forma-topo';
+    const nome = document.createElement('span');
+    nome.textContent = f.nome;
+    const valor = document.createElement('strong');
+    valor.textContent = fmt(gasto);
+    topo.append(nome, valor);
+
+    const mini = document.createElement('div');
+    mini.className = 'mini';
+    const barra = document.createElement('b');
+    barra.style.width = (orc > 0 ? Math.min(gasto / orc, 1) : (gasto > 0 ? 1 : 0)) * 100 + '%';
+    if (resta < 0) barra.style.background = 'var(--estourou)';
+    mini.appendChild(barra);
+
+    const base = document.createElement('div');
+    base.className = 'forma-base';
+    const r = document.createElement('span');
+    if (resta >= 0) {
+      r.textContent = `Resta ${fmt(resta)}`;
+    } else {
+      r.textContent = `Passou ${fmt(-resta)}`;
+      r.className = 'neg';
+    }
+    const de = document.createElement('span');
+    de.textContent = `de ${fmt(orc)}`;
+    base.append(r, de);
+
+    meio.append(topo, mini, base);
+    linha.append(iconeBox(f.ic, f.cor), meio);
+    formasBox.appendChild(linha);
+  });
+
   // Gastos de hoje
   const lista = $('lista');
   lista.textContent = '';
@@ -665,12 +809,11 @@ function renderHoje() {
     titulo.className = 'item-t';
     titulo.textContent = d.descricao || d.categoria;
     info.appendChild(titulo);
-    if (d.descricao) {
-      const sub = document.createElement('div');
-      sub.className = 'item-s';
-      sub.textContent = d.categoria;
-      info.appendChild(sub);
-    }
+    const sub = document.createElement('div');
+    sub.className = 'item-s';
+    if (d.descricao) sub.appendChild(document.createTextNode(d.categoria));
+    sub.appendChild(tagForma(d.forma));
+    info.appendChild(sub);
 
     const valor = document.createElement('div');
     valor.className = 'item-v';
@@ -727,6 +870,33 @@ function renderHoje() {
 
 // ---------- Tela Nova despesa ----------
 let catSel = CATEGORIAS[0];
+let formaSel = 'cartao';
+
+function marcarForma() {
+  document.querySelectorAll('#d-formas .forma').forEach(b => {
+    b.setAttribute('aria-checked', b.dataset.forma === formaSel ? 'true' : 'false');
+  });
+}
+function montarFormas() {
+  const box = $('d-formas');
+  box.textContent = '';
+  ORDEM_FORMAS.forEach(k => {
+    const f = FORMAS[k];
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'forma';
+    b.dataset.forma = k;
+    b.setAttribute('role', 'radio');
+    b.style.setProperty('--c', f.cor);
+    b.appendChild(icone(f.ic));
+    const s = document.createElement('span');
+    s.textContent = f.nome;
+    b.appendChild(s);
+    b.onclick = () => { formaSel = k; marcarForma(); };
+    box.appendChild(b);
+  });
+  marcarForma();
+}
 
 function marcarCategoria() {
   document.querySelectorAll('#d-cats .cat').forEach(b => {
@@ -761,6 +931,8 @@ function abrirDespesa() {
   $('d-data').textContent = formatarData(hojeStr());
   catSel = CATEGORIAS[0];
   montarCategorias();
+  formaSel = FORMAS[estado.ultimaForma] ? estado.ultimaForma : 'cartao';
+  montarFormas();
   irPara('tela-despesa');
   setTimeout(() => $('d-valor').focus(), 150);
 }
@@ -784,15 +956,18 @@ function salvarDespesa() {
     id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
     valor: Math.round(valor * 100) / 100,
     categoria: catSel,
+    forma: formaSel,
     descricao,
     data: hoje
   });
+  estado.ultimaForma = formaSel;
   salvar();
   voltarHoje();
 }
 
 // ---------- Eventos ----------
 $('cfg-salvar').onclick = salvarConfig;
+['cfg-dinheiro', 'cfg-cartao', 'cfg-moeda'].forEach(id => $(id).addEventListener('input', atualizarTotalCfg));
 $('cfg-voltar').onclick = voltarHoje;
 $('btn-config').onclick = abrirConfig;
 $('btn-nova').onclick = abrirDespesa;
