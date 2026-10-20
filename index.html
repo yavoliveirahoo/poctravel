@@ -219,6 +219,33 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
 .fonte a{color:var(--mut)}
 .manual-linha{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:15px}
 .manual-linha input{width:140px;min-height:48px;margin:0}
+.dock{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom));z-index:6;display:flex;align-items:center;justify-content:space-around;width:calc(100% - 24px);max-width:456px;height:80px;padding:0 4px;border:1px solid var(--linha2);border-radius:30px;background:rgba(17,26,48,.97);box-shadow:0 10px 30px rgba(0,0,0,.45)}
+.dock[hidden]{display:none}
+.dk{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:58px;padding:0;border:none;background:none;color:var(--mut);font:inherit;font-size:11.5px;font-weight:600;cursor:pointer}
+.dk b{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;color:var(--c);background:color-mix(in srgb,var(--c) 16%,var(--s1));border:1.5px solid color-mix(in srgb,var(--c) 38%,transparent)}
+.dk b .ic{width:22px;height:22px}
+.dk[aria-current="page"]{color:var(--txt)}
+.dk[aria-current="page"] b{background:var(--ac);border-color:var(--ac);color:var(--ac-ink)}
+.dk.mais b{width:62px;height:62px;margin:-30px 0 16px;background:var(--ac);color:var(--ac-ink);border:4px solid var(--bg);box-shadow:0 0 0 1px var(--linha2)}
+.dk.mais b .ic{width:28px;height:28px;stroke-width:2.6}
+.calc-topo{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.calc-topo h2{margin:0;font-size:17px;font-weight:700}
+.calc-ic{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;color:var(--c);background:color-mix(in srgb,var(--c) 18%,var(--s1))}
+.calc-ic .ic{width:20px;height:20px}
+.cc-linha{display:grid;grid-template-columns:132px minmax(0,1fr);gap:10px;margin-top:10px}
+.cc-linha select,.cc-linha input{margin:0;min-height:52px}
+.cc-linha select{font-weight:700;font-size:16px}
+.cc-linha input{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
+.gj-chips .chip{flex:1;min-width:0;padding:0 8px}
+.pessoas{display:flex;align-items:center;gap:12px;margin-top:18px;font-size:15px;color:var(--mut)}
+.pessoas button{width:44px;height:44px;border:1.5px solid var(--linha2);border-radius:50%;background:transparent;color:var(--txt);font:inherit;font-size:22px;font-weight:700;cursor:pointer}
+.pessoas strong{min-width:24px;text-align:center;color:var(--txt);font-size:18px}
+.check{display:flex;align-items:center;gap:10px;margin-top:14px;color:var(--txt);font-size:15px;cursor:pointer}
+.check input{width:22px;height:22px;min-height:0;margin:0;accent-color:var(--ac)}
+.gj-res{margin-top:16px;padding-top:12px;border-top:1px solid var(--linha)}
+.gj-res div{display:flex;justify-content:space-between;gap:12px;padding:4px 0;font-size:15px;color:var(--mut);font-variant-numeric:tabular-nums}
+.gj-res strong{color:var(--txt);font-size:17px}
+.gj-res .total strong{font-size:22px}
 .modal-caixa.folha{max-height:88vh;overflow:auto}
 .fm-lista{margin-top:14px}
 .fm-item{display:grid;grid-template-columns:52px minmax(0,1fr) 40px;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--linha)}
@@ -290,6 +317,10 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
   <symbol id="i-subir" viewBox="0 0 24 24"><path d="M12 20V9M7 14l5-5 5 5M5 4h14"/></symbol>
   <symbol id="i-enviar" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></symbol>
   <symbol id="i-atualizar" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.6-4.4L4 8M4 3.5V8h4.5M4 13a8 8 0 0 0 14.6 4.4L20 16M20 20.5V16h-4.5"/></symbol>
+  <symbol id="i-casa" viewBox="0 0 24 24"><path d="M4 11l8-6.5 8 6.5M6.5 9.5V19h11V9.5"/></symbol>
+  <symbol id="i-calc" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8.5 7h7M8.5 11.5h.01M12 11.5h.01M15.5 11.5h.01M8.5 15h.01M12 15h.01M15.5 15v2.5M8.5 18h.01M12 18h.01"/></symbol>
+  <symbol id="i-cambio" viewBox="0 0 24 24"><path d="M4 8h13l-3.5-3.5M20 16H7l3.5 3.5"/></symbol>
+  <symbol id="i-gorjeta" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M14.5 9.2c-.5-.8-1.4-1.2-2.5-1.2-1.5 0-2.5.8-2.5 1.9 0 2.6 5 1.4 5 4.1 0 1.1-1.1 2-2.6 2-1.1 0-2.1-.5-2.6-1.3M12 6.5V8M12 16v1.5"/></symbol>
   <symbol id="i-outros" viewBox="0 0 24 24"><path d="M8.3 8.4a3.7 3.7 0 1 1 5.5 3.3c-1.1.6-1.8 1.4-1.8 2.6v.9" stroke-width="2.2"/><circle cx="12" cy="19" r="1.4" fill="currentColor" stroke="none"/></symbol>
 </svg>
 
@@ -378,7 +409,6 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
       <svg class="logo" role="img" aria-label="Logo"><use href="#logo"/></svg>
       <span>Bolso Viagem</span>
     </div>
-    <button id="btn-config" class="icone-btn" type="button" aria-label="Editar viagem"><svg class="ic"><use href="#i-ajustes"/></svg></button>
   </div>
 
   <div class="viagem">
@@ -442,9 +472,6 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
     <div id="cat-lista"></div>
   </div>
 
-  <div id="acao-nova" class="acao">
-    <button id="btn-nova" class="btn" type="button"><svg class="ic"><use href="#i-plus"/></svg>Despesa</button>
-  </div>
 </section>
 
 <!-- Tela: nova despesa -->
@@ -499,9 +526,6 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
   </div>
   <p class="dica" id="todos-total"></p>
   <div id="todos-lista"></div>
-  <div class="acao">
-    <button id="btn-nova-todos" class="btn" type="button"><svg class="ic"><use href="#i-plus"/></svg>Despesa</button>
-  </div>
 </section>
 
 <!-- Tela: pagamentos pré-viagem -->
@@ -572,6 +596,60 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
   </div>
 </section>
 
+<!-- Tela: calculadoras -->
+<section id="tela-calc" class="tela">
+  <div class="barra-app"><h2>Calculadoras</h2></div>
+
+  <div class="bloco" style="--c:#34D399;margin-top:4px">
+    <div class="calc-topo"><span class="calc-ic"><svg class="ic"><use href="#i-cambio"/></svg></span><h2>Câmbio</h2></div>
+    <p class="nota" style="margin-top:0">Digite o valor em qualquer moeda; as outras se atualizam.</p>
+    <div id="cc-linhas"></div>
+    <p class="nota" id="cc-info"></p>
+  </div>
+
+  <div class="bloco" style="--c:#FB923C">
+    <div class="calc-topo"><span class="calc-ic"><svg class="ic"><use href="#i-gorjeta"/></svg></span><h2 id="gj-titulo">Gorjeta</h2></div>
+    <p class="nota" id="gj-nota" style="margin-top:0"></p>
+    <label for="gj-conta">Valor da conta (<span id="gj-moeda"></span>)
+      <input id="gj-conta" type="text" inputmode="decimal" placeholder="0,00" autocomplete="off">
+    </label>
+    <div id="gj-imposto-box">
+      <label for="gj-imposto">Imposto incluído na conta (opcional)
+        <input id="gj-imposto" type="text" inputmode="decimal" placeholder="0,00" autocomplete="off">
+      </label>
+    </div>
+    <div class="sec-titulo">Percentual</div>
+    <div id="gj-chips" class="chips gj-chips" role="radiogroup" aria-label="Percentual da gorjeta" style="margin-top:0"></div>
+    <div id="gj-outro-box" style="display:none">
+      <label for="gj-outro">Outro percentual (%)
+        <input id="gj-outro" type="text" inputmode="decimal" placeholder="12" autocomplete="off">
+      </label>
+    </div>
+    <div class="pessoas">
+      <span>Dividir entre</span>
+      <button id="gj-menos" type="button" aria-label="Menos uma pessoa">−</button>
+      <strong id="gj-pessoas">1</strong>
+      <button id="gj-mais" type="button" aria-label="Mais uma pessoa">+</button>
+      <span id="gj-pessoas-rot">pessoa</span>
+    </div>
+    <label class="check"><input id="gj-arred" type="checkbox"> Arredondar o total para cima</label>
+    <div class="gj-res">
+      <div><span>Gorjeta</span><strong id="gj-valor">—</strong></div>
+      <div class="total"><span>Total</span><strong id="gj-total">—</strong></div>
+      <div id="gj-pp-linha" style="display:none"><span>Por pessoa</span><strong id="gj-pp">—</strong></div>
+    </div>
+    <button id="gj-lancar" class="link-btn" type="button"><svg class="ic"><use href="#i-plus"/></svg><span id="gj-lancar-rot">Lançar como despesa</span></button>
+  </div>
+</section>
+
+<nav id="dock" class="dock" aria-label="Navegação" hidden>
+  <button class="dk" type="button" data-aba="tela-hoje" style="--c:#FFB547"><b><svg class="ic"><use href="#i-casa"/></svg></b><span>Hoje</span></button>
+  <button class="dk" type="button" data-aba="tela-todos" style="--c:#38BDF8"><b><svg class="ic"><use href="#i-lista"/></svg></b><span>Gastos</span></button>
+  <button id="btn-nova" class="dk mais" type="button" aria-label="Nova despesa"><b><svg class="ic"><use href="#i-plus"/></svg></b><span>Despesa</span></button>
+  <button class="dk" type="button" data-aba="tela-calc" style="--c:#34D399"><b><svg class="ic"><use href="#i-calc"/></svg></b><span>Calculadoras</span></button>
+  <button class="dk" type="button" data-aba="tela-config" style="--c:#94A3B8"><b><svg class="ic"><use href="#i-ajustes"/></svg></b><span>Ajustes</span></button>
+</nav>
+
 <div id="folha-moedas" class="modal" hidden>
   <div class="modal-caixa folha" role="dialog" aria-modal="true" aria-labelledby="fm-titulo">
     <h2 id="fm-titulo">Minhas moedas</h2>
@@ -612,7 +690,7 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
 </div>
 
 <script>
-const VERSAO = '11';
+const VERSAO = '12';
 const CHAVE = 'bolsoViagem';
 const CATEGORIAS = ['Alimentação', 'Transporte', 'Hospedagem', 'Ingressos', 'Compras', 'Outros'];
 const ICONE = { 'Alimentação':'i-comida', 'Transporte':'i-carro', 'Hospedagem':'i-cama', 'Ingressos':'i-ingresso', 'Compras':'i-sacola', 'Outros':'i-outros' };
@@ -655,6 +733,25 @@ const PAISES = [
 ].map(([codigo, nome, moeda]) => ({ codigo, nome, moeda }))
  .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
 
+// Costume de gorjeta em restaurantes (pesquisado em out/2026; valores aproximados)
+const GORJETAS = (() => {
+  const g = {};
+  const def = (paises, opcoes, padrao, nota, antesImposto = false) =>
+    paises.forEach(p => { g[p] = { opcoes, padrao, nota, antesImposto }; });
+  def(['US'], [15, 18, 20], 18, 'Nos EUA o costume é 15–20%, calculado sobre o valor antes do imposto. Uma “service fee” na conta nem sempre é gorjeta.', true);
+  def(['CA'], [15, 18, 20], 18, 'No Canadá o costume é 15–20%, calculado sobre o valor antes do imposto (GST/HST/PST).', true);
+  def(['MX', 'AR', 'PE'], [10, 12, 15], 10, 'O costume é 10–15%. Na Argentina, de preferência em dinheiro.');
+  def(['UY'], [5, 10, 15], 10, 'O costume é cerca de 10%.');
+  def(['CO', 'ZA'], [10, 15, 20], 15, 'O costume é 10–20%. Confira se a conta já traz a gorjeta sugerida.');
+  def(['BR', 'CL'], [0, 5, 10], 0, 'A conta costuma já trazer 10% de serviço. Gorjeta extra é opcional.');
+  def(['GB'], [0, 10, 12.5], 0, 'Muitas contas já incluem 12,5% de serviço. Se não incluir, 10–12,5%.');
+  def(['IE', 'PT', 'DE', 'GR', 'NL', 'IN'], [0, 5, 10], 5, 'O costume é 5–10% ou arredondar. Confira se a conta já tem taxa de serviço.');
+  def(['ES', 'FR', 'IT', 'CH'], [0, 5, 10], 0, 'O serviço geralmente já está incluído. Arredondar ou 5–10% por um ótimo serviço é opcional.');
+  def(['JP', 'KR', 'CN', 'TH', 'TR', 'AU', 'NZ'], [0, 5, 10], 0, 'Gorjeta não é costume (no Japão pode até ser recusada). Arredondar é opcional.');
+  return g;
+})();
+const GORJETA_PADRAO = { opcoes: [10, 15, 20], padrao: 15, nota: 'Escolha o país da viagem nos Ajustes para usar o costume local de gorjeta.', antesImposto: false };
+
 // Converte a moeda antiga (texto livre) em código
 function codigoDoSimbolo(txt) {
   const t = String(txt || '').trim();
@@ -688,7 +785,8 @@ function carregar() {
       cambio: o.cambio || null,
       cartao: o.cartao,
       taxasManuais: o.taxasManuais,
-      exibicao: o.exibicao || ''
+      exibicao: o.exibicao || '',
+      calcMoedas: Array.isArray(o.calcMoedas) ? o.calcMoedas : null
     });
   } catch (e) {
     // Dado corrompido: guarda cópia de segurança para não perder nada
@@ -766,7 +864,10 @@ function textoPeriodo(v) {
 
 // ---------- Números ----------
 function parseNum(v) {
-  return parseFloat(String(v).replace(',', '.'));
+  let t = String(v).trim().replace(/\s/g, '');
+  if (t.includes(',')) t = t.replace(/\./g, '').replace(',', '.');   // 1.234,56
+  else if (/^\d{1,3}(\.\d{3})+$/.test(t)) t = t.replace(/\./g, ''); // 1.234
+  return parseFloat(t);
 }
 const num2 = v => v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const r2 = v => Math.round(v * 100) / 100;
@@ -910,9 +1011,23 @@ function calcular() {
 }
 
 // ---------- Navegação ----------
+const ABAS = ['tela-hoje', 'tela-todos', 'tela-calc', 'tela-config'];
 function mostrar(id) {
   document.querySelectorAll('.tela').forEach(t => t.classList.toggle('ativa', t.id === id));
   window.scrollTo(0, 0);
+  const dock = $('dock');
+  dock.hidden = !(estado.viagem && ABAS.includes(id));
+  dock.querySelectorAll('.dk[data-aba]').forEach(b => b.setAttribute('aria-current', b.dataset.aba === id ? 'page' : 'false'));
+}
+// Abas da barra: voltar sempre leva para "Hoje"
+function irParaAba(id) {
+  const ativa = (document.querySelector('.tela.ativa') || {}).id;
+  if (id === ativa) return;
+  if (id === 'tela-hoje') { voltarHoje(); return; }
+  ({ 'tela-todos': renderTodos, 'tela-calc': renderCalc, 'tela-config': preencherConfig })[id]();
+  if (history.state && history.state.t) history.replaceState({ t: id }, '');
+  else history.pushState({ t: id }, '');
+  mostrar(id);
 }
 // O botão voltar do Android fecha a tela atual e volta para "Hoje"
 function irPara(id) {
@@ -930,7 +1045,7 @@ function voltarHoje() {
 window.addEventListener('popstate', () => {
   if (!estado.viagem) return;
   const t = history.state && history.state.t;
-  const telas = { 'tela-pre': renderPre, 'tela-todos': renderTodos };
+  const telas = { 'tela-pre': renderPre, 'tela-todos': renderTodos, 'tela-calc': renderCalc, 'tela-config': preencherConfig };
   if (telas[t]) {
     telas[t]();
     mostrar(t);
@@ -948,7 +1063,7 @@ function renderAtual() {
 const novoId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 
 // ---------- Tela de configuração ----------
-function abrirConfig() {
+function preencherConfig() {
   const v = estado.viagem || {};
   const editando = !!estado.viagem;
   $('cfg-nome').value = v.nome || '';
@@ -974,7 +1089,11 @@ function abrirConfig() {
   msgDados('', '');
   $('cfg-cambio').style.display = editando ? 'block' : 'none';
   if (editando) montarCambioCfg();
-  irPara('tela-config');
+}
+function abrirConfig() {
+  preencherConfig();
+  if (estado.viagem) irParaAba('tela-config');
+  else mostrar('tela-config');
 }
 
 // ---------- Cotações: busca, exibição e formulários ----------
@@ -1421,7 +1540,7 @@ function renderHoje() {
 
   const cardTeto = $('card-teto');
   const avisoFim = $('aviso-fim');
-  const acao = $('acao-nova');
+  const acao = $('btn-nova');
 
   if (c.encerrada) {
     cardTeto.style.display = 'none';
@@ -1450,7 +1569,7 @@ function renderHoje() {
     avisoFim.append(t, p, fim);
   } else {
     cardTeto.style.display = 'block';
-    acao.style.display = 'block';
+    acao.style.display = '';
     avisoFim.style.display = 'none';
 
     dinheiro($('teto'), c.teto);
@@ -1678,7 +1797,7 @@ function montarCategorias() {
 
 let editId = null;
 
-function abrirDespesa(id) {
+function abrirDespesa(id, sugestao) {
   const v = estado.viagem;
   const d = id ? estado.despesas.find(x => x.id === id) : null;
   editId = d ? d.id : null;
@@ -1696,6 +1815,11 @@ function abrirDespesa(id) {
   montarCategorias();
   formaSel = d && FORMAS[d.forma] ? d.forma : (FORMAS[estado.ultimaForma] ? estado.ultimaForma : 'cartao');
   montarFormas();
+  if (sugestao) {
+    $('d-valor').value = sugestao.valor.toFixed(2).replace('.', ',');
+    $('d-desc').value = sugestao.descricao || '';
+    if (sugestao.categoria) { catSel = sugestao.categoria; montarCategorias(); }
+  }
   $('d-apagar').style.display = d ? 'flex' : 'none';
   $('d-scan').style.display = d ? 'none' : 'flex';
   irPara('tela-despesa');
@@ -1860,8 +1984,7 @@ function renderTodos() {
 }
 
 function abrirTodos() {
-  renderTodos();
-  irPara('tela-todos');
+  irParaAba('tela-todos');
 }
 
 // ---------- Leitura de nota (OCR no próprio celular) ----------
@@ -2099,7 +2222,7 @@ function montarEscolha(boxId, opcoes, cls, selecionado, aoEscolher) {
     b.dataset.k = o.k;
     b.setAttribute('role', 'radio');
     b.style.setProperty('--c', o.cor);
-    b.appendChild(icone(o.ic));
+    if (o.ic) b.appendChild(icone(o.ic));
     const s = document.createElement('span');
     s.textContent = o.nome || o.k;
     b.appendChild(s);
@@ -2310,6 +2433,151 @@ async function apagarTudo() {
   abrirConfig();
 }
 
+// ---------- Calculadoras ----------
+function renderCalc() {
+  renderCambioCalc();
+  renderGorjeta();
+}
+
+// Câmbio: 5 moedas, digita em qualquer uma
+let ccEdit = { idx: 0, valor: 100 };
+function moedasComCotacao() {
+  const todas = [...estado.moedas, ...CATALOGO_MOEDAS.filter(m => !moedaPorCodigo(m.codigo))];
+  return todas.filter(m => taxaUSD(m.codigo) != null);
+}
+function renderCambioCalc() {
+  const disp = moedasComCotacao();
+  const box = $('cc-linhas');
+  box.textContent = '';
+  const c = estado.cambio;
+  if (disp.length < 2) {
+    $('cc-info').textContent = 'Ainda não há cotação salva. Conecte à internet uma vez para baixar as cotações.';
+    return;
+  }
+  const codigos = disp.map(m => m.codigo);
+  let sel = (estado.calcMoedas || []).filter(cod => codigos.includes(cod));
+  const sugestao = [estado.viagem.moedaCodigo, ...estado.moedas.map(m => m.codigo), 'CAD', 'BRL', 'EUR', 'MXN', 'USD', 'GBP'];
+  for (const cod of sugestao) {
+    if (sel.length >= Math.min(5, codigos.length)) break;
+    if (codigos.includes(cod) && !sel.includes(cod)) sel.push(cod);
+  }
+  sel = sel.slice(0, 5);
+  estado.calcMoedas = sel;
+  if (ccEdit.idx >= sel.length) ccEdit = { idx: 0, valor: 100 };
+
+  sel.forEach((cod, i) => {
+    const linha = document.createElement('div');
+    linha.className = 'cc-linha';
+    const s = document.createElement('select');
+    s.setAttribute('aria-label', `Moeda ${i + 1}`);
+    disp.forEach(m => s.appendChild(opcao(m.codigo, `${m.simbolo}  ${m.codigo}`)));
+    s.value = cod;
+    const inp = document.createElement('input');
+    inp.type = 'text';
+    inp.inputMode = 'decimal';
+    inp.autocomplete = 'off';
+    inp.placeholder = '0,00';
+    inp.setAttribute('aria-label', `Valor em ${cod}`);
+    inp.dataset.idx = i;
+    s.onchange = () => {
+      estado.calcMoedas[i] = s.value;
+      salvar();
+      recalcularCambio();
+    };
+    inp.oninput = () => {
+      ccEdit = { idx: i, valor: parseNum(inp.value) };
+      recalcularCambio();
+    };
+    linha.append(s, inp);
+    box.appendChild(linha);
+  });
+  recalcularCambio(true);
+  $('cc-info').textContent = c ? `Cotação de ${formatarData(c.data)}. Funciona offline com a última cotação baixada.` : 'Usando a cotação digitada nos Ajustes.';
+}
+function recalcularCambio(inclusiveEditado) {
+  const inputs = $('cc-linhas').querySelectorAll('input');
+  const base = estado.calcMoedas[ccEdit.idx];
+  inputs.forEach((inp, i) => {
+    if (i === ccEdit.idx) {
+      if (inclusiveEditado) inp.value = isNaN(ccEdit.valor) ? '' : num2(ccEdit.valor);
+      return;
+    }
+    const f = fatorConversao(base, estado.calcMoedas[i]);
+    inp.value = f != null && ccEdit.valor > 0 ? num2(ccEdit.valor * f) : '';
+  });
+}
+
+// Gorjeta pelo costume do país da viagem
+let gjPct = null;
+let gjOutro = false;
+let gjPessoas = 1;
+let gjUltimo = null;
+function costumeGorjeta() {
+  return GORJETAS[estado.viagem.pais] || GORJETA_PADRAO;
+}
+function rotuloPct(x) {
+  return String(x).replace('.', ',') + '%';
+}
+function renderGorjeta() {
+  const v = estado.viagem;
+  const g = costumeGorjeta();
+  const pais = PAISES.find(x => x.codigo === v.pais);
+  $('gj-titulo').textContent = pais ? `Gorjeta, ${pais.nome}` : 'Gorjeta';
+  $('gj-nota').textContent = g.nota;
+  $('gj-moeda').textContent = v.moeda;
+  $('gj-imposto-box').style.display = g.antesImposto ? 'block' : 'none';
+  if (gjPct == null || (!gjOutro && !g.opcoes.includes(gjPct))) gjPct = g.padrao;
+  montarEscolha('gj-chips',
+    [...g.opcoes.map(o => ({ k: String(o), nome: rotuloPct(o), ic: null, cor: '#FB923C' })), { k: 'outro', nome: 'Outro', ic: null, cor: '#FB923C' }],
+    'chip', gjOutro ? 'outro' : String(gjPct),
+    k => {
+      gjOutro = k === 'outro';
+      if (!gjOutro) gjPct = parseFloat(k);
+      $('gj-outro-box').style.display = gjOutro ? 'block' : 'none';
+      calcularGorjeta();
+    });
+  $('gj-outro-box').style.display = gjOutro ? 'block' : 'none';
+  calcularGorjeta();
+}
+function calcularGorjeta() {
+  const v = estado.viagem;
+  const g = costumeGorjeta();
+  const conta = parseNum(val('gj-conta'));
+  const imposto = g.antesImposto ? (parseNum(val('gj-imposto')) || 0) : 0;
+  const pct = gjOutro ? parseNum(val('gj-outro')) : gjPct;
+  $('gj-pessoas').textContent = gjPessoas;
+  $('gj-pessoas-rot').textContent = gjPessoas === 1 ? 'pessoa' : 'pessoas';
+  $('gj-pp-linha').style.display = gjPessoas > 1 ? 'flex' : 'none';
+  $('gj-lancar-rot').textContent = gjPessoas > 1 ? 'Lançar minha parte como despesa' : 'Lançar como despesa';
+  if (!(conta > 0) || isNaN(pct) || pct < 0) {
+    ['gj-valor', 'gj-total', 'gj-pp'].forEach(id => { $(id).textContent = '—'; });
+    $('gj-lancar').disabled = true;
+    gjUltimo = null;
+    return;
+  }
+  const base = Math.max(0, conta - imposto);
+  let gorjeta = base * pct / 100;
+  let total = conta + gorjeta;
+  if ($('gj-arred').checked) {
+    const arred = Math.ceil(total - 1e-9);
+    gorjeta += arred - total;
+    total = arred;
+  }
+  const porPessoa = total / gjPessoas;
+  $('gj-valor').textContent = fmtEm(gorjeta, v.moedaCodigo);
+  $('gj-total').textContent = fmtEm(total, v.moedaCodigo);
+  $('gj-pp').textContent = fmtEm(porPessoa, v.moedaCodigo);
+  $('gj-lancar').disabled = false;
+  gjUltimo = { total, porPessoa, pct, pessoas: gjPessoas };
+}
+function lancarGorjeta() {
+  if (!gjUltimo) return;
+  const u = gjUltimo;
+  const valor = r2(u.pessoas > 1 ? u.porPessoa : u.total);
+  const descricao = `Restaurante, gorjeta ${rotuloPct(r2(u.pct))}` + (u.pessoas > 1 ? `, minha parte de ${u.pessoas}` : '');
+  abrirDespesa(null, { valor, descricao, categoria: 'Alimentação' });
+}
+
 // ---------- Eventos ----------
 $('cfg-salvar').onclick = salvarConfig;
 ['cfg-dinheiro', 'cfg-cartao'].forEach(id => $(id).addEventListener('input', atualizarTotalCfg));
@@ -2323,10 +2591,14 @@ $('fm-add').onclick = adicionarMoeda;
 $('fm-fechar').onclick = fecharMinhasMoedas;
 $('folha-moedas').addEventListener('click', e => { if (e.target === $('folha-moedas')) fecharMinhasMoedas(); });
 $('cfg-voltar').onclick = voltarHoje;
-$('btn-config').onclick = abrirConfig;
 $('btn-nova').onclick = () => abrirDespesa();
-$('btn-nova-todos').onclick = () => abrirDespesa();
 $('btn-todos').onclick = abrirTodos;
+document.querySelectorAll('#dock .dk[data-aba]').forEach(b => { b.onclick = () => irParaAba(b.dataset.aba); });
+['gj-conta', 'gj-imposto', 'gj-outro'].forEach(id => $(id).addEventListener('input', calcularGorjeta));
+$('gj-arred').addEventListener('change', calcularGorjeta);
+$('gj-menos').onclick = () => { if (gjPessoas > 1) { gjPessoas--; calcularGorjeta(); } };
+$('gj-mais').onclick = () => { if (gjPessoas < 30) { gjPessoas++; calcularGorjeta(); } };
+$('gj-lancar').onclick = lancarGorjeta;
 $('todos-voltar').onclick = voltarHoje;
 $('d-apagar').onclick = apagarDespesa;
 $('d-scan').onclick = () => $('d-foto').click();
