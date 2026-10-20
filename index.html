@@ -133,8 +133,12 @@ button{font-family:inherit}
 
 /* ---------- formulários ---------- */
 label{display:block;margin-top:18px;font-size:14px;font-weight:500;color:var(--mut)}
-input{width:100%;min-height:56px;margin-top:8px;padding:0 16px;border-radius:var(--raio-p);border:1.5px solid var(--linha);background:var(--s1);color:var(--txt);font-family:inherit;font-size:17px;color-scheme:dark}
-input:focus{outline:none;border-color:var(--ac)}
+input,select{width:100%;min-height:56px;margin-top:8px;padding:0 16px;border-radius:var(--raio-p);border:1.5px solid var(--linha);background:var(--s1);color:var(--txt);font-family:inherit;font-size:17px;color-scheme:dark}
+input:focus,select:focus{outline:none;border-color:var(--ac)}
+select{-webkit-appearance:none;appearance:none;padding-right:44px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238E9AB8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-size:18px}
+select option{background:#111A30;color:#EEF2FA}
+.mini-link{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:6px 0;border:none;background:none;color:var(--ac);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.mini-link .ic{width:16px;height:16px}
 input::placeholder{color:#5d6985}
 .grade2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
 .grade2 label{min-width:0}
@@ -199,6 +203,17 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
 .modal-caixa{width:100%;max-width:400px;background:var(--s1);border:1px solid var(--linha2);border-radius:var(--raio-g);padding:24px 22px 20px}
 .modal-caixa h2{margin:0;font-size:20px;font-weight:800;letter-spacing:-.01em}
 .modal-caixa p{margin:10px 0 0;color:var(--mut);font-size:15px;line-height:1.5}
+.modal-caixa.folha{max-height:88vh;overflow:auto}
+.fm-lista{margin-top:14px}
+.fm-item{display:grid;grid-template-columns:52px minmax(0,1fr) 40px;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--linha)}
+.fm-item:first-child{border-top:none}
+.fm-simb{display:grid;place-items:center;height:40px;border-radius:12px;background:var(--s2);font-weight:700;font-size:14px}
+.fm-nome{font-weight:600;font-size:15px;line-height:1.3}
+.fm-nome small{display:block;color:var(--mut);font-weight:500;font-size:13px}
+.fm-add{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:end}
+.fm-add .btn{min-height:56px;width:auto;padding:0 18px;margin-top:8px}
+.modal-caixa .form-sub{margin-top:18px}
+.modal-caixa .btn.sec-btn.largo{margin-top:18px}
 .modal-botoes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
 .btn.sec-btn{background:var(--s2);color:var(--txt)}
 .btn.perigo{background:var(--estourou);color:#fff}
@@ -258,7 +273,7 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
   <symbol id="i-baixar" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
   <symbol id="i-subir" viewBox="0 0 24 24"><path d="M12 20V9M7 14l5-5 5 5M5 4h14"/></symbol>
   <symbol id="i-enviar" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></symbol>
-  <symbol id="i-outros" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="18" cy="12" r="1.4" fill="currentColor"/></symbol>
+  <symbol id="i-outros" viewBox="0 0 24 24"><path d="M8.3 8.4a3.7 3.7 0 1 1 5.5 3.3c-1.1.6-1.8 1.4-1.8 2.6v.9" stroke-width="2.2"/><circle cx="12" cy="19" r="1.4" fill="currentColor" stroke="none"/></symbol>
 </svg>
 
 <!-- Tela: configuração da viagem -->
@@ -281,6 +296,9 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
     <label for="cfg-destino">Destino
       <input id="cfg-destino" type="text" placeholder="Anaheim, Califórnia" autocomplete="off">
     </label>
+    <label for="cfg-pais">País
+      <select id="cfg-pais"></select>
+    </label>
     <div class="grade2">
       <label for="cfg-inicio">Início
         <input id="cfg-inicio" type="date">
@@ -289,9 +307,10 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
         <input id="cfg-fim" type="date">
       </label>
     </div>
-    <label for="cfg-moeda">Moeda
-      <input id="cfg-moeda" type="text" placeholder="US$, CA$, R$" autocomplete="off">
+    <label for="cfg-moeda">Moeda da viagem
+      <select id="cfg-moeda"></select>
     </label>
+    <button id="btn-minhas-moedas" class="mini-link" type="button"><svg class="ic"><use href="#i-plus"/></svg>Minhas moedas</button>
     <div class="form-sub">Orçamento</div>
     <div class="grade2">
       <label for="cfg-dinheiro">Dinheiro
@@ -501,6 +520,34 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
   </div>
 </section>
 
+<div id="folha-moedas" class="modal" hidden>
+  <div class="modal-caixa folha" role="dialog" aria-modal="true" aria-labelledby="fm-titulo">
+    <h2 id="fm-titulo">Minhas moedas</h2>
+    <p>Estas moedas aparecem na escolha da moeda da viagem e no câmbio.</p>
+    <div id="fm-lista" class="fm-lista"></div>
+    <div class="form-sub">Cadastrar moeda</div>
+    <div class="fm-add">
+      <select id="fm-catalogo" aria-label="Moeda para cadastrar"></select>
+      <button id="fm-add" class="btn" type="button">Adicionar</button>
+    </div>
+    <div id="fm-custom" style="display:none">
+      <div class="grade2">
+        <label for="fm-codigo">Código
+          <input id="fm-codigo" type="text" maxlength="3" placeholder="ABC" autocomplete="off" style="text-transform:uppercase">
+        </label>
+        <label for="fm-simbolo">Símbolo
+          <input id="fm-simbolo" type="text" maxlength="5" placeholder="$" autocomplete="off">
+        </label>
+      </div>
+      <label for="fm-nome">Nome
+        <input id="fm-nome" type="text" placeholder="Nome da moeda" autocomplete="off">
+      </label>
+    </div>
+    <div id="fm-erro" class="erro" role="alert"></div>
+    <button id="fm-fechar" class="btn sec-btn largo" type="button">Pronto</button>
+  </div>
+</div>
+
 <div id="modal" class="modal" hidden>
   <div class="modal-caixa" role="alertdialog" aria-modal="true" aria-labelledby="modal-titulo" aria-describedby="modal-texto">
     <h2 id="modal-titulo"></h2>
@@ -513,7 +560,7 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
 </div>
 
 <script>
-const VERSAO = '9';
+const VERSAO = '10';
 const CHAVE = 'bolsoViagem';
 const CATEGORIAS = ['Alimentação', 'Transporte', 'Hospedagem', 'Ingressos', 'Compras', 'Outros'];
 const ICONE = { 'Alimentação':'i-comida', 'Transporte':'i-carro', 'Hospedagem':'i-cama', 'Ingressos':'i-ingresso', 'Compras':'i-sacola', 'Outros':'i-outros' };
@@ -531,6 +578,41 @@ const TIPOS_PRE = [
   { k: 'Seguro viagem',    ic: 'i-escudo',   cor: '#34D399' },
   { k: 'Outros',           ic: 'i-outros',   cor: '#94A3B8' }
 ];
+const CATALOGO_MOEDAS = [
+  ['USD', 'US$', 'Dólar americano'], ['CAD', 'CA$', 'Dólar canadense'], ['BRL', 'R$', 'Real brasileiro'],
+  ['EUR', '€', 'Euro'], ['GBP', '£', 'Libra esterlina'], ['MXN', 'MX$', 'Peso mexicano'],
+  ['JPY', '¥', 'Iene japonês'], ['AUD', 'A$', 'Dólar australiano'], ['NZD', 'NZ$', 'Dólar neozelandês'],
+  ['CHF', 'CHF', 'Franco suíço'], ['CNY', 'CN¥', 'Yuan chinês'], ['HKD', 'HK$', 'Dólar de Hong Kong'],
+  ['SGD', 'S$', 'Dólar de Singapura'], ['KRW', '₩', 'Won sul-coreano'], ['INR', '₹', 'Rupia indiana'],
+  ['THB', '฿', 'Baht tailandês'], ['TRY', '₺', 'Lira turca'], ['ZAR', 'R', 'Rand sul-africano'],
+  ['SEK', 'kr', 'Coroa sueca'], ['NOK', 'kr', 'Coroa norueguesa'], ['DKK', 'kr', 'Coroa dinamarquesa'],
+  ['PLN', 'zł', 'Złoty polonês'], ['CZK', 'Kč', 'Coroa tcheca'], ['HUF', 'Ft', 'Forint húngaro'],
+  ['ILS', '₪', 'Shekel israelense'], ['ARS', 'AR$', 'Peso argentino'], ['CLP', 'CL$', 'Peso chileno'],
+  ['COP', 'CO$', 'Peso colombiano'], ['PEN', 'S/', 'Sol peruano'], ['UYU', '$U', 'Peso uruguaio']
+].map(([codigo, simbolo, nome]) => ({ codigo, simbolo, nome }));
+const moedasPadrao = () => ['USD', 'CAD', 'BRL'].map(c => ({ ...CATALOGO_MOEDAS.find(m => m.codigo === c) }));
+
+const PAISES = [
+  ['US', 'Estados Unidos', 'USD'], ['CA', 'Canadá', 'CAD'], ['BR', 'Brasil', 'BRL'], ['MX', 'México', 'MXN'],
+  ['PT', 'Portugal', 'EUR'], ['ES', 'Espanha', 'EUR'], ['FR', 'França', 'EUR'], ['IT', 'Itália', 'EUR'],
+  ['DE', 'Alemanha', 'EUR'], ['NL', 'Holanda', 'EUR'], ['IE', 'Irlanda', 'EUR'], ['GR', 'Grécia', 'EUR'],
+  ['GB', 'Reino Unido', 'GBP'], ['CH', 'Suíça', 'CHF'], ['JP', 'Japão', 'JPY'], ['KR', 'Coreia do Sul', 'KRW'],
+  ['CN', 'China', 'CNY'], ['TH', 'Tailândia', 'THB'], ['AU', 'Austrália', 'AUD'], ['NZ', 'Nova Zelândia', 'NZD'],
+  ['AR', 'Argentina', 'ARS'], ['CL', 'Chile', 'CLP'], ['CO', 'Colômbia', 'COP'], ['PE', 'Peru', 'PEN'],
+  ['UY', 'Uruguai', 'UYU'], ['ZA', 'África do Sul', 'ZAR'], ['TR', 'Turquia', 'TRY'], ['IN', 'Índia', 'INR']
+].map(([codigo, nome, moeda]) => ({ codigo, nome, moeda }))
+ .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+
+// Converte a moeda antiga (texto livre) em código
+function codigoDoSimbolo(txt) {
+  const t = String(txt || '').trim();
+  const mapa = { 'US$': 'USD', '$': 'USD', 'U$': 'USD', 'CA$': 'CAD', 'C$': 'CAD', 'CAN$': 'CAD', 'R$': 'BRL', '€': 'EUR', '£': 'GBP' };
+  if (mapa[t]) return mapa[t];
+  const up = t.toUpperCase();
+  if (CATALOGO_MOEDAS.some(m => m.codigo === up)) return up;
+  const porSimbolo = CATALOGO_MOEDAS.find(m => m.simbolo === t);
+  return porSimbolo ? porSimbolo.codigo : null;
+}
 const tipoPre = k => TIPOS_PRE.find(t => t.k === k) || TIPOS_PRE[TIPOS_PRE.length - 1];
 const MESES = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 const SVGNS = 'http://www.w3.org/2000/svg';
@@ -542,20 +624,24 @@ const val = id => $(id).value.trim();
 // ---------- Armazenamento ----------
 function carregar() {
   const raw = localStorage.getItem(CHAVE);
-  if (!raw) return { viagem: null, despesas: [], prePagos: [], ultimaForma: 'cartao' };
+  if (!raw) return estadoVazio();
   try {
     const o = JSON.parse(raw);
     return migrar({
       viagem: o.viagem || null,
       despesas: Array.isArray(o.despesas) ? o.despesas : [],
       prePagos: Array.isArray(o.prePagos) ? o.prePagos : [],
-      ultimaForma: FORMAS[o.ultimaForma] ? o.ultimaForma : 'cartao'
+      ultimaForma: FORMAS[o.ultimaForma] ? o.ultimaForma : 'cartao',
+      moedas: o.moedas
     });
   } catch (e) {
     // Dado corrompido: guarda cópia de segurança para não perder nada
     localStorage.setItem(CHAVE + '_backup', raw);
-    return { viagem: null, despesas: [], prePagos: [], ultimaForma: 'cartao' };
+    return estadoVazio();
   }
+}
+function estadoVazio() {
+  return { viagem: null, despesas: [], prePagos: [], ultimaForma: 'cartao', moedas: moedasPadrao() };
 }
 // Dados de versões antigas: orçamento único vira "dinheiro"; despesas sem forma viram "dinheiro"
 function migrar(e) {
@@ -565,6 +651,23 @@ function migrar(e) {
   }
   e.despesas.forEach(d => { if (!FORMAS[d.forma]) d.forma = 'dinheiro'; });
   e.prePagos.forEach(d => { if (!FORMAS[d.forma]) d.forma = 'cartao'; });
+  // Moedas cadastradas
+  if (!Array.isArray(e.moedas) || !e.moedas.length) e.moedas = moedasPadrao();
+  e.moedas = e.moedas.filter(m => m && m.codigo && m.simbolo);
+  // Viagens antigas: moeda em texto livre vira código
+  if (e.viagem && !e.viagem.moedaCodigo) {
+    let cod = codigoDoSimbolo(e.viagem.moeda);
+    if (!cod) {
+      cod = 'X' + String(e.viagem.moeda || 'MOE').replace(/[^A-Za-z]/g, '').toUpperCase().padEnd(2, 'X').slice(0, 2);
+      if (!e.moedas.some(m => m.codigo === cod)) e.moedas.push({ codigo: cod, simbolo: e.viagem.moeda || cod, nome: 'Moeda da viagem' });
+    }
+    e.viagem.moedaCodigo = cod;
+  }
+  if (e.viagem && !e.moedas.some(m => m.codigo === e.viagem.moedaCodigo)) {
+    const doCatalogo = CATALOGO_MOEDAS.find(m => m.codigo === e.viagem.moedaCodigo);
+    e.moedas.push(doCatalogo ? { ...doCatalogo } : { codigo: e.viagem.moedaCodigo, simbolo: e.viagem.moeda, nome: 'Moeda da viagem' });
+  }
+  if (e.viagem && e.viagem.pais == null) e.viagem.pais = '';
   return e;
 }
 function salvar() {
@@ -752,7 +855,8 @@ function abrirConfig() {
   $('cfg-destino').value = v.destino || '';
   $('cfg-inicio').value = v.inicio || '';
   $('cfg-fim').value = v.fim || '';
-  $('cfg-moeda').value = v.moeda || '';
+  montarPaises(v.pais || '');
+  montarMoedasCfg(v.moedaCodigo || '');
   const paraCampo = n => (n != null && n !== 0) ? String(n).replace('.', ',') : '';
   $('cfg-dinheiro').value = paraCampo(v.orcamentoDinheiro);
   $('cfg-cartao').value = paraCampo(v.orcamentoCartao);
@@ -771,10 +875,147 @@ function abrirConfig() {
   irPara('tela-config');
 }
 
+// ---------- Moedas e países ----------
+function moedaPorCodigo(cod) {
+  return estado.moedas.find(m => m.codigo === cod) || null;
+}
+function rotuloMoeda(m) {
+  return `${m.simbolo}  ${m.nome} (${m.codigo})`;
+}
+function opcao(valor, texto) {
+  const o = document.createElement('option');
+  o.value = valor;
+  o.textContent = texto;
+  return o;
+}
+function montarPaises(sel) {
+  const s = $('cfg-pais');
+  s.textContent = '';
+  s.appendChild(opcao('', 'Escolha o país (opcional)'));
+  PAISES.forEach(p => s.appendChild(opcao(p.codigo, p.nome)));
+  s.appendChild(opcao('XX', 'Outro país'));
+  s.value = sel;
+}
+let moedaCfgAnterior = '';
+function montarMoedasCfg(sel) {
+  const s = $('cfg-moeda');
+  s.textContent = '';
+  s.appendChild(opcao('', 'Escolha a moeda'));
+  estado.moedas.forEach(m => s.appendChild(opcao(m.codigo, rotuloMoeda(m))));
+  s.appendChild(opcao('__nova', '+ Cadastrar outra moeda…'));
+  s.value = moedaPorCodigo(sel) ? sel : '';
+  moedaCfgAnterior = s.value;
+  atualizarTotalCfg();
+}
+// Garante que uma moeda do catálogo esteja cadastrada
+function garantirMoeda(cod) {
+  if (moedaPorCodigo(cod)) return true;
+  const m = CATALOGO_MOEDAS.find(x => x.codigo === cod);
+  if (!m) return false;
+  estado.moedas.push({ ...m });
+  salvar();
+  return true;
+}
+function aoMudarPais() {
+  const p = PAISES.find(x => x.codigo === $('cfg-pais').value);
+  if (p && garantirMoeda(p.moeda)) montarMoedasCfg(p.moeda);
+}
+function aoMudarMoedaCfg() {
+  const s = $('cfg-moeda');
+  if (s.value === '__nova') {
+    s.value = moedaCfgAnterior;
+    abrirMinhasMoedas(true);
+    return;
+  }
+  moedaCfgAnterior = s.value;
+  atualizarTotalCfg();
+}
+
+// ---------- Folha "Minhas moedas" ----------
+let fmSelecionarNova = false;
+function abrirMinhasMoedas(selecionarNova) {
+  fmSelecionarNova = !!selecionarNova;
+  $('fm-erro').textContent = '';
+  montarFolhaMoedas();
+  $('folha-moedas').hidden = false;
+  $('fm-catalogo').focus();
+}
+function fecharMinhasMoedas() {
+  $('folha-moedas').hidden = true;
+  montarMoedasCfg($('cfg-moeda').value);
+}
+function montarFolhaMoedas() {
+  const emUso = new Set([$('cfg-moeda').value, estado.viagem && estado.viagem.moedaCodigo].filter(Boolean));
+  const lista = $('fm-lista');
+  lista.textContent = '';
+  estado.moedas.forEach(m => {
+    const linha = document.createElement('div');
+    linha.className = 'fm-item';
+    const simb = document.createElement('span');
+    simb.className = 'fm-simb';
+    simb.textContent = m.simbolo;
+    const nome = document.createElement('div');
+    nome.className = 'fm-nome';
+    nome.textContent = m.nome;
+    const sub = document.createElement('small');
+    sub.textContent = m.codigo + (emUso.has(m.codigo) ? ', moeda da viagem' : '');
+    nome.appendChild(sub);
+    linha.append(simb, nome);
+    if (!emUso.has(m.codigo) && estado.moedas.length > 1) {
+      const del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'del';
+      del.setAttribute('aria-label', 'Remover ' + m.nome);
+      del.appendChild(icone('i-lixo'));
+      del.onclick = () => {
+        estado.moedas = estado.moedas.filter(x => x.codigo !== m.codigo);
+        salvar();
+        montarFolhaMoedas();
+      };
+      linha.appendChild(del);
+    }
+    lista.appendChild(linha);
+  });
+  const cat = $('fm-catalogo');
+  cat.textContent = '';
+  CATALOGO_MOEDAS.filter(m => !moedaPorCodigo(m.codigo))
+    .forEach(m => cat.appendChild(opcao(m.codigo, rotuloMoeda(m))));
+  cat.appendChild(opcao('__custom', 'Moeda que não está na lista…'));
+  $('fm-custom').style.display = cat.value === '__custom' ? 'block' : 'none';
+}
+function adicionarMoeda() {
+  const cat = $('fm-catalogo');
+  let nova;
+  if (cat.value === '__custom') {
+    const codigo = val('fm-codigo').toUpperCase();
+    const simbolo = val('fm-simbolo');
+    const nome = val('fm-nome');
+    if (!/^[A-Z]{3}$/.test(codigo)) { $('fm-erro').textContent = 'O código deve ter 3 letras (ex.: ARS).'; return; }
+    if (!simbolo) { $('fm-erro').textContent = 'Informe o símbolo da moeda.'; return; }
+    if (moedaPorCodigo(codigo)) { $('fm-erro').textContent = 'Essa moeda já está cadastrada.'; return; }
+    nova = { codigo, simbolo, nome: nome || codigo };
+    $('fm-codigo').value = $('fm-simbolo').value = $('fm-nome').value = '';
+  } else {
+    const m = CATALOGO_MOEDAS.find(x => x.codigo === cat.value);
+    if (!m) return;
+    nova = { ...m };
+  }
+  estado.moedas.push(nova);
+  salvar();
+  $('fm-erro').textContent = '';
+  if (fmSelecionarNova) {
+    $('folha-moedas').hidden = true;
+    montarMoedasCfg(nova.codigo);
+    return;
+  }
+  montarFolhaMoedas();
+}
+
 function atualizarTotalCfg() {
   const d = lerValor('cfg-dinheiro');
   const c = lerValor('cfg-cartao');
-  const moeda = val('cfg-moeda');
+  const m = moedaPorCodigo($('cfg-moeda').value);
+  const moeda = m ? m.simbolo : '';
   if (isNaN(d) || isNaN(c)) { $('cfg-total').textContent = '—'; return; }
   const num = (d + c).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   $('cfg-total').textContent = `${moeda} ${num}`.trim();
@@ -785,7 +1026,10 @@ function salvarConfig() {
   const destino = val('cfg-destino');
   const inicio = $('cfg-inicio').value;
   const fim = $('cfg-fim').value;
-  const moeda = val('cfg-moeda');
+  const pais = $('cfg-pais').value;
+  const moedaCodigo = $('cfg-moeda').value;
+  const mSel = moedaPorCodigo(moedaCodigo);
+  const moeda = mSel ? mSel.simbolo : '';
   const orcamentoDinheiro = lerValor('cfg-dinheiro');
   const orcamentoCartao = lerValor('cfg-cartao');
 
@@ -793,7 +1037,7 @@ function salvarConfig() {
   if (!nome) erro = 'Informe o nome da viagem.';
   else if (!inicio || !fim) erro = 'Informe as datas de início e fim.';
   else if (fim < inicio) erro = 'A data fim deve ser igual ou posterior à data início.';
-  else if (!moeda) erro = 'Informe a moeda (ex.: US$, CA$, R$).';
+  else if (!moeda) erro = 'Escolha a moeda da viagem.';
   else if (isNaN(orcamentoDinheiro) || isNaN(orcamentoCartao) || orcamentoDinheiro < 0 || orcamentoCartao < 0)
     erro = 'Informe valores válidos para dinheiro e cartão (pode deixar um deles em branco).';
   else if (!(orcamentoDinheiro + orcamentoCartao > 0)) erro = 'O orçamento total (dinheiro + cartão) deve ser maior que zero.';
@@ -805,7 +1049,7 @@ function salvarConfig() {
 
   // Editar a viagem não apaga as despesas
   const orcamento = Math.round((orcamentoDinheiro + orcamentoCartao) * 100) / 100;
-  estado.viagem = { nome, destino, inicio, fim, moeda, orcamentoDinheiro, orcamentoCartao, orcamento };
+  estado.viagem = { nome, destino, pais, inicio, fim, moeda, moedaCodigo, orcamentoDinheiro, orcamentoCartao, orcamento };
   salvar();
   voltarHoje();
 }
@@ -1688,7 +1932,8 @@ async function restaurarBackup(arquivo) {
       viagem: d.viagem,
       despesas: d.despesas,
       prePagos: Array.isArray(d.prePagos) ? d.prePagos : [],
-      ultimaForma: FORMAS[d.ultimaForma] ? d.ultimaForma : 'cartao'
+      ultimaForma: FORMAS[d.ultimaForma] ? d.ultimaForma : 'cartao',
+      moedas: d.moedas
     });
     salvar();
     history.replaceState(null, '');
@@ -1709,14 +1954,23 @@ async function apagarTudo() {
   if (!ok) return;
   localStorage.removeItem(CHAVE);
   localStorage.removeItem(CHAVE + '_backup');
-  estado = { viagem: null, despesas: [], prePagos: [], ultimaForma: 'cartao' };
+  estado = estadoVazio();
   history.replaceState(null, '');
   abrirConfig();
 }
 
 // ---------- Eventos ----------
 $('cfg-salvar').onclick = salvarConfig;
-['cfg-dinheiro', 'cfg-cartao', 'cfg-moeda'].forEach(id => $(id).addEventListener('input', atualizarTotalCfg));
+['cfg-dinheiro', 'cfg-cartao'].forEach(id => $(id).addEventListener('input', atualizarTotalCfg));
+$('cfg-moeda').addEventListener('change', aoMudarMoedaCfg);
+$('cfg-pais').addEventListener('change', aoMudarPais);
+$('btn-minhas-moedas').onclick = () => abrirMinhasMoedas(false);
+$('fm-catalogo').addEventListener('change', () => {
+  $('fm-custom').style.display = $('fm-catalogo').value === '__custom' ? 'block' : 'none';
+});
+$('fm-add').onclick = adicionarMoeda;
+$('fm-fechar').onclick = fecharMinhasMoedas;
+$('folha-moedas').addEventListener('click', e => { if (e.target === $('folha-moedas')) fecharMinhasMoedas(); });
 $('cfg-voltar').onclick = voltarHoje;
 $('btn-config').onclick = abrirConfig;
 $('btn-nova').onclick = () => abrirDespesa();
