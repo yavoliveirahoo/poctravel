@@ -189,6 +189,19 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
 .scan-status.erro{color:var(--estourou)}
 .scan-status.aviso{color:var(--atencao)}
 .dica{margin:4px 0 0;font-size:14px;color:var(--mut)}
+.dados{margin-top:22px}
+.dados h2{margin:0;font-size:16px;font-weight:700}
+.dados .nota{margin-top:6px}
+.dados .link-btn{margin-top:10px}
+.dados .apagar-btn{margin-top:18px}
+.modal{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:24px;background:rgba(5,8,18,.75)}
+.modal[hidden]{display:none}
+.modal-caixa{width:100%;max-width:400px;background:var(--s1);border:1px solid var(--linha2);border-radius:var(--raio-g);padding:24px 22px 20px}
+.modal-caixa h2{margin:0;font-size:20px;font-weight:800;letter-spacing:-.01em}
+.modal-caixa p{margin:10px 0 0;color:var(--mut);font-size:15px;line-height:1.5}
+.modal-botoes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
+.btn.sec-btn{background:var(--s2);color:var(--txt)}
+.btn.perigo{background:var(--estourou);color:#fff}
 .encerrada .formas-fim{margin-top:14px;display:grid;gap:6px;font-size:15px;color:var(--txt);font-variant-numeric:tabular-nums}
 
 .valor-box{display:flex;align-items:center;gap:12px;margin-top:8px;padding:24px 22px;background:var(--s1);border-radius:var(--raio-g);border:1.5px solid transparent}
@@ -242,6 +255,9 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
   <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
   <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l2-2.5h6L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></symbol>
   <symbol id="i-lista" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></symbol>
+  <symbol id="i-baixar" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
+  <symbol id="i-subir" viewBox="0 0 24 24"><path d="M12 20V9M7 14l5-5 5 5M5 4h14"/></symbol>
+  <symbol id="i-enviar" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></symbol>
   <symbol id="i-outros" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="18" cy="12" r="1.4" fill="currentColor"/></symbol>
 </svg>
 
@@ -288,6 +304,18 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
     <div class="total-orc">Orçamento total: <strong id="cfg-total">0,00</strong></div>
     <div id="cfg-erro" class="erro" role="alert"></div>
     <button id="cfg-salvar" class="btn" type="button">Começar</button>
+  </div>
+  <div id="cfg-dados" class="bloco dados">
+    <h2>Seus dados</h2>
+    <p class="nota" id="dados-nota"></p>
+    <div id="dados-backup">
+      <button id="btn-backup" class="link-btn" type="button"><svg class="ic"><use href="#i-baixar"/></svg>Salvar backup</button>
+      <button id="btn-compartilhar" class="link-btn" type="button" style="display:none"><svg class="ic"><use href="#i-enviar"/></svg>Enviar backup (e-mail, Drive…)</button>
+    </div>
+    <button id="btn-restaurar" class="link-btn" type="button"><svg class="ic"><use href="#i-subir"/></svg>Restaurar backup</button>
+    <input id="arq-backup" type="file" accept="application/json,.json" hidden>
+    <div id="dados-msg" class="scan-status" role="status" aria-live="polite"></div>
+    <button id="btn-apagar-tudo" class="apagar-btn" type="button"><svg class="ic"><use href="#i-lixo"/></svg>Apagar todos os dados da viagem</button>
   </div>
   <p class="versao">Bolso Viagem, versão <span id="versao"></span></p>
 </section>
@@ -473,8 +501,19 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
   </div>
 </section>
 
+<div id="modal" class="modal" hidden>
+  <div class="modal-caixa" role="alertdialog" aria-modal="true" aria-labelledby="modal-titulo" aria-describedby="modal-texto">
+    <h2 id="modal-titulo"></h2>
+    <p id="modal-texto"></p>
+    <div class="modal-botoes">
+      <button id="modal-nao" class="btn sec-btn" type="button">Não</button>
+      <button id="modal-sim" class="btn" type="button">Sim</button>
+    </div>
+  </div>
+</div>
+
 <script>
-const VERSAO = '8';
+const VERSAO = '9';
 const CHAVE = 'bolsoViagem';
 const CATEGORIAS = ['Alimentação', 'Transporte', 'Hospedagem', 'Ingressos', 'Compras', 'Outros'];
 const ICONE = { 'Alimentação':'i-comida', 'Transporte':'i-carro', 'Hospedagem':'i-cama', 'Ingressos':'i-ingresso', 'Compras':'i-sacola', 'Outros':'i-outros' };
@@ -722,6 +761,13 @@ function abrirConfig() {
   $('cfg-bar').style.display = editando ? 'flex' : 'none';
   $('cfg-salvar').textContent = editando ? 'Salvar' : 'Começar';
   $('cfg-erro').textContent = '';
+  $('dados-backup').style.display = editando ? 'block' : 'none';
+  $('btn-apagar-tudo').style.display = editando ? 'flex' : 'none';
+  $('btn-compartilhar').style.display = editando && podeCompartilhar() ? 'flex' : 'none';
+  $('dados-nota').textContent = editando
+    ? 'Os dados ficam só neste celular. Faça um backup antes de trocar de navegador ou de celular, ou antes de apagar a viagem.'
+    : 'Já usou o Bolso Viagem em outro navegador ou celular? Restaure um backup para continuar de onde parou.';
+  msgDados('', '');
   irPara('tela-config');
 }
 
@@ -1554,6 +1600,120 @@ function apagarPre() {
   voltarHoje();
 }
 
+// ---------- Janela de confirmação (Sim / Não) ----------
+function perguntar({ titulo, texto, sim = 'Sim', nao = 'Não', perigo = false }) {
+  return new Promise(resolver => {
+    const m = $('modal');
+    const bSim = $('modal-sim');
+    const bNao = $('modal-nao');
+    $('modal-titulo').textContent = titulo;
+    $('modal-texto').textContent = texto;
+    bSim.textContent = sim;
+    bNao.textContent = nao;
+    bSim.className = 'btn' + (perigo ? ' perigo' : '');
+    m.hidden = false;
+    bNao.focus();
+    const tecla = e => { if (e.key === 'Escape') fechar(false); };
+    function fechar(resposta) {
+      m.hidden = true;
+      bSim.onclick = bNao.onclick = m.onclick = null;
+      document.removeEventListener('keydown', tecla);
+      resolver(resposta);
+    }
+    bSim.onclick = () => fechar(true);
+    bNao.onclick = () => fechar(false);
+    m.onclick = e => { if (e.target === m) fechar(false); };
+    document.addEventListener('keydown', tecla);
+  });
+}
+
+// ---------- Backup, restauração e exclusão ----------
+function msgDados(texto, tipo) {
+  const el = $('dados-msg');
+  el.textContent = texto;
+  el.className = 'scan-status' + (tipo ? ' ' + tipo : '');
+}
+function conteudoBackup() {
+  return JSON.stringify({ app: 'bolso-viagem', versao: VERSAO, criadoEm: new Date().toISOString(), dados: estado }, null, 2);
+}
+function nomeBackup() {
+  const nome = ((estado.viagem && estado.viagem.nome) || 'viagem')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '').toLowerCase();
+  return `bolso-viagem-${nome}-${hojeStr()}.json`;
+}
+function podeCompartilhar() {
+  try {
+    return !!(navigator.canShare && navigator.canShare({ files: [new File(['{}'], 'teste.json', { type: 'application/json' })] }));
+  } catch (e) {
+    return false;
+  }
+}
+function salvarBackup() {
+  const blob = new Blob([conteudoBackup()], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = nomeBackup();
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 3000);
+  msgDados(`Backup salvo como ${nomeBackup()} na pasta Downloads.`, 'ok');
+}
+async function compartilharBackup() {
+  const arquivo = new File([conteudoBackup()], nomeBackup(), { type: 'application/json' });
+  try {
+    await navigator.share({ files: [arquivo], title: 'Backup Bolso Viagem' });
+    msgDados('Backup enviado.', 'ok');
+  } catch (e) {
+    if (e.name !== 'AbortError') msgDados('Não deu para enviar daqui. Use Salvar backup e anexe o arquivo.', 'erro');
+  }
+}
+async function restaurarBackup(arquivo) {
+  if (!arquivo) return;
+  try {
+    const o = JSON.parse(await arquivo.text());
+    const d = o && o.dados ? o.dados : o;
+    if (!d || !d.viagem || !d.viagem.inicio || !d.viagem.fim || !Array.isArray(d.despesas)) throw new Error('formato');
+    const n = d.despesas.length;
+    const np = Array.isArray(d.prePagos) ? d.prePagos.length : 0;
+    const ok = await perguntar({
+      titulo: 'Restaurar backup?',
+      texto: `O backup tem a viagem "${d.viagem.nome}", com ${n} ${n === 1 ? 'despesa' : 'despesas'} e ${np} ${np === 1 ? 'pagamento' : 'pagamentos'} pré-viagem. Os dados atuais deste celular serão substituídos. Deseja continuar?`,
+      sim: 'Sim', nao: 'Não'
+    });
+    if (!ok) return;
+    estado = migrar({
+      viagem: d.viagem,
+      despesas: d.despesas,
+      prePagos: Array.isArray(d.prePagos) ? d.prePagos : [],
+      ultimaForma: FORMAS[d.ultimaForma] ? d.ultimaForma : 'cartao'
+    });
+    salvar();
+    history.replaceState(null, '');
+    renderHoje();
+    mostrar('tela-hoje');
+  } catch (e) {
+    msgDados('Esse arquivo não é um backup válido do Bolso Viagem.', 'erro');
+  } finally {
+    $('arq-backup').value = '';
+  }
+}
+async function apagarTudo() {
+  const ok = await perguntar({
+    titulo: 'Apagar toda a viagem?',
+    texto: 'Toda a sua viagem será apagada: configuração, orçamento, despesas e pagamentos pré-viagem. Isso não pode ser desfeito. Você tem certeza de continuar?',
+    sim: 'Sim', nao: 'Não', perigo: true
+  });
+  if (!ok) return;
+  localStorage.removeItem(CHAVE);
+  localStorage.removeItem(CHAVE + '_backup');
+  estado = { viagem: null, despesas: [], prePagos: [], ultimaForma: 'cartao' };
+  history.replaceState(null, '');
+  abrirConfig();
+}
+
 // ---------- Eventos ----------
 $('cfg-salvar').onclick = salvarConfig;
 ['cfg-dinheiro', 'cfg-cartao', 'cfg-moeda'].forEach(id => $(id).addEventListener('input', atualizarTotalCfg));
@@ -1574,6 +1734,11 @@ $('btn-novo-pre').onclick = () => abrirPreForm();
 $('p-voltar').onclick = voltarHoje;
 $('p-salvar').onclick = salvarPre;
 $('p-apagar').onclick = apagarPre;
+$('btn-backup').onclick = salvarBackup;
+$('btn-compartilhar').onclick = compartilharBackup;
+$('btn-restaurar').onclick = () => $('arq-backup').click();
+$('arq-backup').addEventListener('change', e => restaurarBackup(e.target.files && e.target.files[0]));
+$('btn-apagar-tudo').onclick = apagarTudo;
 
 // Atualiza a tela ao voltar para o app (pode ter virado o dia)
 document.addEventListener('visibilitychange', () => {
