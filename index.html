@@ -203,6 +203,22 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
 .modal-caixa{width:100%;max-width:400px;background:var(--s1);border:1px solid var(--linha2);border-radius:var(--raio-g);padding:24px 22px 20px}
 .modal-caixa h2{margin:0;font-size:20px;font-weight:800;letter-spacing:-.01em}
 .modal-caixa p{margin:10px 0 0;color:var(--mut);font-size:15px;line-height:1.5}
+.chips{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:16px}
+.chips-rot{font-size:13px;color:var(--mut);margin-right:2px}
+.chip{min-height:40px;padding:0 16px;border-radius:999px;border:1.5px solid var(--linha2);background:transparent;color:var(--mut);font:inherit;font-size:15px;font-weight:700;cursor:pointer}
+.chip[aria-checked="true"]{background:var(--ac);border-color:var(--ac);color:var(--ac-ink)}
+.exib-info{margin:8px 0 0;font-size:13px;color:var(--mut);line-height:1.45}
+.exib-info:empty{display:none}
+.moeda-sel{flex:none;width:auto;min-height:0;margin:0;padding:6px 30px 6px 12px;border:none;border-radius:12px;background-color:var(--s2);background-position:right 8px center;background-size:16px;color:var(--txt);font-size:20px;font-weight:700}
+.conv{margin-top:10px;padding:14px 16px;border-radius:16px;background:var(--s1);font-size:14px;color:var(--mut)}
+.conv-linha{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.conv-linha input{width:130px;min-height:44px;margin:0;font-size:16px}
+.conv-res{margin-top:8px;color:var(--txt);font-weight:600}
+.conv-res:empty{display:none}
+.fonte{font-size:12px}
+.fonte a{color:var(--mut)}
+.manual-linha{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:15px}
+.manual-linha input{width:140px;min-height:48px;margin:0}
 .modal-caixa.folha{max-height:88vh;overflow:auto}
 .fm-lista{margin-top:14px}
 .fm-item{display:grid;grid-template-columns:52px minmax(0,1fr) 40px;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--linha)}
@@ -273,6 +289,7 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
   <symbol id="i-baixar" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
   <symbol id="i-subir" viewBox="0 0 24 24"><path d="M12 20V9M7 14l5-5 5 5M5 4h14"/></symbol>
   <symbol id="i-enviar" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></symbol>
+  <symbol id="i-atualizar" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.6-4.4L4 8M4 3.5V8h4.5M4 13a8 8 0 0 0 14.6 4.4L20 16M20 20.5V16h-4.5"/></symbol>
   <symbol id="i-outros" viewBox="0 0 24 24"><path d="M8.3 8.4a3.7 3.7 0 1 1 5.5 3.3c-1.1.6-1.8 1.4-1.8 2.6v.9" stroke-width="2.2"/><circle cx="12" cy="19" r="1.4" fill="currentColor" stroke="none"/></symbol>
 </svg>
 
@@ -324,6 +341,21 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
     <div id="cfg-erro" class="erro" role="alert"></div>
     <button id="cfg-salvar" class="btn" type="button">Começar</button>
   </div>
+  <div id="cfg-cambio" class="bloco dados">
+    <h2>Câmbio e cartão</h2>
+    <p class="nota" id="cambio-status"></p>
+    <button id="btn-atualizar-cambio" class="link-btn" type="button"><svg class="ic"><use href="#i-atualizar"/></svg>Atualizar cotação agora</button>
+    <label for="cfg-cartao-moeda">Moeda da fatura do cartão
+      <select id="cfg-cartao-moeda"></select>
+    </label>
+    <label for="cfg-cartao-taxa">Taxa do cartão em compras no exterior (%)
+      <input id="cfg-cartao-taxa" type="text" inputmode="decimal" placeholder="2,5" autocomplete="off">
+    </label>
+    <p class="nota">Usada para estimar quanto os gastos no cartão vão custar na sua fatura.</p>
+    <div id="manuais"></div>
+    <p class="nota fonte" id="cambio-fonte"></p>
+  </div>
+
   <div id="cfg-dados" class="bloco dados">
     <h2>Seus dados</h2>
     <p class="nota" id="dados-nota"></p>
@@ -353,6 +385,10 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
     <h1 id="h-nome"></h1>
     <div class="local"><svg class="ic"><use href="#i-pin"/></svg><span id="h-destino"></span></div>
     <div class="periodo" id="h-periodo"></div>
+  </div>
+  <div id="exib-box">
+    <div id="exib-chips" class="chips" role="radiogroup" aria-label="Ver valores em"></div>
+    <p id="exib-info" class="exib-info"></p>
   </div>
 
   <div id="dias-barra" class="dias-barra" role="img" aria-label="Progresso dos dias da viagem"></div>
@@ -423,8 +459,16 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
   <div id="d-scan-status" class="scan-status" role="status" aria-live="polite"></div>
 
   <div class="valor-box">
-    <span class="moeda" id="d-moeda"></span>
+    <select id="d-moeda-sel" class="moeda-sel" aria-label="Moeda do valor"></select>
     <input id="d-valor" type="text" inputmode="decimal" placeholder="0,00" autocomplete="off" aria-label="Valor">
+  </div>
+  <div id="d-conv" class="conv" style="display:none">
+    <div class="conv-linha">
+      <span>Cotação: 1 <b id="d-conv-de"></b> =</span>
+      <input id="d-taxa" type="text" inputmode="decimal" placeholder="0,0000" autocomplete="off" aria-label="Cotação">
+      <span id="d-conv-para"></span>
+    </div>
+    <div id="d-conv-res" class="conv-res"></div>
   </div>
 
   <div class="sec-titulo" id="d-forma-rot">Forma de pagamento</div>
@@ -496,8 +540,16 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
   </div>
 
   <div class="valor-box">
-    <span class="moeda" id="p-moeda"></span>
+    <select id="p-moeda-sel" class="moeda-sel" aria-label="Moeda do valor"></select>
     <input id="p-valor" type="text" inputmode="decimal" placeholder="0,00" autocomplete="off" aria-label="Valor">
+  </div>
+  <div id="p-conv" class="conv" style="display:none">
+    <div class="conv-linha">
+      <span>Cotação: 1 <b id="p-conv-de"></b> =</span>
+      <input id="p-taxa" type="text" inputmode="decimal" placeholder="0,0000" autocomplete="off" aria-label="Cotação">
+      <span id="p-conv-para"></span>
+    </div>
+    <div id="p-conv-res" class="conv-res"></div>
   </div>
 
   <div class="sec-titulo" id="p-forma-rot">Forma de pagamento</div>
@@ -560,7 +612,7 @@ input[type=date]{min-width:0;-webkit-appearance:none;appearance:none}
 </div>
 
 <script>
-const VERSAO = '10';
+const VERSAO = '11';
 const CHAVE = 'bolsoViagem';
 const CATEGORIAS = ['Alimentação', 'Transporte', 'Hospedagem', 'Ingressos', 'Compras', 'Outros'];
 const ICONE = { 'Alimentação':'i-comida', 'Transporte':'i-carro', 'Hospedagem':'i-cama', 'Ingressos':'i-ingresso', 'Compras':'i-sacola', 'Outros':'i-outros' };
@@ -632,7 +684,11 @@ function carregar() {
       despesas: Array.isArray(o.despesas) ? o.despesas : [],
       prePagos: Array.isArray(o.prePagos) ? o.prePagos : [],
       ultimaForma: FORMAS[o.ultimaForma] ? o.ultimaForma : 'cartao',
-      moedas: o.moedas
+      moedas: o.moedas,
+      cambio: o.cambio || null,
+      cartao: o.cartao,
+      taxasManuais: o.taxasManuais,
+      exibicao: o.exibicao || ''
     });
   } catch (e) {
     // Dado corrompido: guarda cópia de segurança para não perder nada
@@ -641,7 +697,8 @@ function carregar() {
   }
 }
 function estadoVazio() {
-  return { viagem: null, despesas: [], prePagos: [], ultimaForma: 'cartao', moedas: moedasPadrao() };
+  return { viagem: null, despesas: [], prePagos: [], ultimaForma: 'cartao', moedas: moedasPadrao(),
+           cambio: null, cartao: { moeda: 'CAD', taxa: 2.5 }, taxasManuais: {}, exibicao: '' };
 }
 // Dados de versões antigas: orçamento único vira "dinheiro"; despesas sem forma viram "dinheiro"
 function migrar(e) {
@@ -668,6 +725,10 @@ function migrar(e) {
     e.moedas.push(doCatalogo ? { ...doCatalogo } : { codigo: e.viagem.moedaCodigo, simbolo: e.viagem.moeda, nome: 'Moeda da viagem' });
   }
   if (e.viagem && e.viagem.pais == null) e.viagem.pais = '';
+  if (!e.cartao || typeof e.cartao !== 'object') e.cartao = { moeda: e.moedas.some(m => m.codigo === 'CAD') ? 'CAD' : '', taxa: 2.5 };
+  if (!e.taxasManuais || typeof e.taxasManuais !== 'object') e.taxasManuais = {};
+  if (e.cambio === undefined) e.cambio = null;
+  if (typeof e.exibicao !== 'string') e.exibicao = '';
   return e;
 }
 function salvar() {
@@ -707,10 +768,49 @@ function textoPeriodo(v) {
 function parseNum(v) {
   return parseFloat(String(v).replace(',', '.'));
 }
+const num2 = v => v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const r2 = v => Math.round(v * 100) / 100;
+
+// ---------- Câmbio ----------
+// Quantas unidades da moeda valem 1 dólar americano
+function taxaUSD(cod) {
+  if (cod === 'USD') return 1;
+  const t = estado.cambio && estado.cambio.taxas && estado.cambio.taxas[cod];
+  if (t > 0) return t;
+  const m = estado.taxasManuais && estado.taxasManuais[cod];
+  return m > 0 ? m : null;
+}
+function fatorConversao(de, para) {
+  if (de === para) return 1;
+  const a = taxaUSD(de), b = taxaUSD(para);
+  return a && b ? b / a : null;
+}
+function simboloDe(cod) {
+  const m = moedaPorCodigo(cod) || CATALOGO_MOEDAS.find(x => x.codigo === cod);
+  return m ? m.simbolo : cod;
+}
+function fmtEm(v, cod) {
+  return `${v < 0 ? '-' : ''}${simboloDe(cod)} ${num2(Math.abs(v))}`;
+}
+function fmtTaxa(f) {
+  return f.toLocaleString('pt-BR', { useGrouping: false, minimumFractionDigits: 2, maximumFractionDigits: f < 1 ? 6 : 4 });
+}
+// Moeda em que a tela mostra os valores (a da viagem ou a escolhida nos botões)
+function moedaExibida() {
+  const v = estado.viagem;
+  const e = estado.exibicao;
+  if (e && e !== v.moedaCodigo && moedaPorCodigo(e) && fatorConversao(v.moedaCodigo, e) != null) {
+    return { codigo: e, simbolo: moedaPorCodigo(e).simbolo, fator: fatorConversao(v.moedaCodigo, e) };
+  }
+  return { codigo: v.moedaCodigo, simbolo: v.moeda, fator: 1 };
+}
+
 function partes(v) {
+  const me = moedaExibida();
+  v = v * me.fator;
   const n = Math.abs(v) < 0.005 ? 0 : v;
-  const num = Math.abs(n).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  return { sinal: n < 0 ? '-' : '', moeda: estado.viagem.moeda, num };
+  const num = num2(Math.abs(n));
+  return { sinal: n < 0 ? '-' : '', moeda: me.simbolo, num };
 }
 function fmt(v) {
   const p = partes(v);
@@ -872,7 +972,229 @@ function abrirConfig() {
     ? 'Os dados ficam só neste celular. Faça um backup antes de trocar de navegador ou de celular, ou antes de apagar a viagem.'
     : 'Já usou o Bolso Viagem em outro navegador ou celular? Restaure um backup para continuar de onde parou.';
   msgDados('', '');
+  $('cfg-cambio').style.display = editando ? 'block' : 'none';
+  if (editando) montarCambioCfg();
   irPara('tela-config');
+}
+
+// ---------- Cotações: busca, exibição e formulários ----------
+const URL_BCE = 'https://api.frankfurter.dev/v1/latest?base=USD';
+const URL_ER = 'https://open.er-api.com/v6/latest/USD';
+let cambioCarregando = null;
+
+// Busca cotações (no máximo a cada 6 horas, a menos que seja forçado). Guarda tudo para usar offline.
+function atualizarCambio(forcar) {
+  const c = estado.cambio;
+  if (!forcar && c && Date.now() - new Date(c.atualizadoEm).getTime() < 6 * 3600 * 1000) return Promise.resolve(false);
+  if (cambioCarregando) return cambioCarregando;
+  const buscar = url => fetch(url, { cache: 'no-store' }).then(r => (r.ok ? r.json() : Promise.reject(new Error(r.status))));
+  cambioCarregando = Promise.allSettled([buscar(URL_BCE), buscar(URL_ER)]).then(([bce, er]) => {
+    const taxas = {};
+    const fontes = [];
+    let data = null;
+    if (er.status === 'fulfilled' && er.value && er.value.rates) {
+      Object.assign(taxas, er.value.rates);
+      fontes.push('er');
+      if (er.value.time_last_update_unix) {
+        const d = new Date(er.value.time_last_update_unix * 1000);
+        data = `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}`;
+      }
+    }
+    if (bce.status === 'fulfilled' && bce.value && bce.value.rates) {
+      Object.assign(taxas, bce.value.rates);   // o Banco Central Europeu tem prioridade
+      fontes.push('bce');
+      data = bce.value.date || data;
+    }
+    if (!fontes.length) throw new Error('Sem cotação');
+    taxas.USD = 1;
+    estado.cambio = { taxas, data: data || hojeStr(), atualizadoEm: new Date().toISOString(), fontes };
+    salvar();
+    return true;
+  }).finally(() => { cambioCarregando = null; });
+  return cambioCarregando;
+}
+function aoAtualizarCambio(mudou) {
+  if (!mudou || !estado.viagem) return;
+  renderAtual();
+  if ($('tela-config').classList.contains('ativa')) montarCambioCfg();
+}
+
+function renderExibicao() {
+  const v = estado.viagem;
+  const box = $('exib-box');
+  const outras = estado.moedas.filter(m => m.codigo !== v.moedaCodigo && fatorConversao(v.moedaCodigo, m.codigo) != null);
+  if (!outras.length) { box.style.display = 'none'; return; }
+  box.style.display = 'block';
+  const me = moedaExibida();
+  const chips = $('exib-chips');
+  chips.textContent = '';
+  const rot = document.createElement('span');
+  rot.className = 'chips-rot';
+  rot.textContent = 'Ver em';
+  chips.appendChild(rot);
+  [{ codigo: v.moedaCodigo, simbolo: v.moeda }, ...outras].forEach(m => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'chip';
+    b.setAttribute('role', 'radio');
+    b.setAttribute('aria-checked', m.codigo === me.codigo ? 'true' : 'false');
+    b.textContent = m.simbolo;
+    b.onclick = () => {
+      estado.exibicao = m.codigo === v.moedaCodigo ? '' : m.codigo;
+      salvar();
+      renderHoje();
+    };
+    chips.appendChild(b);
+  });
+  const c = estado.cambio;
+  const quando = c ? ` pela cotação de ${formatarData(c.data)}` : '';
+  $('exib-info').textContent = me.codigo === v.moedaCodigo
+    ? (c ? `Cotação de ${formatarData(c.data)}. Toque numa moeda para ver todos os valores nela.` : '')
+    : `Valores convertidos de ${v.moeda} para ${me.simbolo}${quando}: 1 ${v.moeda} = ${fmtTaxa(me.fator)} ${me.simbolo}. Os lançamentos continuam em ${v.moeda}.`;
+}
+function notaExibicao() {
+  const me = moedaExibida();
+  return me.codigo === estado.viagem.moedaCodigo ? '' : ` Valores mostrados em ${me.simbolo}.`;
+}
+// Quanto os gastos no cartão (na moeda da viagem) custam na fatura, com a taxa do cartão
+function textoFatura(valorViagem) {
+  const cc = estado.cartao;
+  const v = estado.viagem;
+  if (!cc || !cc.moeda || cc.moeda === v.moedaCodigo || !(valorViagem > 0)) return '';
+  const f = fatorConversao(v.moedaCodigo, cc.moeda);
+  if (f == null) return '';
+  const total = valorViagem * f * (1 + (cc.taxa || 0) / 100);
+  return `Na fatura ≈ ${fmtEm(total, cc.moeda)}${cc.taxa ? ` (com taxa de ${String(cc.taxa).replace('.', ',')}%)` : ''}`;
+}
+
+// Seletor de moeda nos formulários de despesa ('d') e pagamento pré-viagem ('p')
+function montarMoedaForm(px, codSel, taxaSalva) {
+  const v = estado.viagem;
+  const s = $(px + '-moeda-sel');
+  s.textContent = '';
+  estado.moedas.forEach(m => s.appendChild(opcao(m.codigo, m.simbolo)));
+  s.value = moedaPorCodigo(codSel) ? codSel : v.moedaCodigo;
+  atualizarTaxaForm(px, taxaSalva);
+}
+function atualizarTaxaForm(px, taxaSalva) {
+  const v = estado.viagem;
+  const de = $(px + '-moeda-sel').value;
+  const box = $(px + '-conv');
+  if (de === v.moedaCodigo) { box.style.display = 'none'; return; }
+  box.style.display = 'block';
+  $(px + '-conv-de').textContent = simboloDe(de);
+  $(px + '-conv-para').textContent = v.moeda;
+  const f = taxaSalva || fatorConversao(de, v.moedaCodigo);
+  $(px + '-taxa').value = f ? fmtTaxa(f) : '';
+  atualizarResultadoConv(px);
+}
+function atualizarResultadoConv(px) {
+  const v = estado.viagem;
+  const de = $(px + '-moeda-sel').value;
+  if (de === v.moedaCodigo) return;
+  const valor = parseNum(val(px + '-valor'));
+  const taxa = parseNum(val(px + '-taxa'));
+  const el = $(px + '-conv-res');
+  if (!(taxa > 0)) {
+    el.textContent = `Sem cotação salva para ${simboloDe(de)}. Conecte à internet uma vez ou digite a cotação.`;
+    return;
+  }
+  el.textContent = valor > 0 ? `= ${v.moeda} ${num2(valor * taxa)} na moeda da viagem` : '';
+}
+function lerValorForm(px) {
+  const v = estado.viagem;
+  const de = $(px + '-moeda-sel').value;
+  const valor = parseNum(val(px + '-valor'));
+  if (!(valor > 0)) return { erro: 'O valor deve ser maior que zero.' };
+  if (de === v.moedaCodigo) return { valor: r2(valor), moedaOriginal: undefined, valorOriginal: undefined, taxa: undefined };
+  const taxa = parseNum(val(px + '-taxa'));
+  if (!(taxa > 0)) return { erro: `Informe a cotação: quanto vale 1 ${simboloDe(de)} em ${v.moeda}.` };
+  return { valor: r2(valor * taxa), moedaOriginal: de, valorOriginal: r2(valor), taxa };
+}
+
+// Seção "Câmbio e cartão" na configuração
+function dataHora(iso) {
+  const d = new Date(iso);
+  return `${pad(d.getDate())}/${pad(d.getMonth() + 1)} às ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+function montarCambioCfg(msg) {
+  const c = estado.cambio;
+  $('cambio-status').textContent = msg || (c
+    ? `Cotação de ${formatarData(c.data)}, baixada em ${dataHora(c.atualizadoEm)}. O app atualiza sozinho quando há internet.`
+    : 'Ainda sem cotação. Conecte à internet e toque em Atualizar cotação agora.');
+
+  const s = $('cfg-cartao-moeda');
+  s.textContent = '';
+  s.appendChild(opcao('', 'A mesma da viagem (sem conversão)'));
+  estado.moedas.forEach(m => s.appendChild(opcao(m.codigo, rotuloMoeda(m))));
+  s.value = estado.cartao.moeda && moedaPorCodigo(estado.cartao.moeda) ? estado.cartao.moeda : '';
+  $('cfg-cartao-taxa').value = estado.cartao.taxa ? String(estado.cartao.taxa).replace('.', ',') : '';
+
+  // Moedas sem cotação automática: cotação digitada (1 US$ = ...)
+  const box = $('manuais');
+  box.textContent = '';
+  const semAuto = estado.moedas.filter(m => m.codigo !== 'USD' && !(c && c.taxas && c.taxas[m.codigo] > 0));
+  if (semAuto.length) {
+    const t = document.createElement('div');
+    t.className = 'form-sub';
+    t.textContent = 'Cotação manual';
+    const n = document.createElement('p');
+    n.className = 'nota';
+    n.textContent = 'Estas moedas não têm cotação automática. Informe quanto vale 1 US$ em cada uma.';
+    box.append(t, n);
+    semAuto.forEach(m => {
+      const linha = document.createElement('label');
+      linha.className = 'manual-linha';
+      linha.appendChild(document.createTextNode('1 US$ ='));
+      const inp = document.createElement('input');
+      inp.type = 'text';
+      inp.inputMode = 'decimal';
+      inp.placeholder = '0,00';
+      const atual = estado.taxasManuais[m.codigo];
+      inp.value = atual ? fmtTaxa(atual) : '';
+      inp.onchange = () => {
+        const x = parseNum(inp.value);
+        if (x > 0) estado.taxasManuais[m.codigo] = x;
+        else delete estado.taxasManuais[m.codigo];
+        salvar();
+      };
+      linha.append(inp, document.createTextNode(`${m.simbolo} (${m.codigo})`));
+      box.appendChild(linha);
+    });
+  }
+
+  const f = $('cambio-fonte');
+  f.textContent = '';
+  if (c && c.fontes && c.fontes.length) {
+    f.appendChild(document.createTextNode('Fontes: '));
+    if (c.fontes.includes('bce')) f.appendChild(document.createTextNode('Banco Central Europeu (via Frankfurter)'));
+    if (c.fontes.includes('er')) {
+      if (c.fontes.includes('bce')) f.appendChild(document.createTextNode(' e '));
+      const a = document.createElement('a');
+      a.href = 'https://www.exchangerate-api.com';
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.textContent = 'Rates By Exchange Rate API';
+      f.appendChild(a);
+    }
+    f.appendChild(document.createTextNode('. Cotação comercial de referência: o banco pode cobrar diferente.'));
+  }
+}
+async function atualizarCambioAgora() {
+  const btn = $('btn-atualizar-cambio');
+  btn.disabled = true;
+  montarCambioCfg('Atualizando a cotação…');
+  try {
+    await atualizarCambio(true);
+    montarCambioCfg();
+    if (estado.viagem) renderHoje();
+  } catch (e) {
+    montarCambioCfg(estado.cambio
+      ? `Não deu para atualizar agora (sem internet?). Continuo usando a cotação de ${formatarData(estado.cambio.data)}.`
+      : 'Não deu para baixar a cotação. Verifique a internet e tente de novo.');
+  } finally {
+    btn.disabled = false;
+  }
 }
 
 // ---------- Moedas e países ----------
@@ -1082,6 +1404,7 @@ function renderHoje() {
   $('h-nome').textContent = v.nome;
   $('h-destino').textContent = v.destino || 'Destino não informado';
   $('h-periodo').textContent = textoPeriodo(v);
+  renderExibicao();
   desenharDias(c);
 
   if (c.antes) {
@@ -1241,6 +1564,13 @@ function renderHoje() {
     base.append(r, de);
 
     meio.append(topo, mini, base);
+    const fatura = k === 'cartao' ? textoFatura(gasto) : '';
+    if (fatura) {
+      const lf = document.createElement('div');
+      lf.className = 'forma-base';
+      lf.textContent = fatura;
+      meio.appendChild(lf);
+    }
     linha.append(iconeBox(f.ic, f.cor), meio);
     formasBox.appendChild(linha);
   });
@@ -1353,7 +1683,7 @@ function abrirDespesa(id) {
   const d = id ? estado.despesas.find(x => x.id === id) : null;
   editId = d ? d.id : null;
   $('d-titulo').textContent = d ? 'Editar despesa' : 'Nova despesa';
-  $('d-valor').value = d ? d.valor.toFixed(2).replace('.', ',') : '';
+  $('d-valor').value = d ? (d.valorOriginal != null ? d.valorOriginal : d.valor).toFixed(2).replace('.', ',') : '';
   $('d-desc').value = d ? (d.descricao || '') : '';
   const campoData = $('d-data-in');
   campoData.min = v.inicio;
@@ -1361,7 +1691,7 @@ function abrirDespesa(id) {
   campoData.value = d ? d.data : hojeStr();
   $('d-erro').textContent = '';
   mostrarStatusScan('', '');
-  $('d-moeda').textContent = v.moeda;
+  montarMoedaForm('d', d && d.moedaOriginal ? d.moedaOriginal : v.moedaCodigo, d && d.taxa);
   catSel = d && CATEGORIAS.includes(d.categoria) ? d.categoria : CATEGORIAS[0];
   montarCategorias();
   formaSel = d && FORMAS[d.forma] ? d.forma : (FORMAS[estado.ultimaForma] ? estado.ultimaForma : 'cartao');
@@ -1372,13 +1702,13 @@ function abrirDespesa(id) {
 }
 
 function salvarDespesa() {
-  const valor = parseNum(val('d-valor'));
+  const lido = lerValorForm('d');
   const descricao = val('d-desc');
   const data = $('d-data-in').value;
   const v = estado.viagem;
 
   let erro = '';
-  if (!(valor > 0)) erro = 'O valor deve ser maior que zero.';
+  if (lido.erro) erro = lido.erro;
   else if (!data) erro = 'Informe a data da despesa.';
   else if (data < v.inicio || data > v.fim)
     erro = `A data precisa estar dentro da viagem (${formatarData(v.inicio)} a ${formatarData(v.fim)}).`;
@@ -1388,7 +1718,8 @@ function salvarDespesa() {
     return;
   }
 
-  const dados = { valor: Math.round(valor * 100) / 100, categoria: catSel, forma: formaSel, descricao, data };
+  const dados = { valor: lido.valor, moedaOriginal: lido.moedaOriginal, valorOriginal: lido.valorOriginal, taxa: lido.taxa,
+                  categoria: catSel, forma: formaSel, descricao, data };
   if (editId) {
     const d = estado.despesas.find(x => x.id === editId);
     if (d) Object.assign(d, dados);
@@ -1455,7 +1786,7 @@ function itemDespesa(d) {
   return criarItem({
     icBox: iconeCategoria(d.categoria),
     titulo: d.descricao || d.categoria,
-    sub: [d.descricao ? d.categoria : '', tagForma(d.forma)],
+    sub: [d.descricao ? d.categoria : '', d.moedaOriginal ? fmtEm(d.valorOriginal, d.moedaOriginal) : '', tagForma(d.forma)],
     valor: fmt(d.valor),
     rotulo: 'despesa',
     aoEditar: () => abrirDespesa(d.id),
@@ -1473,7 +1804,8 @@ function itemPre(d) {
   return criarItem({
     icBox: iconeBox(t.ic, t.cor),
     titulo: d.descricao || d.tipo,
-    sub: [[d.descricao ? d.tipo : '', d.data ? formatarData(d.data) : ''].filter(Boolean).join(', '), tagForma(d.forma)],
+    sub: [[d.descricao ? d.tipo : '', d.data ? formatarData(d.data) : ''].filter(Boolean).join(', '),
+          d.moedaOriginal ? fmtEm(d.valorOriginal, d.moedaOriginal) : '', tagForma(d.forma)],
     valor: fmt(d.valor),
     rotulo: 'pagamento',
     aoEditar: () => abrirPreForm(d.id),
@@ -1495,7 +1827,7 @@ function renderTodos() {
   const c = calcular();
   const n = estado.despesas.length;
   $('todos-total').textContent = n
-    ? `${n} ${n === 1 ? 'gasto' : 'gastos'}, ${fmt(c.totalGasto)} no total. Toque num gasto para editar.`
+    ? `${n} ${n === 1 ? 'gasto' : 'gastos'}, ${fmt(c.totalGasto)} no total. Toque num gasto para editar.${notaExibicao()}`
     : '';
   if (!n) {
     const bloco = document.createElement('div');
@@ -1694,7 +2026,15 @@ function lerNota(texto) {
   const temDinheiro = /(\bcash\b|dinheiro|change\s*due|troco)/i.test(texto);
   const forma = temCartao ? 'cartao' : (temDinheiro ? 'dinheiro' : null);
 
-  return { valor, data, dataFora: data ? null : dataFora, conferido, forma, descricao: nomeLoja(linhas), categoria };
+  // Moeda pela pista da nota (impostos e símbolos típicos)
+  let moeda = null;
+  if (/\b(GST|HST|PST|QST|CAD)\b|C\$/.test(texto)) moeda = 'CAD';
+  else if (/R\$|\bBRL\b|CNPJ|NFC-?e/i.test(texto)) moeda = 'BRL';
+  else if (/€|\bEUR\b|\bIVA\b|\bTVA\b|MwSt/.test(texto)) moeda = 'EUR';
+  else if (/£|\bGBP\b/.test(texto)) moeda = 'GBP';
+  else if (/MX\$|\bMXN\b/.test(texto)) moeda = 'MXN';
+
+  return { valor, data, dataFora: data ? null : dataFora, conferido, forma, moeda, descricao: nomeLoja(linhas), categoria };
 }
 
 function listaPt(itens) {
@@ -1705,6 +2045,12 @@ function listaPt(itens) {
 function aplicarLeitura(r) {
   const achou = [];
   if (r.valor) { $('d-valor').value = r.valor.toFixed(2).replace('.', ','); achou.push('o valor'); }
+  if (r.moeda && moedaPorCodigo(r.moeda) && r.moeda !== $('d-moeda-sel').value) {
+    $('d-moeda-sel').value = r.moeda;
+    atualizarTaxaForm('d', null);
+    achou.push(`a moeda (${simboloDe(r.moeda)})`);
+  }
+  atualizarResultadoConv('d');
   if (r.data) { $('d-data-in').value = r.data; achou.push('a data'); }
   if (r.descricao && !val('d-desc')) { $('d-desc').value = r.descricao; achou.push('o estabelecimento'); }
   if (r.categoria) { catSel = r.categoria; marcarCategoria(); achou.push('a categoria'); }
@@ -1801,11 +2147,11 @@ function abrirPreForm(id) {
   const d = id ? estado.prePagos.find(x => x.id === id) : null;
   preEditId = d ? d.id : null;
   $('p-titulo').textContent = d ? 'Editar pagamento' : 'Novo pagamento';
-  $('p-valor').value = d ? d.valor.toFixed(2).replace('.', ',') : '';
+  $('p-valor').value = d ? (d.valorOriginal != null ? d.valorOriginal : d.valor).toFixed(2).replace('.', ',') : '';
   $('p-desc').value = d ? (d.descricao || '') : '';
   $('p-data').value = d && d.data ? d.data : hojeStr();
   $('p-erro').textContent = '';
-  $('p-moeda').textContent = estado.viagem.moeda;
+  montarMoedaForm('p', d && d.moedaOriginal ? d.moedaOriginal : estado.viagem.moedaCodigo, d && d.taxa);
   preForma = d && FORMAS[d.forma] ? d.forma : 'cartao';
   preTipo = d ? tipoPre(d.tipo).k : TIPOS_PRE[0].k;
   montarEscolha('p-formas', ORDEM_FORMAS.map(k => ({ k, nome: FORMAS[k].nome, ic: FORMAS[k].ic, cor: FORMAS[k].cor })),
@@ -1817,16 +2163,17 @@ function abrirPreForm(id) {
 }
 
 function salvarPre() {
-  const valor = parseNum(val('p-valor'));
+  const lido = lerValorForm('p');
   const data = $('p-data').value;
   let erro = '';
-  if (!(valor > 0)) erro = 'O valor deve ser maior que zero.';
+  if (lido.erro) erro = lido.erro;
   else if (!data) erro = 'Informe a data do pagamento.';
   if (erro) {
     $('p-erro').textContent = erro;
     return;
   }
-  const dados = { valor: Math.round(valor * 100) / 100, tipo: preTipo, forma: preForma, descricao: val('p-desc'), data };
+  const dados = { valor: lido.valor, moedaOriginal: lido.moedaOriginal, valorOriginal: lido.valorOriginal, taxa: lido.taxa,
+                  tipo: preTipo, forma: preForma, descricao: val('p-desc'), data };
   if (preEditId) {
     const d = estado.prePagos.find(x => x.id === preEditId);
     if (d) Object.assign(d, dados);
@@ -1933,7 +2280,11 @@ async function restaurarBackup(arquivo) {
       despesas: d.despesas,
       prePagos: Array.isArray(d.prePagos) ? d.prePagos : [],
       ultimaForma: FORMAS[d.ultimaForma] ? d.ultimaForma : 'cartao',
-      moedas: d.moedas
+      moedas: d.moedas,
+      cambio: d.cambio || estado.cambio || null,
+      cartao: d.cartao,
+      taxasManuais: d.taxasManuais,
+      exibicao: ''
     });
     salvar();
     history.replaceState(null, '');
@@ -2001,6 +2352,20 @@ document.addEventListener('visibilitychange', () => {
 
 // ---------- Início ----------
 $('versao').textContent = VERSAO;
+['d', 'p'].forEach(px => {
+  $(px + '-moeda-sel').addEventListener('change', () => atualizarTaxaForm(px, null));
+  $(px + '-valor').addEventListener('input', () => atualizarResultadoConv(px));
+  $(px + '-taxa').addEventListener('input', () => atualizarResultadoConv(px));
+});
+$('btn-atualizar-cambio').onclick = atualizarCambioAgora;
+$('cfg-cartao-moeda').addEventListener('change', e => { estado.cartao.moeda = e.target.value; salvar(); });
+$('cfg-cartao-taxa').addEventListener('change', e => {
+  const x = lerValor('cfg-cartao-taxa');
+  estado.cartao.taxa = x > 0 ? x : 0;
+  salvar();
+});
+window.addEventListener('online', () => atualizarCambio().then(aoAtualizarCambio).catch(() => {}));
+atualizarCambio().then(aoAtualizarCambio).catch(() => {});
 history.replaceState(null, '');
 if (estado.viagem) {
   renderHoje();
