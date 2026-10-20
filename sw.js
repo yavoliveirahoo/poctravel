@@ -2,7 +2,7 @@
 // Estratégia: rede primeiro (pega sempre a versão mais nova quando há internet)
 // e cache como reserva (o app continua abrindo 100% offline).
 // Ao publicar uma versão nova, aumente o número abaixo.
-const CACHE = 'bolso-viagem-v7';
+const CACHE = 'bolso-viagem-v8';
 const ARQUIVOS = [
   './', './index.html', './manifest.json',
   './icon.svg', './icon-192.png', './icon-512.png', './icon-maskable-512.png'
